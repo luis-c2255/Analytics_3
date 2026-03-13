@@ -144,7 +144,7 @@ div[data-testid="stSidebarNavSearch"] input {
     transition: 0.3s;
 }
 [data-testid="stSidebarNav"] li:hover {
-    background-color: #4666FF;
+    background-color: #003262;
     transform: translateX(5px);
 }
 [data-testid="stSidebarNav"] span {
