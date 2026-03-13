@@ -45,7 +45,7 @@ class Components:
     def page_header(title:str) -> str:
         """Create a styled page header"""
         return f"""
-        <div style='background: linear-gradient(135deg, #CC7A00 0%, #D91F1F 100%);
+        <div style='background: linear-gradient(135deg, #6050DC 0%, #120A8F 100%);
             padding: 0.8rem; border-radius: 6px; margin-bottom: 0.8rem;'>
             <h1 style='color: white; margin: 0; text-align: center; font-size: 2.5rem;'>{title}</h1>
         </div>
