@@ -125,11 +125,11 @@ div[data-testid="stMetricValue"] {
 
 /* Sidebar */
 section[data-testid="stSidebar"] {
-    background-color: rgba(147, 6, 6, 0.85);
+    background-color: rgba(0, 0, 128, 0.85);
 }
 /* Stylize the search input */
 div[data-testid="stSidebarNavSearch"] input {
-    border: 1px solid #CC3D00 !important;
+    border: 1px solid #2072AF !important;
     border-radius: 5px;
 }
 /* Highlight the navigation links to look like buttons */
@@ -137,14 +137,14 @@ div[data-testid="stSidebarNavSearch"] input {
     padding-top: 2rem;
 }
 [data-testid="stSidebarNav"] li {
-    background-color: #811818; 
+    background-color: #003262; 
     border-radius: 10px;
     margin-bottom: 10px;
-    border: 1px solid #FF8D5C; 
+    border: 1px solid #87CEFA; 
     transition: 0.3s;
 }
 [data-testid="stSidebarNav"] li:hover {
-    background-color: #FF621F;
+    background-color: #4666FF;
     transform: translateX(5px);
 }
 [data-testid="stSidebarNav"] span {
@@ -153,9 +153,9 @@ div[data-testid="stSidebarNavSearch"] input {
 }
 .stLinkButton { 
     border-radius: 18px; padding: 0; overflow: hidden;
-    background-color: #930606;
-    background: rgba(147, 6, 6, 0.3); 
-    backdrop-filter: blur(12px); border: 1px solid rgba(147, 6, 6, 0.5); 
+    background-color: #000080;
+    background: rgba(0, 0, 128, 0.3); 
+    backdrop-filter: blur(12px); border: 1px solid rgba(0, 0, 128, 0.5); 
     box-shadow: 0 4px 12px rgba(0,0,0,0.25); 
     transition: transform 0.25s ease, 
     box-shadow 0.25s ease, border-color 0.25s ease; cursor: pointer;
@@ -172,10 +172,10 @@ div[data-testid="stSidebarNavSearch"] input {
 } 
 /* Download button */
 .stDownloadButton > button {
-    background-color: #FF621F;
-    color: #811818;
+    background-color: #4666FF;
+    color: #003262;
     font-weight: 600;
 }
 .stDownloadButton > button:hover {
-    background-color: #FF8D5C;
+    background-color: #87CEFA;
 }
