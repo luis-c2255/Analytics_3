@@ -125,7 +125,7 @@ div[data-testid="stMetricValue"] {
 
 /* Sidebar */
 section[data-testid="stSidebar"] {
-    background-color: rgba(0, 0, 128, 0.5);
+    background-color: rgba(18, 10, 143, 0.5);
 }
 /* Stylize the search input */
 div[data-testid="stSidebarNavSearch"] input {
