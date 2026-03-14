@@ -54,7 +54,7 @@ def encoded_data(df):
         df_encoded[col + '_Encoded'] = le.fit_transform(df[col].astype(str))
         return df_encoded
     
-df_encoded = encoded_data(df)
+    df_encoded = encoded_data(df)
 
 # Title
 st.markdown(
