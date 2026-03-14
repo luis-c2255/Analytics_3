@@ -41,7 +41,6 @@ def load_data():
     else 'None', axis=1)
     return df
 
-    df.load_data()
 
 # Encode categorical variables
 @st.cache_data
@@ -55,6 +54,7 @@ def encoded_data(df):
         return df_encoded
     
     df_encoded = encoded_data(df)
+    df.load_data()
 
 # Title
 st.markdown(
