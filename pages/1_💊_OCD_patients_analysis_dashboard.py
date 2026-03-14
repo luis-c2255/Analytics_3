@@ -41,7 +41,7 @@ def load_data():
     else 'None', axis=1)
     return df
 
-df.load_data()
+    df.load_data()
 
 # Encode categorical variables
 @st.cache_data
