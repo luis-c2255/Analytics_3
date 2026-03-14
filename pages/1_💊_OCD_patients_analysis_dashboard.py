@@ -45,7 +45,7 @@ def load_data():
 
 # Encode categorical variables
 @st.cache_data
-def encode_data(df):
+def encoded_data(df):
     df_encoded = df.copy()
     categorical_cols = ['Gender', 'Ethnicity', 'Marital Status', 'Education Level', 'Previous Diagnosis', 'Family History of OCD', 'Obsession Type',
     'Compulsion Type', 'Depression Diagnosis', 'Anxiety Diagnosis', 'Medications']
