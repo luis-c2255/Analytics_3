@@ -123,7 +123,7 @@ def encoded_data(df):
     st.markdown("### 👥 Demographics Overview")
     gender_counts = df['Gender'].value_counts()
     fig2 = go.Figure(data=[go.Pie(
-            labels=gender_counts.index
+            labels=gender_counts.index,
             values=gender_counts.values,
             hole=0.4,
             marker_colors=['#FF6B6B', '#4ECDC4']
