@@ -678,7 +678,7 @@ residuals = y_test - y_pred
 fig26 = go.Figure()
 fig26.add_trace(go.Scatter(
     x=y_pred,
-    x=residuals,
+    y=residuals,
     mode='markers',
     marker=dict(color='coral', size=8, opacity=0.6)
 ))
