@@ -207,7 +207,7 @@ with col1:
         nbins=30,
         title='Age Distribution',
         color_discrete_sequence=['skyblue'])
-    fig3.update_layout(height=400)
+    fig3.update_layout(height=700)
     st.plotly_chart(fig3, width="stretch")
 with col2:
     age_group_counts = df['Age Group'].value_counts().sort_index()
@@ -218,7 +218,7 @@ with col2:
         labels={'x': 'Age Group', 'y': 'Count'},
         color=age_group_counts.values,
         color_continuous_scale='viridis')
-    fig4.update_layout(height=400, showlegend=False)
+    fig4.update_layout(height=700, showlegend=False)
     st.plotly_chart(fig4, width="stretch")
 
 st.markdown("### Y-BOCS Score by Gender")
@@ -229,7 +229,7 @@ fig5 = px.box(
     color='Gender',
     title='Y-BCOS Score Distribution by Gender',
     color_discrete_map={'Male': '#4ECDC4', 'Female': '#FF6B6B'})
-fig5.update_layout(height=400)
+fig5.update_layout(height=700)
 st.plotly_chart(fig5, width="stretch")
 
 with tab2:
@@ -245,7 +245,7 @@ with col1:
         labels={'x': 'Count', 'y': 'Ethnicity'},
         color=ethnicity_counts.values,
         color_continuous_scale='Teal')
-    fig6.update_layout(height=400, showlegend=False)
+    fig6.update_layout(height=700, showlegend=False)
     st.plotly_chart(fig6, width="stretch")
 with col2:
     edu_counts = df['Education Level'].value_counts()
@@ -254,7 +254,7 @@ with col2:
         values=edu_counts.values,
         hole=0.3
     )])
-    fig7.update_layout(title='Education Level Distribution', height=400)
+    fig7.update_layout(title='Education Level Distribution', height=700)
     st.plotly_chart(fig7, width="stretch")
 
 st.markdown("### Y-BOCS Score by Ethnicity") 
@@ -264,7 +264,7 @@ fig8 = px.box(
     y='Total Y-BOCS Score',
     color='Ethnicity',
     title="Y-BOCS Score by Ethnicity")
-fig8.update_layout(height=400)
+fig8.update_layout(height=700)
 st.plotly_chart(fig8, width="stretch")
 
 with tab3:
@@ -277,7 +277,7 @@ with col1:
         names=marital_counts.index,
         title='Marital Status Distribution',
         hole=0.4)
-    fig9.update_layout(height=400)
+    fig9.update_layout(height=700)
     st.plotly_chart(fig9, width="stretch")
 with col2:
     fig10 = px.box(
@@ -286,7 +286,7 @@ with col2:
         y='Total Y-BOCS Score',
         color='Marital Status',
         title='Y-BOCS Score by Marital Status')
-    fig10.update_layout(height=400)
+    fig10.update_layout(height=700)
     st.plotly_chart(fig10, width="stretch")
 
 st.markdown("   ")  
