@@ -741,7 +741,7 @@ with st.form("prediction_form"):
         pred_ethnicity = st.selectbox('Ethnicity', df['Ethnicity'].unique())
 
     with col2:
-        pre_marital = st.selectbox('Marital Status', df['Marital Status'].unique())
+        pred_marital = st.selectbox('Marital Status', df['Marital Status'].unique())
         pred_education = st.selectbox('Education Level', df['Education Level'].unique())
         pred_family = st.selectbox('Family History of OCD', df['Family History of OCD'].unique())
         pred_obsession = st.selectbox('Obsession Type', df['Obsession Type'].unique())
