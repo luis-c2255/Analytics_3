@@ -725,32 +725,32 @@ st.markdown("### 🎯 Make a Prediction")
 with st.form("prediction_form"):
     col1, col2, col3 = st.columns(3)
 
-with col1:
-    pred_age = st.number_input(
+    with col1:
+        pred_age = st.number_input(
         'Age', 
         min_value=18,
         max_value=100,
         value=35)
-    pred_duration = st.number_input(
+        pred_duration = st.number_input(
         'Duration (months)',
         min_value=1,
         max_value=500,
         value=100
-    )
-    pred_gender = st.selectbox('Gender', df['Gender'].unique())
-    pred_ethnicity = st.selectbox('Ethnicity', df['Ethnicity'].unique())
+        )
+        pred_gender = st.selectbox('Gender', df['Gender'].unique())
+        pred_ethnicity = st.selectbox('Ethnicity', df['Ethnicity'].unique())
 
-with col2:
-    pre_marital = st.selectbox('Marital Status', df['Marital Status'].unique())
-    pred_education = st.selectbox('Education Level', df['Education Level'].unique())
-    pred_family = st.selectbox('Family History of OCD', df['Family History of OCD'].unique())
-    pred_obsession = st.selectbox('Obsession Type', df['Obsession Type'].unique())
-with col3:
-    pred_compulsion = st.selectbox("Compulsion Type", df['Compulsion Type'].unique())
-    pred_depression = st.selectbox("Depression Diagnosis", df['Depression Diagnosis'].unique())
-    pred_anxiety = st.selectbox("Anxiety Diagnosis", df['Anxiety Diagnosis'].unique())
-    pred_medication = st.selectbox("Medications", df['Medications'].unique())
-submit_button = st.form_submit_button("🔮 Predict Y-BOCS Score")
+    with col2:
+        pre_marital = st.selectbox('Marital Status', df['Marital Status'].unique())
+        pred_education = st.selectbox('Education Level', df['Education Level'].unique())
+        pred_family = st.selectbox('Family History of OCD', df['Family History of OCD'].unique())
+        pred_obsession = st.selectbox('Obsession Type', df['Obsession Type'].unique())
+    with col3:
+        pred_compulsion = st.selectbox("Compulsion Type", df['Compulsion Type'].unique())
+        pred_depression = st.selectbox("Depression Diagnosis", df['Depression Diagnosis'].unique())
+        pred_anxiety = st.selectbox("Anxiety Diagnosis", df['Anxiety Diagnosis'].unique())
+        pred_medication = st.selectbox("Medications", df['Medications'].unique())
+    submit_button = st.form_submit_button("🔮 Predict Y-BOCS Score")
 if submit_button:
     # Encode inputs
     from sklearn.preprocessing import LabelEncoder
@@ -768,7 +768,7 @@ if submit_button:
         'Anxiety Diagnosis': pred_anxiety,  
         'Medications': pred_medication  
     }
-    
+
 # ============================================
 # FOOTER
 # ============================================
