@@ -411,7 +411,7 @@ with col2:
             title="Median Duration (months)",
             value=f"{df['Duration of Symptoms (months)'].median():.1f}",
             delta="",
-            metric_card="info"
+            card_type="info"
         ), unsafe_allow_html=True
     )
 with col3:
@@ -420,7 +420,7 @@ with col3:
             title="Min Duration (months)",
             value=f"{df['Duration of Symptoms (months)'].min():.1f}",
             delta="",
-            metric_card="info"
+            card_type="info"
         ), unsafe_allow_html=True
     )
 with col4:
@@ -429,7 +429,7 @@ with col4:
             title="Max Duration (months)",
             value=f"{df['Duration of Symptoms (months)'].max():.1f}",
             delta="",
-            metric_card="info"
+            card_type="info"
         ), unsafe_allow_html=True
     )
 st.markdown("   ")
