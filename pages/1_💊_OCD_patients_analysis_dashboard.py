@@ -932,7 +932,100 @@ with col2:
         color_continuous_scale='Viridis')
     fig33.update_layout(height=400)
     st.plotly_chart(fig33, width="stretch")
+# Cluster Profiles  
+st.markdown("   ")  
+st.markdown("### 📋 Detailed Cluster Profiles")  
+for cluster_id in range(optimal_k):
+    with st.expander(f"🔍 Cluster {cluster_id} Profile", expanded=(cluster_id == 0)):
+        cluster_data = df[df['Cluster'] == cluster_id]
 
+col1, col2, col3, col4 = st.columns(4)
+with col1:
+    st.metric("Patients", len(cluster_data))  
+    st.metric("Mean Age", f"{cluster_data['Age'].mean():.1f}")
+with col2:
+    st.metric("Mean Duration", f"{cluster_data['Duration of Symptoms (months)'].mean():.1f}")  
+    st.metric("Mean Y-BOCS", f"{cluster_data['Total Y-BOCS Score'].mean():.1f}")
+with col3:
+    depression_rate = (cluster_data['Depression Diagnosis']=='Yes').sum()/len(cluster_data)*100  
+    anxiety_rate = (cluster_data['Anxiety Diagnosis']=='Yes').sum()/len(cluster_data)*100  
+    st.metric("Depression Rate", f"{depression_rate:.1f}%")  
+    st.metric("Anxiety Rate", f"{anxiety_rate:.1f}%")
+with col4:
+    family_rate = (cluster_data['Family History of OCD']=='Yes').sum()/len(cluster_data)*100  
+    st.metric("Family History", f"{family_rate:.1f}%")  
+    st.metric("Most Common Med", cluster_data['Medications'].mode()[0]) 
+
+st.markdown("**Most Common Characteristics:**")  
+st.write(f"- **Obsession Type:** {cluster_data['Obsession Type'].mode()[0]}")  
+st.write(f"- **Compulsion Type:** {cluster_data['Compulsion Type'].mode()[0]}")  
+st.write(f"- **Gender:** {cluster_data['Gender'].mode()[0]}")
+
+st.markdown("   ")  
+st.markdown("### 📋 Time Series Analysis - Diagnosis Trends")
+
+diagnosis_trends = df.groupby('Diagnosis Year').agg({
+    'Patient ID': 'count',
+    'Total Y-BOCS Score': 'mean',
+    'Age': 'mean'
+}).reset_index()
+
+diagnosis_trends.columns = ['Year', 'Number of Diagnoses', 'Mean Y-BOCS', 'Mean Age']
+fig34 = make_subplots(
+    rows=1, cols=3,
+    subplot_titles=('OCD Diagnoses Over Time', 'Mean Y-BOCS Score Over Time', 'Mean Age at Diagnosis Over Time')
+)
+fig34.add_trace(
+    go.Scatter(
+        x=diagnosis_trends['Year'],
+        y=diagnosis_trends['Number of Diagnoses'],
+        mode='lines+markers',
+        marker=dict(size=8, color='steelblue', symbol='circle'),
+        line=dict(width=2, color='steelblue'),
+        name='Number of Diagnoses'
+    ),
+    row=1, col=1
+)
+fig34.add_trace(
+    go.Scatter(
+        x=diagnosis_trends['Year'],
+        y=diagnosis_trends['Mean Y-BOCS'],
+        mode='lines+markers',
+        marker=dict(size=8, color='coral', symbol='square'),
+        line=dict(width=2, color='coral'),
+        name='Mean Y-BOCS'
+    ),
+    row=1, col=2
+)
+fig34.add_trace(
+    go.Scatter(
+        x=diagnosis_trends['Year'],
+        y=diagnosis_trends['Mean Age'],
+        mode='lines+markers',
+        marker=dict(size=8, color='green', symbol='triangle-up'),
+        line=dict(width=2, color='green'),
+        name='Mean Age'
+    ),
+    row=1, col=3
+)
+
+fig34.update_xaxes(title_text='Year', title_font=dict(size=12), showgrid=True, gridcolor='lightgray', gridwidth=0.5, row=1, col=1)
+fig34.update_xaxes(title_text='Year', title_font=dict(size=12), showgrid=True, gridcolor='lightgray', gridwidth=0.5, row=1, col=2)
+fig34.update_xaxes(title_text='Year', title_font=dict(size=12), showgrid=True, gridcolor='lightgray', gridwidth=0.5, row=1, col=3)
+
+fig34.update_yaxes(title_text='Number of Diagnoses', title_font=dict(size=12), showgrid=True, gridcolor='lightgray', gridwidth=0.5, row=1, col=1)
+fig34.update_yaxes(title_text='Mean Y-BOCS Score', title_font=dict(size=12), showgrid=True, gridcolor='lightgray', gridwidth=0.5, row=1, col=2)
+fig34.update_yaxes(title_text='Mean Age at Diagnosis', title_font=dict(size=12), showgrid=True, gridcolor='lightgray', gridwidth=0.5, row=1, col=3)
+
+fig34.update_layout(
+    height=500,
+    width=1800,
+    showlegend=False,
+    font=dict(size=12)
+)
+
+fig34.for_each_annotation(lambda a: a.update(font=dict(size=14, family='Arial, bold')))
+st.plotly_chart(fig34, width="stretch")
 # ============================================
 # FOOTER
 # ============================================
