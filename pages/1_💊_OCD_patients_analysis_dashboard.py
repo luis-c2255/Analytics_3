@@ -939,22 +939,22 @@ for cluster_id in range(optimal_k):
     with st.expander(f"🔍 Cluster {cluster_id} Profile", expanded=(cluster_id == 0)):
         cluster_data = df[df['Cluster'] == cluster_id]
 
-col1, col2, col3, col4 = st.columns(4)
-with col1:
-    st.metric("Patients", len(cluster_data))  
-    st.metric("Mean Age", f"{cluster_data['Age'].mean():.1f}")
-with col2:
-    st.metric("Mean Duration", f"{cluster_data['Duration of Symptoms (months)'].mean():.1f}")  
-    st.metric("Mean Y-BOCS", f"{cluster_data['Total Y-BOCS Score'].mean():.1f}")
-with col3:
-    depression_rate = (cluster_data['Depression Diagnosis']=='Yes').sum()/len(cluster_data)*100  
-    anxiety_rate = (cluster_data['Anxiety Diagnosis']=='Yes').sum()/len(cluster_data)*100  
-    st.metric("Depression Rate", f"{depression_rate:.1f}%")  
-    st.metric("Anxiety Rate", f"{anxiety_rate:.1f}%")
-with col4:
-    family_rate = (cluster_data['Family History of OCD']=='Yes').sum()/len(cluster_data)*100  
-    st.metric("Family History", f"{family_rate:.1f}%")  
-    st.metric("Most Common Med", cluster_data['Medications'].mode()[0]) 
+        col1, col2, col3, col4 = st.columns(4)
+        with col1:
+            st.metric("Patients", len(cluster_data))  
+            st.metric("Mean Age", f"{cluster_data['Age'].mean():.1f}")
+        with col2:
+            st.metric("Mean Duration", f"{cluster_data['Duration of Symptoms (months)'].mean():.1f}")  
+            st.metric("Mean Y-BOCS", f"{cluster_data['Total Y-BOCS Score'].mean():.1f}")
+        with col3:
+            depression_rate = (cluster_data['Depression Diagnosis']=='Yes').sum()/len(cluster_data)*100  
+            anxiety_rate = (cluster_data['Anxiety Diagnosis']=='Yes').sum()/len(cluster_data)*100  
+            st.metric("Depression Rate", f"{depression_rate:.1f}%")  
+            st.metric("Anxiety Rate", f"{anxiety_rate:.1f}%")
+        with col4:
+            family_rate = (cluster_data['Family History of OCD']=='Yes').sum()/len(cluster_data)*100  
+            st.metric("Family History", f"{family_rate:.1f}%")  
+            st.metric("Most Common Med", cluster_data['Medications'].mode()[0]) 
 
 st.markdown("**Most Common Characteristics:**")  
 st.write(f"- **Obsession Type:** {cluster_data['Obsession Type'].mode()[0]}")  
