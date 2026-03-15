@@ -327,7 +327,7 @@ fig11 = px.histogram(
     nbins=25,
     title="Y-BOCS Obsession Scores Distribution",
     color_discrete_sequence=['lightcoral'])
-fig11.update_layout(height=600)
+fig11.update_layout(height=700)
 st.plotly_chart(fig11, width="stretch")
 
 # Compulsion scores distribution
@@ -337,7 +337,7 @@ fig12 = px.histogram(
     nbins=25,
     title="Y-BOCS Compulsion Scores Distribution",
     color_discrete_sequence=['lightskyblue'])
-fig12.update_layout(height=600)
+fig12.update_layout(height=700)
 st.plotly_chart(fig12, width="stretch")
 
 # Scatter plot: Obsessions vs Compulsions 
@@ -351,7 +351,7 @@ fig13 = px.scatter(
     hover_data=['Age', 'Gender', 'Severity Category'],
     title="Y-BOCS Obsessions vs Compulsions",
     color_continuous_scale='Viridis')
-fig13.update_layout(height=500)
+fig13.update_layout(height=700)
 st.plotly_chart(fig13, width="stretch")
 
 # Obsession types  
@@ -363,7 +363,7 @@ fig14 = px.bar(
     title='Obsession Types Distribution',
     labels={'x': 'Count', 'y': 'Obsession Type'},
     color_continuous_scale='Reds')
-fig14.update_layout(height=400, showlegend=False)
+fig14.update_layout(height=700, showlegend=False)
 st.plotly_chart(fig14, width="stretch")
 
 # Compulsion types
@@ -376,7 +376,7 @@ fig15 = px.bar(
     labels={'x': 'Count', 'y': 'Compulsion Type'},
     color=compulsion_counts.values,
     color_continuous_scale='Blues')
-fig15.update_layout(height=400, showlegend=False)
+fig15.update_layout(height=700, showlegend=False)
 st.plotly_chart(fig15, width="stretch")
 
 # Heatmap: Obsession vs Compulsion
@@ -391,7 +391,7 @@ fig16 = px.imshow(
     title='Obsession-Compulsion Relationship Heatmap',
     color_continuous_scale='YlOrRd',
     text_auto=True)
-fig16.update_layout(height=500)
+fig16.update_layout(height=700)
 st.plotly_chart(fig16, width="stretch")
 st.markdown("   ")
 
@@ -440,7 +440,7 @@ fig17 = px.histogram(
     nbins=40,
     title='Symptom Duration Distribution',
     color_discrete_sequence=['mediumpurple'])
-fig17.update_layout(height=400)
+fig17.update_layout(height=700)
 st.plotly_chart(fig17, width="stretch")
 
 # Duration vs Y-BOCS Score 
@@ -453,7 +453,7 @@ fig18 = px.scatter(
     hover_data=['Age', 'Gender', 'Obsession Type'],
     title='Symptom Duration vs Y-BOCS Score',
     trendline='lowess')
-fig18.update_layout(height=500)
+fig18.update_layout(height=700)
 st.plotly_chart(fig18, width="stretch")
 st.markdown("   ")
 st.subheader("🧬 :red[Comorbidity Analysis]", divider='red')
