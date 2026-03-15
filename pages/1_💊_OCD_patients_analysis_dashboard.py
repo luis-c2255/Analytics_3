@@ -402,7 +402,7 @@ with col1:
             title="Mean Duration (months)",
             value=f"{df['Duration of Symptoms (months)'].mean():.1f}",
             delta="",
-            metric_card="info"
+            card_type="info"
         ), unsafe_allow_html=True
     )
 with col2:
