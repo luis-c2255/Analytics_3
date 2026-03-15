@@ -931,7 +931,7 @@ with col2:
         title='Age vs Y-BOCS Score',
         color_continuous_scale='Viridis')
     fig33.update_layout(height=400)
-    st.plotly_chart(fig32, width="stretch")
+    st.plotly_chart(fig33, width="stretch")
 
 # ============================================
 # FOOTER
