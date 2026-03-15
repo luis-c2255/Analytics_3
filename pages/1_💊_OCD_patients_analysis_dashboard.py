@@ -47,20 +47,20 @@ def encoded_data(df):
     df_encoded = df.copy()
     categorical_cols = ['Gender', 'Ethnicity', 'Marital Status', 'Education Level', 'Previous Diagnosis', 'Family History of OCD', 'Obsession Type',
     'Compulsion Type', 'Depression Diagnosis', 'Anxiety Diagnosis', 'Medications']
-    for col in categorical_cols:
-        le = LabelEncoder()
-        df_encoded[col + '_Encoded'] = le.fit_transform(df[col].astype(str))
-        return df_encoded
+for col in categorical_cols:
+    le = LabelEncoder()
+    df_encoded[col + '_Encoded'] = le.fit_transform(df[col].astype(str))
+    return df_encoded
     
-    df_encoded = encoded_data(df)
-    df.load_data()
+df_encoded = encoded_data(df)
+df.load_data()
 
-    # Title
-    st.markdown(
-        Components.page_header(
-            "💊 OCD Patients Analysis Dashboard"
-        ), unsafe_allow_html=True
-    )
+# Title
+st.markdown(
+    Components.page_header(
+        "💊 OCD Patients Analysis Dashboard"
+    ), unsafe_allow_html=True
+)
     st.subheader("🏠 :orange[Overview]", divider="orange")
     col1, col2, col3, col4 = st.columns(4)  
     with col1:
