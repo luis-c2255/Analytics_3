@@ -927,7 +927,7 @@ with col2:
         x='Age',
         y='Total Y-BOCS Score',
         color='Cluster',
-        hover_data=['Duration of Symptoms (month)', 'Gender'],
+        hover_data=['Duration of Symptoms (months)', 'Gender'],
         title='Age vs Y-BOCS Score',
         color_continuous_scale='Viridis')
     fig33.update_layout(height=400)
