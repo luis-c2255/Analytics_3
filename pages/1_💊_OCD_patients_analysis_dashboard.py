@@ -53,7 +53,7 @@ def encoded_data(df):
     return df_encoded
     
     df_encoded = encoded_data(df)
-    df.load_data()
+df.load_data()
 
 # Title
 st.markdown(
