@@ -798,8 +798,8 @@ if submit_button:
         else:
             severity = "Extreme"
             color='darkred'
-st.success(f"### Predicted Y-BOCS Score: **{prediction:.2f}**")
-st.info(f"#### Severity Category: **{severity}**")
+    st.success(f"### Predicted Y-BOCS Score: **{prediction:.2f}**")
+    st.info(f"#### Severity Category: **{severity}**")
 
 # ============================================
 # FOOTER
