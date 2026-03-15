@@ -47,7 +47,7 @@ def encoded_data(df):
     df_encoded = df.copy()
     categorical_cols = ['Gender', 'Ethnicity', 'Marital Status', 'Education Level', 'Previous Diagnosis', 'Family History of OCD', 'Obsession Type',
     'Compulsion Type', 'Depression Diagnosis', 'Anxiety Diagnosis', 'Medications']
-for col in categorical_cols:
+    for col in categorical_cols:
     le = LabelEncoder()
     df_encoded[col + '_Encoded'] = le.fit_transform(df[col].astype(str))
     return df_encoded
