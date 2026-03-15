@@ -327,7 +327,7 @@ fig11 = px.histogram(
     nbins=25,
     title="Y-BOCS Obsession Scores Distribution",
     color_discrete_sequence=['lightcoral'])
-fig11.update_layout(height=400)
+fig11.update_layout(height=600)
 st.plotly_chart(fig11, width="stretch")
 
 # Compulsion scores distribution
@@ -337,7 +337,7 @@ fig12 = px.histogram(
     nbins=25,
     title="Y-BOCS Compulsion Scores Distribution",
     color_discrete_sequence=['lightskyblue'])
-fig12.update_layout(height=400)
+fig12.update_layout(height=600)
 st.plotly_chart(fig12, width="stretch")
 
 # Scatter plot: Obsessions vs Compulsions 
