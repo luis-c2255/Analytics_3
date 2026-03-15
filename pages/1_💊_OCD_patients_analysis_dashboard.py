@@ -768,6 +768,38 @@ if submit_button:
         'Anxiety Diagnosis': pred_anxiety,  
         'Medications': pred_medication  
     }
+    # Encode categorical variables
+    encoded_values = []
+    encoded_values.append(pred_age)
+    encoded_values.append(pred_duration)
+    for col in [
+        'Gender', 'Ethnicity', 'Marital Status',
+        'Education Level', 'Family History of OCD', 'Obsession Type',
+        'Compulsion Type', 'Depression Diagnosis', 'Anxiety Diagnosis',
+        'Medications' ]:
+        le = LabelEncoder()
+        le.fit(df[col].astype(str))
+        encoded_values.append(le.transform([pred_data[col]])[0])
+        # Make prediction
+        prediction = rf.model.predict([encoded_values])[0]
+        # Determine severity
+        if prediction <= 7:
+            severity = "Subclinical"
+            color='green'
+        elif prediction <= 15:
+            severity = "Mild"
+            color='yellow'
+        elif prediction <= 23:
+            severity = "Moderate"
+            color='orange'
+        elif prediction <= 31:
+            severity = "Severe"
+            color='red'
+        else:
+            severity = "Extreme"
+            color='darkred'
+st.success(f"### Predicted Y-BOCS Score: **{prediction:.2f}**")
+st.info(f"#### Severity Category: **{severity}**")
 
 # ============================================
 # FOOTER
