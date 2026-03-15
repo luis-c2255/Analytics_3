@@ -781,7 +781,7 @@ if submit_button:
         le.fit(df[col].astype(str))
         encoded_values.append(le.transform([pred_data[col]])[0])
     # Make prediction
-    prediction = rf.model.predict([encoded_values])[0]
+    prediction = rf_model.predict([encoded_values])[0]
     # Determine severity
     if prediction <= 7:
         severity = "Subclinical"
