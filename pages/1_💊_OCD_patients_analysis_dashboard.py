@@ -288,6 +288,176 @@ with col2:
         title='Y-BOCS Score by Marital Status')
     fig10.update_layout(height=400)
     st.plotly_chart(fig10, width="stretch")
+
+st.markdown("   ")  
+st.subheader("🔬 :blue[Clinical Profile Analysis]", divider="blue")
+col1, col2, col3 = st.columns(3) 
+with col1:
+    st.markdown(
+        Components.metric_card(
+            title="Mean Obsession Score",
+            value=f"{df['Y-BOCS Score (Obsessions)'].mean():.2f}",
+            delta="",
+            card_type="info"
+        ), unsafe_allow_html=True
+    )
+with col2:
+    st.markdown(
+        Components.metric_card(
+            title="Mean Compulsion Score",
+            value=f"{df['Y-BOCS Score (Compulsions)'].mean():.2f}",
+            delta="",
+            card_type="info"
+        ), unsafe_allow_html=True
+    )
+with col3:
+    st.markdown(
+        Components.metric_card(
+            title="Mean Total Score",
+            value=f"{df['Total Y-BOCS Score'].mean():.2f}",
+            delta="",
+            card_type="info"
+        ), unsafe_allow_html=True
+    )
+
+# Obsession scores distribution  
+fig11 = px.histogram(
+    df,
+    x='Y-BOCS Score (Obsessions)',
+    nbins=25,
+    title="Y-BOCS Obsession Scores Distribution",
+    color_discrete_sequence=['lightcoral'])
+fig11.update_layout(height=400)
+st.plotly_chart(fig11, width="stretch")
+
+# Compulsion scores distribution
+fig12 = px.histogram(
+    df,
+    x='Y-BOCS Score (Compulsions)',
+    nbins=25,
+    title="Y-BOCS Compulsion Scores Distribution",
+    color_discrete_sequence=['lightskyblue'])
+fig12.update_layout(height=400)
+st.plotly_chart(fig12, width="stretch")
+
+# Scatter plot: Obsessions vs Compulsions 
+st.markdown("### Relationship: Obsessions vs Compulsions")
+fig13 = px.scatter(
+    df,
+    x='Y-BOCS Score (Obsessions)',
+    y='Y-BOCS Score (Compulsions)',
+    color='Total Y-BOCS Score',
+    size='Total Y-BOCS Score',
+    hover_data=['Age', 'Gender', 'Severity Category'],
+    title="Y-BOCS Obsessions vs Compulsions",
+    color_continuous_scale='Viridis')
+fig13.update_layout(height=500)
+st.plotly_chart(fig13, width="stretch")
+
+# Obsession types  
+obsession_counts = df['Obsession Type'].value_counts()
+fig14 = px.bar(
+    x=obsession_counts.values,
+    y=obsession_counts.index,
+    orientation='h',
+    title='Obsession Types Distribution',
+    labels={'x': 'Count', 'y': 'Obsession Type'},
+    color_continuous_scale='Reds')
+fig14.update_layout(height=400, showlegend=False)
+st.plotly_chart(fig14, width="stretch")
+
+# Compulsion types
+compulsion_counts = df['Compulsion Type'].value_counts()
+fig15 = px.bar(
+    x=compulsion_counts.values,
+    y=compulsion_counts.index,
+    orientation='h',
+    title='Compulsion Types Distribution',
+    labels={'x': 'Count', 'y': 'Compulsion Type'},
+    color=compulsion_counts.values,
+    color_continuous_scale='Blues')
+fig15.update_layout(height=400, showlegend=False)
+st.plotly_chart(fig15, width="stretch")
+
+# Heatmap: Obsession vs Compulsion
+st.markdown("### Cross-Tabulation: Obsession vs Compulsion Types")
+crosstab = pd.crosstab(df['Obsession Type'], df['Compulsion Type'])
+fig16 = px.imshow(
+    crosstab,
+    labels=dict(
+        x='Compulsion Type',
+        y='Obsession Type',
+        color='Count'),
+    title='Obsession-Compulsion Relationship Heatmap',
+    color_continuous_scale='YlOrRd',
+    text_auto=True)
+fig16.update_layout(height=500)
+st.plotly_chart(fig16, width="stretch")
+st.markdown("   ")
+
+col1, col2, col3, col4 = st.columns(4)
+with col1:
+    st.markdown(
+        Components.metric_card(
+            title="Mean Duration (months)",
+            value=f"{df['Duration of Symptoms (months)'].mean():.1f}",
+            delta="",
+            metric_card="info"
+        ), unsafe_allow_html=True
+    )
+with col2:
+    st.markdown(
+        Components.metric_card(
+            title="Median Duration (months)",
+            value=f"{df['Duration of Symptoms (months)'].median():.1f}",
+            delta="",
+            metric_card="info"
+        ), unsafe_allow_html=True
+    )
+with col3:
+    st.markdown(
+        Components.metric_card(
+            title="Min Duration (months)",
+            value=f"{df['Duration of Symptoms (months)'].min():.1f}",
+            delta="",
+            metric_card="info"
+        ), unsafe_allow_html=True
+    )
+with col4:
+    st.markdown(
+        Components.metric_card(
+            title="Max Duration (months)",
+            value=f"{df['Duration of Symptoms (months)'].max():.1f}",
+            delta="",
+            metric_card="info"
+        ), unsafe_allow_html=True
+    )
+st.markdown("   ")
+# Duration distribution
+fig17 = px.histogram(
+    df,
+    x='Duration of Symptoms (months)',
+    nbins=40,
+    title='Symptom Duration Distribution',
+    color_discrete_sequence=['mediumpurple'])
+fig17.update_layout(height=400)
+st.plotly_chart(fig17, width="stretch")
+
+# Duration vs Y-BOCS Score 
+st.markdown("### Duration vs Y-BOCS Score") 
+fig18 = px.scatter(
+    df,
+    x='Duration of Symptoms (months)',
+    y='Total Y-BOCS Score',
+    color='Severity Category',
+    hover_data=['Age', 'Gender', 'Obsession Type'],
+    title='Symptom Duration vs Y-BOCS Score',
+    trendline='lowess')
+fig18.update_layout(height=500)
+st.plotly_chart(fig18, width="stretch")
+st.markdown("   ")
+st.subheader("🧬 :red[Comorbidity Analysis]", divider='red')
+
 # ============================================
 # FOOTER
 # ============================================
