@@ -457,7 +457,265 @@ fig18.update_layout(height=700)
 st.plotly_chart(fig18, width="stretch")
 st.markdown("   ")
 st.subheader("🧬 :red[Comorbidity Analysis]", divider='red')
+col1, col2, col3, col4 = st.columns(4) 
+with col1:
+    depression_count = (df['Depression Diagnosis'] == 'Yes').sum()
+    depression_pct = depression_count / len(df) * 100
+    st.markdown(
+        Components.metric_card(
+            title="Depression",
+            value=f"{depression_pct:.1f}%",
+            delta=f"{depression_count}",
+            card_type="info"
+        ), unsafe_allow_html=True
+    )
+with col2:
+    anxiety_count = (df['Anxiety Diagnosis'] == 'Yes').sum()  
+    anxiety_pct = anxiety_count / len(df) * 100 
+    st.markdown(
+        Components.metric_card(
+            title="Anxiety",
+            value=f"{anxiety_pct:.1f}%",
+            delta=f"{anxiety_count}",
+            card_type="info"
+        ), unsafe_allow_html=True
+    )
+with col3:
+    both_count = ((df['Depression Diagnosis'] == 'Yes') & (df['Anxiety Diagnosis'] == 'Yes')).sum()
+    both_pct = both_count / len(df) * 100 
+    st.markdown(
+        Components.metric_card(
+            title="Both",
+            value=f"{both_pct:.1f}%",
+            delta=f"{both_count}",
+            card_type="info"
+        ), unsafe_allow_html=True
+    )
+with col4:
+    family_count = (df['Family History of OCD'] == 'Yes').sum()  
+    family_pct = family_count / len(df) * 100 
+    st.markdown(
+        Components.metric_card(
+            title="Family History",
+            value=f"{family_pct:.1f}%",
+            delta=f"{family_count}",
+            card_type="info"
+        ), unsafe_allow_html=True
+    )
+st.markdown("   ") 
+# Comorbidity profile distribution 
+comorbidity_counts = df['Comorbidity Profile'].value_counts() 
+fig19 = px.bar(
+    x=comorbidity_counts.index,
+    y=comorbidity_counts.values,
+    title='Comorbidity Profile Distribution',
+    labels={'x': 'Profile', 'y': 'Count'},
+    color=comorbidity_counts.index,
+    color_discrete_map={
+        'None': 'lightgreen',
+        'Depression Only': 'lightblue',
+        'Anxiety Only': 'lightyellow',
+        'Both': 'lightcoral'
+    })
+fig19.update_layout(height=700)
+st.plotly_chart(fig19, width="stretch")
 
+# Y-BOCS by comorbidity profile 
+fig20 = px.box(
+    df,
+    x='Comorbidity Profile',
+    y='Total Y-BOCS Score',
+    color='Comorbidity Profile',
+    title='Y-BOCS Score by Comorbidity Profile',
+    category_orders={'Comorbidity Profile': ['None', 'Depression Only', 'Anxiety Only', 'Both']})
+fig20.update_layout(height=700)
+st.plotly_chart(fig20, width="stretch")
+
+# Family history impact  
+st.markdown("### 🧬 Family History Impact on Severity")  
+fig21 = px.box(
+    df,
+    x='Family History of OCD',
+    y='Total Y-BOCS Score',
+    color='Family History of OCD',
+    title="Y-BOCS Score vs Family History",
+    color_discrete_map={'Yes': '#FF6B6B', 'No': '#95E1D3'})
+fig21.update_layout(height=700)
+st.plotly_chart(fig21, width="stretch")
+
+# Statistical comparison  
+with_family = df[df['Family History of OCD'] == 'Yes']['Total Y-BOCS Score']
+without_family = df[df['Family History of OCD'] == 'No']['Total Y-BOCS Score']
+
+st.markdown("### Statistical Summary:")
+st.write(f"**With Family History:** Mean = {with_family.mean():.2f}, Std = {with_family.std():.2f}")
+st.write(f"**Without Family History:** Mean = {without_family.mean():.2f}, Std = {without_family.std():.2f}") 
+
+# Medications distribution  
+med_counts = df['Medications'].value_counts()
+fig22 = px.pie(
+    values=med_counts.values,
+    names=med_counts.index,
+    title='Medication Types Distribution',
+    hole=0.4)
+fig22.update_layout(height=700)
+st.plotly_chart(fig22, width="stretch")
+
+# Medication effectiveness  
+st.markdown("### 💊 Medication Analysis")
+col1, col2 = st.columns(2) 
+with col1:
+    fig23 = px.box(
+        df,
+        x='Medications',
+        y='Total Y-BOCS Score',
+        color='Medications',
+        title="Y-BOCS Score by Medication Type")
+    fig23.update_layout(height=400)
+    st.plotly_chart(fig23, width="stretch")
+with col2:
+    fig24 = px.violin(
+        df,
+        x='Medications',
+        y='Duration of Symptoms (months)',
+        color='Medications',
+        title="Symptom Duration by Medication Type")
+    fig24.update_layout(height=400)
+    st.plotly_chart(fig24, width="stretch")
+
+st.markdown("   ")
+st.subheader("🤖 :rainbow[Y-BOCS Score Prediction Model]", divider="rainbow")
+st.info("📊 This model predicts Total Y-BOCS Score based on patient characteristics using Random Forest Regression.")
+
+# Prepare features
+feature_cols = [
+    'Age', 'Duration of Symptoms (months)', 'Gender_Encoded',
+    'Ethnicity_Encoded', 'Marital Status_Encoded',
+    'Education Level_Encoded', 'Family History of OCD_Encoded',
+    'Obsession Type_Encoded', 'Compulsion Type_Encoded',
+    'Depression Diagnosis_Encoded', 'Anxiety Diagnosis_Encoded',
+    'Medications_Encoded'
+]
+X = df_encoded[feature_cols]  
+y = df_encoded['Total Y-BOCS Score'] 
+
+# Split data  
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Train model  
+with st.spinner("Training Random Forest model..."):
+    rf_model = RandomForestRegressor(
+        n_estimators=100,
+        random_state=42,
+        max_depth=10)
+    rf_model.fit(X_train, y_train)
+    y_pred = rf_model.predict(X_test)
+    r2 = r2_score(y_test, y_pred)
+    mae = mean_absolute_error(y_test, y_pred)
+    rmse = np.sqrt(((y_test - y_pred) **2).mean())
+
+# Model performance  
+col1, col2, col3 = st.columns(3)
+with col1:
+    st.markdown(
+        Components.metric_card(
+            title="R² Score",
+            value=f"{r2:.4f}",
+            delta="",
+            card_type="info"
+        ), unsafe_allow_html=True
+    )
+with col2:
+    st.markdown(
+        Components.metric_card(
+            title="MAE",
+            value=f"{mae:.4f}",
+            delta="",
+            card_type="info"
+        ), unsafe_allow_html=True
+    )
+with col3:
+    st.markdown(
+        Components.metric_card(
+            title="RMSE",
+            value=f"{rmse:.4f}",
+            delta="",
+            card_type="info"
+        ), unsafe_allow_html=True
+    )
+st.markdown("   ")
+# Actual vs Predicted  
+fig25 = go.Figure()
+
+fig25.add_trace(go.Scatter(
+    x=y_test,
+    y=y_pred,
+    mode='markers',
+    name='Predictions',
+    marker=dict(color='steelblue', size=8, opacity=0.6)
+))
+# Perfect prediction line  
+min_val = min(y_test.min(), y_pred.min())  
+max_val = max(y_test.max(), y_pred.max())
+fig25.add_trace(go.Scatter(
+    x=[min_val, max_val],
+    y=[min_val, max_val],
+    mode='lines',
+    name='Perfect Prediction',
+    line=dict(color='red', dash='dash', width=2)
+))
+fig25.update_layout(
+    title='Actual vs Predicted Y-BOCS Scores',
+    xaxis_title='Actual Y-BOCS Score',
+    yaxis_title='Predicted Y-BOCS Score',
+    height=500
+)
+st.plotly_chart(fig25, width="stretch")
+
+# Residuals plot  
+residuals = y_test - y_pred
+
+fig26 = go.Figure()
+fig26.add_trace(go.Scatter(
+    x=y_pred,
+    x=residuals,
+    mode='markers',
+    marker=dict(color='coral', size=8, opacity=0.6)
+))
+fig26.add_hline(
+    y=0, 
+    line_dash='dash',
+    line_color='red',
+    line_width=2
+)
+fig26.update_layout(
+    title='Residual Plot',
+    xaxis_title='Predicted Y-BOCS Score',
+    yaxis_title='Residuals',
+    height=500
+)
+st.plotly_chart(fig26, width="stretch")
+# Feature importance  
+st.markdown("### 📊 Feature Importance")
+
+feature_importance = pd.DataFrame({
+    'Feature': feature_cols,
+    'Importance': rf_model.feature_importances_
+}).sort_values('Importance', ascending=False)
+
+# Clean feature names
+feature_importance['Feature'] = feature_importance['Feature'].str.replace('_Encoded', '')
+
+fig27 = px.bar(
+    feature_importance,
+    x='Importance',
+    y='Feature',
+    orientation='h',
+    title='Feature Importance for Y-BOCS Prediction',
+    color='Importance',
+    color_continuous_scale='Viridis')
+fig27.update_layout(height=600, yaxis={'categoryorder': 'total ascending'})
+st.plotly_chart(fig27, width="stretch")
 # ============================================
 # FOOTER
 # ============================================
