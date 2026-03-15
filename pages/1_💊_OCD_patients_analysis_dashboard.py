@@ -66,7 +66,7 @@ def encoded_data(df):
     df_encoded = df.copy()
     categorical_cols = [
         'Gender', 'Ethnicity', 'Marital Status', 'Education Level', 
-        'Previous Diagnosis', 'Family History of OCD', 'Obsession Type',
+        'Previous Diagnoses', 'Family History of OCD', 'Obsession Type',
         'Compulsion Type', 'Depression Diagnosis', 'Anxiety Diagnosis', 
         'Medications'
     ]
