@@ -119,6 +119,56 @@ def encoded_data(df):
         height=400
     )
     st.plotly_chart(fig, width="stretch")
+    st.markdown("   ") 
+    st.markdown("### 👥 Demographics Overview")
+    gender_counts = df['Gender'].value_counts()
+    fig2 = go.Figure(data=[go.Pie(
+            labels=gender_counts.index
+            values=gender_counts.values,
+            hole=0.4,
+            marker_colors=['#FF6B6B', '#4ECDC4']
+    )])
+    fig2.update_layout(
+            title='Gender Distribution',
+            height=400
+    )
+    st.plotly_chart(fig2, width="stretch")
+    # Additional overview metrics  
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        family_yes = (df['Family History of OCD'] == 'Yes').sum()
+        family_pct = family_yes / len(df) * 100
+        st.markdown(
+            Components.metric_card(
+                title="With Family History",
+                value=f"{family_pct:.1f}%",
+                delta=f"{family_yes}",
+                card_type="info"
+            ), unsafe_allow_html=True
+        )
+    with col2:
+        depression_yes = (df['Depression Diagnosis'] == 'Yes').sum()
+        depression_pct = depression_yes / len(df) * 100
+        st.markdown(
+            Components.metric_card(
+                title="With Depression",
+                value=f"{depression_pct:.1f}%",
+                delta=f"{depression_yes}",
+                card_type="info"
+            ), unsafe_allow_html=True
+        )
+    with col3:
+        anxiety_yes = (df['Anxiety Diagnosis'] == 'Yes').sum()
+        anxiety_pct = anxiety_yes / len(df) * 100
+        st.markdown(
+            Components.metric_card(
+                title="With Anxiety",
+                value=f"{anxiety_pct:.1f}%",
+                delta=f"{anxiety_yes}",
+                card_type="info"
+            ), unsafe_allow_html=True
+        )        
+
 
 # ============================================
 # FOOTER
