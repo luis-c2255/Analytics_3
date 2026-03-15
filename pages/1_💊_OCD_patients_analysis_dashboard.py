@@ -127,6 +127,8 @@ with col4:
 st.markdown("   ")  
 st.markdown("### 🎯 Key Statistics")
 severity_counts = df['Severity Category'].value_counts().sort_index()
+
+fig = go.Figure()
     
 fig.add_trace(go.Bar(
         x=severity_counts.index,
