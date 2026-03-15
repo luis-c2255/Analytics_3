@@ -125,7 +125,7 @@ with col4:
     )
         
 st.markdown("   ")  
-st.markdown("### 🎯 Key Statistics")
+st.markdown("### 🎯 :orange[Key Statistics]")
 severity_counts = df['Severity Category'].value_counts().sort_index()
 
 fig = go.Figure()
@@ -145,7 +145,7 @@ fig.update_layout(
     )
 st.plotly_chart(fig, width="stretch")
 st.markdown("   ") 
-st.markdown("### 👥 Demographics Overview")
+st.markdown("### 👥 :orange[Demographics Overview]")
 gender_counts = df['Gender'].value_counts()
 fig2 = go.Figure(data=[go.Pie(
             labels=gender_counts.index,
@@ -221,7 +221,7 @@ with col2:
     fig4.update_layout(height=700, showlegend=False)
     st.plotly_chart(fig4, width="stretch")
 
-st.markdown("### Y-BOCS Score by Gender")
+st.markdown("### :violet[Y-BOCS Score by Gender]")
 fig5 = px.box(
     df,
     x='Gender',
@@ -257,7 +257,7 @@ with col2:
     fig7.update_layout(title='Education Level Distribution', height=700)
     st.plotly_chart(fig7, width="stretch")
 
-st.markdown("### Y-BOCS Score by Ethnicity") 
+st.markdown("### :violet[Y-BOCS Score by Ethnicity]") 
 fig8 = px.box(
     df,
     x='Ethnicity',
@@ -341,7 +341,7 @@ fig12.update_layout(height=700)
 st.plotly_chart(fig12, width="stretch")
 
 # Scatter plot: Obsessions vs Compulsions 
-st.markdown("### Relationship: Obsessions vs Compulsions")
+st.markdown("### :blue[Relationship: Obsessions vs Compulsions]")
 fig13 = px.scatter(
     df,
     x='Y-BOCS Score (Obsessions)',
@@ -380,7 +380,7 @@ fig15.update_layout(height=700, showlegend=False)
 st.plotly_chart(fig15, width="stretch")
 
 # Heatmap: Obsession vs Compulsion
-st.markdown("### Cross-Tabulation: Obsession vs Compulsion Types")
+st.markdown("### :blue[Cross-Tabulation: Obsession vs Compulsion Types]")
 crosstab = pd.crosstab(df['Obsession Type'], df['Compulsion Type'])
 fig16 = px.imshow(
     crosstab,
@@ -444,7 +444,7 @@ fig17.update_layout(height=700)
 st.plotly_chart(fig17, width="stretch")
 
 # Duration vs Y-BOCS Score 
-st.markdown("### Duration vs Y-BOCS Score") 
+st.markdown("### :blue[Duration vs Y-BOCS Score]") 
 fig18 = px.scatter(
     df,
     x='Duration of Symptoms (months)',
@@ -532,7 +532,7 @@ fig20.update_layout(height=700)
 st.plotly_chart(fig20, width="stretch")
 
 # Family history impact  
-st.markdown("### 🧬 Family History Impact on Severity")  
+st.markdown("### 🧬 :red[Family History Impact on Severity]")  
 fig21 = px.box(
     df,
     x='Family History of OCD',
@@ -547,9 +547,9 @@ st.plotly_chart(fig21, width="stretch")
 with_family = df[df['Family History of OCD'] == 'Yes']['Total Y-BOCS Score']
 without_family = df[df['Family History of OCD'] == 'No']['Total Y-BOCS Score']
 
-st.markdown("### Statistical Summary:")
-st.write(f"**With Family History:** Mean = {with_family.mean():.2f}, Std = {with_family.std():.2f}")
-st.write(f"**Without Family History:** Mean = {without_family.mean():.2f}, Std = {without_family.std():.2f}") 
+st.markdown("### :red[Statistical Summary:]")
+st.error(f"**With Family History:** Mean = {with_family.mean():.2f}, Std = {with_family.std():.2f}")
+st.error(f"**Without Family History:** Mean = {without_family.mean():.2f}, Std = {without_family.std():.2f}") 
 
 # Medications distribution  
 med_counts = df['Medications'].value_counts()
@@ -562,7 +562,7 @@ fig22.update_layout(height=700)
 st.plotly_chart(fig22, width="stretch")
 
 # Medication effectiveness  
-st.markdown("### 💊 Medication Analysis")
+st.markdown("### 💊 :red[Medication Analysis]")
 col1, col2 = st.columns(2) 
 with col1:
     fig23 = px.box(
@@ -696,7 +696,7 @@ fig26.update_layout(
 )
 st.plotly_chart(fig26, width="stretch")
 # Feature importance  
-st.markdown("### 📊 Feature Importance")
+st.markdown("### 📊 :rainbow[Feature Importance]")
 
 feature_importance = pd.DataFrame({
     'Feature': feature_cols,
@@ -720,7 +720,7 @@ st.plotly_chart(fig27, width="stretch")
   
 # Prediction tool  
 st.markdown("   ")  
-st.markdown("### 🎯 Make a Prediction")
+st.markdown("### 🎯 :rainbow[Make a Prediction]")
 
 with st.form("prediction_form"):
     col1, col2, col3 = st.columns(3)
@@ -811,7 +811,7 @@ scaler = StandardScaler()
 X_cluster_scaled = scaler.fit_transform(X_cluster)
 
 # Optimal k selection  
-st.markdown("### 🔍 Optimal Cluster Selection")
+st.markdown("### 🔍 :violet[Optimal Cluster Selection]")
 # Calculate metrics for different k values
 inertias = []  
 silhouette_scores = []  
@@ -875,7 +875,7 @@ cluster_counts = df['Cluster'].value_counts().sort_index()
 
 col1, col2 = st.columns([1, 2])
 with col1:
-    st.markdown("### Cluster Distribution")
+    st.markdown("### :violet[Cluster Distribution]")
     for cluster_id in range(optimal_k):
         count = cluster_counts[cluster_id]
         pct = count / len(df) * 100
@@ -893,7 +893,7 @@ with col2:
 
 st.markdown("   ")
 # 3D Visualization  
-st.markdown("### 🎨 3D Cluster Visualization")  
+st.markdown("### 🎨 :violet[3D Cluster Visualization]")  
 
 fig31 = px.scatter_3d(
     df,
@@ -908,7 +908,7 @@ fig31.update_layout(height=700)
 st.plotly_chart(fig31, width="stretch")
 
 # 2D Visualizations  
-st.markdown("### 📊 2D Cluster Visualizations")
+st.markdown("### 📊 :violet[2D Cluster Visualizations]")
 col1, col2 = st.columns(2)
 with col1:
     fig32 = px.scatter(
@@ -934,7 +934,7 @@ with col2:
     st.plotly_chart(fig33, width="stretch")
 # Cluster Profiles  
 st.markdown("   ")  
-st.markdown("### 📋 Detailed Cluster Profiles")  
+st.markdown("### 📋 :violet[Detailed Cluster Profiles]")  
 for cluster_id in range(optimal_k):
     with st.expander(f"🔍 Cluster {cluster_id} Profile", expanded=(cluster_id == 0)):
         cluster_data = df[df['Cluster'] == cluster_id]
@@ -956,13 +956,13 @@ for cluster_id in range(optimal_k):
             st.metric("Family History", f"{family_rate:.1f}%")  
             st.metric("Most Common Med", cluster_data['Medications'].mode()[0]) 
 
-st.markdown("**Most Common Characteristics:**")  
+st.markdown(":violet[**Most Common Characteristics:**]")  
 st.write(f"- **Obsession Type:** {cluster_data['Obsession Type'].mode()[0]}")  
 st.write(f"- **Compulsion Type:** {cluster_data['Compulsion Type'].mode()[0]}")  
 st.write(f"- **Gender:** {cluster_data['Gender'].mode()[0]}")
 
 st.markdown("   ")  
-st.markdown("### 📋 Time Series Analysis - Diagnosis Trends")
+st.markdown("### 📋 :violet[Time Series Analysis - Diagnosis Trends]")
 
 diagnosis_trends = df.groupby('Diagnosis Year').agg({
     'Patient ID': 'count',
