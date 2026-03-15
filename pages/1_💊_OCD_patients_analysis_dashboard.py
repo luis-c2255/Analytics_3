@@ -192,7 +192,8 @@ with col3:
                 delta=f"{anxiety_yes}",
                 card_type="info"
             ), unsafe_allow_html=True
-        )        
+        )   
+st.markdown("   ")       
 st.subheader("👥 :violet[Demographic Analysis]", divider="violet")
 tab1, tab2, tab3 = st.tabs(["Age & Gender", "Ethnicity & Education", "Marital Status"]) 
 
