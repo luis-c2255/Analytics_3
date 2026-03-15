@@ -31,29 +31,52 @@ def load_data():
     df = pd.read_csv('ocd_patient_dataset.csv')
     df['OCD Diagnosis Date'] = pd.to_datetime(df['OCD Diagnosis Date'])
     df['Diagnosis Year'] = df['OCD Diagnosis Date'].dt.year
-    df['Age Group'] = pd.cut(df['Age'], bins=[0, 18, 30, 45, 60, 100],
-    labels=['<18', '18-30', '31-45', '46-60', '60+'])
-    df['Total Y-BOCS Score'] = df['Y-BOCS Score (Obsessions)'] + df['Y-BOCS Score (Compulsions)']
-    df['Severity Category'] = pd.cut(df['Total Y-BOCS Score'], bins=[0, 7, 15, 23, 31, 40], labels=['Subclinical', 'Mild', 'Moderate', 'Severe', 'Extreme'])
-    df['Comorbidity Profile'] = df.apply(lambda row: 'Both' if row['Depression Diagnosis'] == 'Yes' and row['Anxiety Diagnosis'] == 'Yes'
-    else 'Depression Only' if row['Depression Diagnosis'] == 'Yes'
-    else 'Anxiety Only' if row['Anxiety Diagnosis'] == 'Yes'
-    else 'None', axis=1)
+
+    df['Age Group'] = pd.cut(
+        df['Age'], 
+        bins=[0, 18, 30, 45, 60, 100],
+        labels=['<18', '18-30', '31-45', '46-60', '60+']
+    )
+
+    df['Total Y-BOCS Score'] = (
+        df['Y-BOCS Score (Obsessions)'] + 
+        df['Y-BOCS Score (Compulsions)']
+    )
+
+    df['Severity Category'] = pd.cut(
+        df['Total Y-BOCS Score'], 
+        bins=[0, 7, 15, 23, 31, 40], 
+        labels=['Subclinical', 'Mild', 'Moderate', 'Severe', 'Extreme']
+    )
+
+    df['Comorbidity Profile'] = df.apply(
+        lambda row: 
+            'Both' if row['Depression Diagnosis'] == 'Yes' and row['Anxiety Diagnosis'] == 'Yes'
+            else 'Depression Only' if row['Depression Diagnosis'] == 'Yes'
+            else 'Anxiety Only' if row['Anxiety Diagnosis'] == 'Yes'
+            else 'None', 
+        axis=1
+    )
+
     return df
 
-    # Encode categorical variables
-    @st.cache_data
-    def encoded_data(df):
-        df_encoded = df.copy()
-        categorical_cols = ['Gender', 'Ethnicity', 'Marital Status', 'Education Level', 'Previous Diagnosis', 'Family History of OCD', 'Obsession Type',
-        'Compulsion Type', 'Depression Diagnosis', 'Anxiety Diagnosis', 'Medications']
-        for col in categorical_cols:
-            le = LabelEncoder()
+# Encode categorical variables
+@st.cache_data
+def encoded_data(df):
+    df_encoded = df.copy()
+    categorical_cols = [
+        'Gender', 'Ethnicity', 'Marital Status', 'Education Level', 
+        'Previous Diagnosis', 'Family History of OCD', 'Obsession Type',
+        'Compulsion Type', 'Depression Diagnosis', 'Anxiety Diagnosis', 
+        'Medications'
+    ]
+    for col in categorical_cols:
+        le = LabelEncoder()
         df_encoded[col + '_Encoded'] = le.fit_transform(df[col].astype(str))
-        return df_encoded
+    return df_encoded
     
-    df_encoded = encoded_data(df)
 df.load_data()
+df_encoded = encoded_data(df)
 
 # Title
 st.markdown(
