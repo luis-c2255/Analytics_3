@@ -780,24 +780,24 @@ if submit_button:
         le = LabelEncoder()
         le.fit(df[col].astype(str))
         encoded_values.append(le.transform([pred_data[col]])[0])
-        # Make prediction
-        prediction = df.model.predict([encoded_values])[0]
-        # Determine severity
-        if prediction <= 7:
-            severity = "Subclinical"
-            color='green'
-        elif prediction <= 15:
-            severity = "Mild"
-            color='yellow'
-        elif prediction <= 23:
-            severity = "Moderate"
-            color='orange'
-        elif prediction <= 31:
-            severity = "Severe"
-            color='red'
-        else:
-            severity = "Extreme"
-            color='darkred'
+    # Make prediction
+    prediction = rf.model.predict([encoded_values])[0]
+    # Determine severity
+    if prediction <= 7:
+        severity = "Subclinical"
+        color='green'
+    elif prediction <= 15:
+        severity = "Mild"
+        color='yellow'
+    elif prediction <= 23:
+        severity = "Moderate"
+        color='orange'
+    elif prediction <= 31:
+        severity = "Severe"
+        color='red'
+    else:
+        severity = "Extreme"
+        color='darkred'
     st.success(f"### Predicted Y-BOCS Score: **{prediction:.2f}**")
     st.info(f"#### Severity Category: **{severity}**")
 
