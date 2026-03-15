@@ -61,9 +61,9 @@ st.markdown(
         "💊 OCD Patients Analysis Dashboard"
     ), unsafe_allow_html=True
 )
-    st.subheader("🏠 :orange[Overview]", divider="orange")
-    col1, col2, col3, col4 = st.columns(4)  
-    with col1:
+st.subheader("🏠 :orange[Overview]", divider="orange")
+col1, col2, col3, col4 = st.columns(4)  
+with col1:
         st.markdown(
             Components.metric_card(
                 title="Total Patients",
@@ -72,7 +72,7 @@ st.markdown(
                 card_type="info"
             ), unsafe_allow_html=True
         )
-    with col2:
+with col2:
         st.markdown(
         Components.metric_card(
             title="Avg Y-BOCS Score",
@@ -81,7 +81,7 @@ st.markdown(
             card_type="info"
         ), unsafe_allow_html=True
     )
-    with col3:
+with col3:
         st.markdown(
         Components.metric_card(
             title="Avg Age",
@@ -90,7 +90,7 @@ st.markdown(
             card_type="info"
         ), unsafe_allow_html=True
     )
-    with col4:
+with col4:
         comorbidity_rate = ((df['Depression Diagnosis']=='Yes') | (df['Anxiety Diagnosis']=='Yes')).sum() / len(df) * 100 
         st.markdown(
         Components.metric_card(
@@ -101,41 +101,41 @@ st.markdown(
         ), unsafe_allow_html=True
     )
         
-    st.markdown("   ")  
-    st.markdown("### 🎯 Key Statistics")
-    severity_counts = df['Severity Category'].value_counts().sort_index()
+st.markdown("   ")  
+st.markdown("### 🎯 Key Statistics")
+severity_counts = df['Severity Category'].value_counts().sort_index()
     
-    fig.add_trace(go.Bar(
+fig.add_trace(go.Bar(
         x=severity_counts.index,
         y=severity_counts.values,
         marker_color=['green', 'yellow', 'orange', 'red', 'darkred'],
         text=severity_counts.values,
         textposition='auto'
     ))
-    fig.update_layout(
+fig.update_layout(
         title="OCD Severity Distribution",
         xaxis_title='Severity',
         yaxis_title='Number of Patients',
         height=400
     )
-    st.plotly_chart(fig, width="stretch")
-    st.markdown("   ") 
-    st.markdown("### 👥 Demographics Overview")
-    gender_counts = df['Gender'].value_counts()
-    fig2 = go.Figure(data=[go.Pie(
+st.plotly_chart(fig, width="stretch")
+st.markdown("   ") 
+st.markdown("### 👥 Demographics Overview")
+gender_counts = df['Gender'].value_counts()
+fig2 = go.Figure(data=[go.Pie(
             labels=gender_counts.index,
             values=gender_counts.values,
             hole=0.4,
             marker_colors=['#FF6B6B', '#4ECDC4']
     )])
-    fig2.update_layout(
+fig2.update_layout(
             title='Gender Distribution',
             height=400
     )
-    st.plotly_chart(fig2, width="stretch")
-    # Additional overview metrics  
-    col1, col2, col3 = st.columns(3)
-    with col1:
+st.plotly_chart(fig2, width="stretch")
+# Additional overview metrics  
+col1, col2, col3 = st.columns(3)
+with col1:
         family_yes = (df['Family History of OCD'] == 'Yes').sum()
         family_pct = family_yes / len(df) * 100
         st.markdown(
@@ -146,7 +146,7 @@ st.markdown(
                 card_type="info"
             ), unsafe_allow_html=True
         )
-    with col2:
+with col2:
         depression_yes = (df['Depression Diagnosis'] == 'Yes').sum()
         depression_pct = depression_yes / len(df) * 100
         st.markdown(
@@ -157,7 +157,7 @@ st.markdown(
                 card_type="info"
             ), unsafe_allow_html=True
         )
-    with col3:
+with col3:
         anxiety_yes = (df['Anxiety Diagnosis'] == 'Yes').sum()
         anxiety_pct = anxiety_yes / len(df) * 100
         st.markdown(
