@@ -801,6 +801,138 @@ if submit_button:
     st.success(f"### Predicted Y-BOCS Score: **{prediction:.2f}**")
     st.info(f"#### Severity Category: **{severity}**")
 
+st.subheader("👥 :violet[Patient Segmentation using K-Means Clustering]", divider="violet")
+st.info("📊 Patients are segmented based on Age, Symptom Duration, and Y-BOCS Scores.") 
+# Clustering  
+cluster_features = ['Age', 'Duration of Symptoms (months)', 'Y-BOCS Score (Obsessions)', 'Y-BOCS Score (Compulsions)']
+X_cluster = df[cluster_features].copy()
+# Standardize  
+scaler = StandardScaler()
+X_cluster_scaled = scaler.fit_transform(X_cluster)
+
+# Optimal k selection  
+st.markdown("### 🔍 Optimal Cluster Selection")
+# Calculate metrics for different k values
+inertias = []  
+silhouette_scores = []  
+K_range = range(2, 11) 
+from sklearn.metrics import silhouette_score 
+for k in K_range:
+    kmeans = KMeans(n_clusters=k, random_state=42, n_init=10)
+    kmeans.fit(X_cluster_scaled)
+    inertias.append(kmeans.inertia_)
+    silhouette_scores.append(
+        silhouette_score(
+            X_cluster_scaled,
+            kmeans.labels_
+        )
+    )
+col1, col2 = st.columns(2)
+with col1:
+    # Elbow curve
+    fig28 = go.Figure()
+    fig28.add_trace(go.Scatter(
+            x=list(K_range),
+            y=inertias,
+            mode='lines+markers',
+            marker=dict(size=10, color='steelblue'),
+            line=dict(width=3)
+    ))
+    fig28.update_layout(
+        title="Elbow Method",
+            xaxis_title='Number of Clusters (k)',
+            yaxis_title='Inertia', height=400
+    )
+    st.plotly_chart(fig28, width="stretch")
+with col2:
+    # Silhouette scores
+    fig29 = go.Figure()
+    fig29.add_trace(go.Scatter(
+            x=list(K_range),
+            y=silhouette_scores,
+            mode='lines+markers',
+            marker=dict(size=10, color='coral'),
+            line=dict(width=3)
+    ))
+    fig29.update_layout(
+            title='Silhouette Score',
+            xaxis_title='Number of Clusters (k)',
+            yaxis_title='Silhouette Score',
+            height=400
+    )
+    st.plotly_chart(fig29, width="stretch")
+
+# User selects k  
+optimal_k = st.slider("Select number of clusters (k):", min_value=2, max_value=10, value=4)
+# Apply K-Means  
+kmeans_final = KMeans(n_clusters=optimal_k, random_state=42, n_init=10)  
+df['Cluster'] = kmeans_final.fit_predict(X_cluster_scaled) 
+
+st.success(f"✅ Patients segmented into **{optimal_k}** clusters") 
+
+# Cluster distribution  
+cluster_counts = df['Cluster'].value_counts().sort_index()  
+
+col1, col2 = st.columns([1, 2])
+with col1:
+    st.markdown("### Cluster Distribution")
+    for cluster_id in range(optimal_k):
+        count = cluster_counts[cluster_id]
+        pct = count / len(df) * 100
+        st.metric(f"Cluster {cluster_id}", f"{count}", f"{pct:.1f}%")
+with col2:
+    fig30 = px.bar(
+        x=cluster_counts.index,
+        y=cluster_counts.values,
+        title='Patients per Cluster',
+        labels={'x': 'Cluster', 'y': 'Number of Patients'},
+        color= cluster_counts.index,
+        color_continuous_scale='Viridis')
+    fig30.update_layout(height=400, showlegend=False)
+    st.plotly_chart(fig30, width="stretch")
+
+st.markdown("   ")
+# 3D Visualization  
+st.markdown("### 🎨 3D Cluster Visualization")  
+
+fig31 = px.scatter_3d(
+    df,
+    x='Age',
+    y='Duration of Symptoms (months)',
+    z='Total Y-BOCS Score',
+    color='Cluster',
+    hover_data=['Gender', 'Obsession Type', 'Compulsion Type'],
+    title='Patient Clusters in 3D Space',
+    color_continuous_scale='Viridis')
+fig31.update_layout(height=700)
+st.plotly_chart(fig31, width="stretch")
+
+# 2D Visualizations  
+st.markdown("### 📊 2D Cluster Visualizations")
+col1, col2 = st.columns(2)
+with col1:
+    fig32 = px.scatter(
+        df,
+        x='Duration of Symptoms (months)',
+        y='Total Y-BOCS Score',
+        color='Cluster',
+        hover_data=['Age', 'Gender', 'Obsession Type'],
+        title='Duration vs Y-BOCS Score',
+        color_continuous_scale='Viridis')
+    fig32.update_layout(height=400)
+    st.plotly_chart(fig32, width="stretch")
+with col2:
+    fig33 = px.scatter(
+        df,
+        x='Age',
+        y='Total Y-BOCS Score',
+        color='Cluster',
+        hover_data=['Duration of Symptoms (month)', 'Gender'],
+        title='Age vs Y-BOCS Score',
+        color_continuous_scale='Viridis')
+    fig33.update_layout(height=400)
+    st.plotly_chart(fig32, width="stretch")
+
 # ============================================
 # FOOTER
 # ============================================
