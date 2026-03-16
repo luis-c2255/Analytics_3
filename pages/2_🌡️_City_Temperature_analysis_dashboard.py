@@ -802,10 +802,10 @@ st.subheader("Actual vs Predicted (Test Set)")
 col1, col2 = st.columns(2)  
   
 with col1:  
-# Time series comparison  
-fig5 = go.Figure()  
+	# Time series comparison  
+	fig5 = go.Figure()  
   
-fig5.add_trace(go.Scatter(  
+	fig5.add_trace(go.Scatter(  
 x=test_merged['ds'],  
 y=test_merged['y'],  
 mode='lines',  
@@ -813,7 +813,7 @@ name='Actual',
 line=dict(color='blue', width=2)  
 ))  
   
-fig5.add_trace(go.Scatter(  
+	fig5.add_trace(go.Scatter(  
 x=test_merged['ds'],  
 y=test_merged['yhat'],  
 mode='lines',  
@@ -821,7 +821,7 @@ name='Predicted',
 line=dict(color='red', width=2)  
 ))  
   
-fig5.add_trace(go.Scatter(  
+	fig5.add_trace(go.Scatter(  
 x=test_merged['ds'].tolist() + test_merged['ds'].tolist()[::-1],  
 y=test_merged['yhat_upper'].tolist() + test_merged['yhat_lower'].tolist()[::-1],  
 fill='toself',  
@@ -831,7 +831,7 @@ name='95% Confidence',
 showlegend=True  
 ))  
   
-fig5.update_layout(  
+	fig5.update_layout(  
 title='Actual vs Predicted Temperature (Test Period)',  
 xaxis_title='Date',  
 yaxis_title='Temperature (°C)',  
@@ -839,11 +839,11 @@ height=450,
 hovermode='x unified'  
 )  
   
-st.plotly_chart(fig5, use_container_width=True)  
+	st.plotly_chart(fig5, use_container_width=True)  
   
 with col2:  
-# Scatter plot  
-fig6 = px.scatter(  
+	# Scatter plot  
+	fig6 = px.scatter(  
 test_merged,  
 x='y',  
 y='yhat',  
@@ -852,11 +852,11 @@ title='Actual vs Predicted Scatter Plot',
 trendline='ols'  
 )  
   
-# Add perfect prediction line  
-min_val = min(test_merged['y'].min(), test_merged['yhat'].min())  
-max_val = max(test_merged['y'].max(), test_merged['yhat'].max())  
+	# Add perfect prediction line  
+	min_val = min(test_merged['y'].min(), test_merged['yhat'].min())  
+	max_val = max(test_merged['y'].max(), test_merged['yhat'].max())  
   
-fig6.add_trace(go.Scatter(  
+	fig6.add_trace(go.Scatter(  
 x=[min_val, max_val],  
 y=[min_val, max_val],  
 mode='lines',  
@@ -864,8 +864,8 @@ name='Perfect Prediction',
 line=dict(color='green', dash='dash')  
 ))  
   
-fig6.update_layout(height=450)  
-st.plotly_chart(fig6, use_container_width=True)  
+	fig6.update_layout(height=450)  
+	st.plotly_chart(fig6, use_container_width=True)  
   
 # Residual analysis  
 st.subheader("Residual Analysis")  
