@@ -829,7 +829,7 @@ if warming_rate > 0.02:
             <li><strong>Energy:</strong> Transition to renewable energy sources to reduce emissions</li>
             <li><strong>Adaptation:</strong> Develop climate adaptation strategies for agriculture and water resources</li>
         </ol>
-        """, "error", unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
         
 
 elif warming_rate > 0.01:  
@@ -843,7 +843,7 @@ elif warming_rate > 0.01:
             <li><strong>Preparedness:</strong> Develop contingency plans for extreme weather events</li>
             <li><strong>Research:</strong> Support climate research and modeling initiatives</li>
          </ol>
-        """, "info", unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
 
 else:  
     with st.expander("Stable Temperature Trends - Maintain Current Practices"):
@@ -856,7 +856,7 @@ else:
             <li><strong>Prevention:</strong> Implement preventive measures to avoid future warming</li>
             <li><strong>Collaboration:</strong> Share data and insights with climate research communities</li>
          </ol>
-        """, "success", unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
 # ============================================
 # FOOTER
 # ============================================
