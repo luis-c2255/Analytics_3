@@ -23,7 +23,7 @@ except FileNotFoundError:
     
 # Load data
 @st.cache_data(show_spinner="Loading & cleaning data...")
-def load_data():
+def load_and_clean():
     df = pd.read_csv("city_temperature.csv")
 
     # Basic cleaning
