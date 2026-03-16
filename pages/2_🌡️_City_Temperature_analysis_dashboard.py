@@ -595,13 +595,6 @@ else:
             name="Confidence Interval",
             showlegend=True
     ))
-    fig_forecast.add_vline(
-            x=last_date,
-            line_dash="dash",
-            line_color="green",
-            annotation_text="Forecast Start",
-            annotation_position="top left"
-    )
     fig_forecast.update_layout(
             title=f"Temperature Forecast ({forecast_days} days ahead)",
             xaxis_title="Date",
