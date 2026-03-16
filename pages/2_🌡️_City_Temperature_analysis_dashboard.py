@@ -857,6 +857,155 @@ else:
             <li><strong>Collaboration:</strong> Share data and insights with climate research communities</li>
          </ol>
         """, unsafe_allow_html=True)
+st.markdown("   ")
+  
+# Statistical insights  
+st.subheader("📊 :red[Statistical Summary]", divider="red")  
+  
+# Extreme events analysis  
+temp_mean = df_filtered[temp_col].mean()  
+temp_std = df_filtered[temp_col].std()  
+  
+extreme_hot = df_filtered[df_filtered[temp_col] > temp_mean + 2*temp_std]  
+extreme_cold = df_filtered[df_filtered[temp_col] < temp_mean - 2*temp_std]  
+  
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    st.markdown(
+        Components.metric_cards(
+            title="Extreme Heat Events",
+            value=f"{len(extreme_hot)/len(df_filtered)*100:.2f}% of records",
+            delta=f"{len(extreme_hot):,}",
+            card_type="error"
+        ), unsafe_allow_html=True
+    )
+   with col2:
+    st.markdown(
+        Components.metric_cards(
+            title="Extreme Cold Events",
+            value=f"{len(extreme_cold)/len(df_filtered)*100:.2f}% of records",
+            delta=f"{len(extreme_cold):,}",
+            card_type="info"
+        ), unsafe_allow_html=True
+    )
+   with col3:
+    recent_years = df_filtered[df_filtered['Year'] >= yearly['Year'].max() - 5]  
+	trend_direction = "↑ Warming" if warming_rate > 0 else "↓ Cooling" if warming_rate < 0 else "→ Stable"
+    st.markdown(
+        Components.metric_cards(
+            title="5-Year Trend",
+            value=f"{trend_direction}",
+            delta=f"{warming_rate * 5:.3f}°C",
+            card_type="success"
+        ), unsafe_allow_html=True
+    )
+st.markdown("   ")
+# Actionable business/research insights  
+st.subheader("🎯 :red[Domain-Specific Applications]", divider="red")  
+  
+ 
+with st.expander("🏢 Business Applications"):  
+	st.markdown(
+    """   
+    **Energy Sector:**  
+    - Forecast cooling/heating demand based on temperature predictions  
+    - Optimize energy production and distribution  
+    - Plan for renewable energy capacity (solar/wind correlates with temperature)  
+  
+    **Agriculture:**  
+    - Plan crop cycles based on seasonal forecasts  
+    - Optimize irrigation schedules  
+    - Assess climate risk for crop insurance  
+  
+    **Retail & Supply Chain:**  
+    - Forecast seasonal product demand (ice cream, heaters, etc.)  
+    - Optimize inventory management  
+    - Plan promotional campaigns around weather patterns  
+  
+    **Real Estate & Construction:**  
+    - Assess climate risk for property investments  
+    - Plan construction schedules around weather patterns  
+    - Design climate-resilient buildings  
+    """)  
+  
+with st.expander("🔬 Research Applications"):  
+	st.markdown(
+    """
+    **Climate Science:**  
+    - Validate climate models with historical data  
+    - Study regional climate change patterns  
+    - Identify climate feedback mechanisms  
+  
+    **Ecology & Biology:**  
+    - Study impact on species migration patterns  
+    - Analyze ecosystem changes  
+    - Research phenological shifts (timing of biological events)  
+  
+    **Urban Planning:**  
+    - Study urban heat island effects  
+    - Design climate-adaptive cities  
+    - Research heat mitigation strategies  
+  
+    **Data Science:**  
+    - Benchmark forecasting algorithms  
+    - Develop improved prediction models  
+    - Test machine learning approaches on real-world data  
+    """)  
+  
+with st.expander("🏛 Policy Recommendations"):  
+	st.markdown(
+    """
+    **Immediate Actions (0-2 years):**  
+    - Establish temperature monitoring networks in underserved areas  
+    - Develop heat emergency response protocols  
+    - Create public awareness campaigns on climate adaptation  
+  
+    **Medium-term (2-5 years):**  
+    - Implement urban greening initiatives (target: {warming_rate * 5:.2f}°C reduction)  
+    - Update building codes for climate resilience  
+    - Invest in cooling infrastructure for vulnerable populations  
+  
+    **Long-term (5+ years):**  
+    - Transition to 100% renewable energy  
+    - Develop comprehensive climate adaptation strategy  
+    - Establish climate monitoring and early warning systems  
+  
+    **Funding Priorities:**  
+    - Allocate resources based on warming rate severity  
+    - Prioritize regions showing >0.03°C/year increase  
+    - Support climate research and monitoring infrastructure  
+    """)  
+  
+with st.expander("👥 Public Health Implications"):  
+	st.markdown(
+    """
+    **Heat-Related Risks:**  
+    - Heat exhaustion and heat stroke incidents may increase  
+    - Vulnerable populations: elderly, children, outdoor workers  
+    - Recommended: Establish cooling centers and heat alert systems  
+  
+    **Vector-Borne Diseases:**  
+    - Warmer temperatures may expand mosquito habitats  
+    - Monitor for dengue, malaria, Zika virus spread  
+    - Implement disease surveillance programs  
+  
+    **Air Quality:**  
+    - Higher temperatures increase ground-level ozone formation  
+    - Exacerbates respiratory conditions (asthma, COPD)  
+    - Recommended: Air quality monitoring and public alerts  
+  
+    **Mental Health:**  
+    - Temperature extremes linked to increased anxiety and aggression  
+    - Climate anxiety affecting young populations  
+    - Recommended: Community support programs and mental health services  
+  
+    **Healthcare Infrastructure:**  
+    - Prepare hospitals for heat-related emergency spikes  
+    - Stock heat illness medications and supplies  
+    - Train healthcare workers on climate-related health issues  
+    """)  
+st.markdown("   ")
 # ============================================
 # FOOTER
 # ============================================
