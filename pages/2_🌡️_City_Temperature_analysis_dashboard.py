@@ -873,7 +873,7 @@ col1, col2, col3 = st.columns(3)
 
 with col1:
     st.markdown(
-        Components.metric_cards(
+        Components.metric_card(
             title="Extreme Heat Events",
             value=f"{len(extreme_hot)/len(df_filtered)*100:.2f}% of records",
             delta=f"{len(extreme_hot):,}",
@@ -882,7 +882,7 @@ with col1:
     )
 with col2:
     st.markdown(
-        Components.metric_cards(
+        Components.metric_card(
             title="Extreme Cold Events",
             value=f"{len(extreme_cold)/len(df_filtered)*100:.2f}% of records",
             delta=f"{len(extreme_cold):,}",
@@ -893,7 +893,7 @@ with col3:
     recent_years = df_filtered[df_filtered['Year'] >= yearly['Year'].max() - 5]  
     trend_direction = "↑ Warming" if warming_rate > 0 else "↓ Cooling" if warming_rate < 0 else "→ Stable"
     st.markdown(
-        Components.metric_cards(
+        Components.metric_card(
             title="5-Year Trend",
             value=f"{trend_direction}",
             delta=f"{warming_rate * 5:.3f}°C",
