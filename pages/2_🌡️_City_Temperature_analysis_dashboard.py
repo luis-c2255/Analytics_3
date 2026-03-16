@@ -801,21 +801,18 @@ with st.expander("View synthesized insights"):
 # Future projections  
 st.subheader("🔮 :violet[Future Projections]", divider="violet") 
 
-with st.container(border=True, horizontal=True, horizontal_alignment="center"):
-    st.markdown(
-        """
-        **Based on current trends, by 2030:**
-        
-        - Expected temperature increase: **{warming_rate * (2030 - yearly['Year'].max()):.2f}°C**
-        - Projected average temperature: **{yearly[temp_col].iloc[-1] + warming_rate * (2030 - yearly['Year'].max()):.1f}{temp_symbol}**
+st.markdown("**Based on current trends, by 2030:**")
+st.warning(f"Expected temperature increase: **{warming_rate * (2030 - yearly['Year'].max()):.2f}°C**")
+st.warning(f"Projected average temperature: **{yearly[temp_col].iloc[-1] + warming_rate * (2030 - yearly['Year'].max()):.1f}{temp_symbol}**")
+st.markdown("   ")
 
-        **By 2050:**
-
-        - Expected temperature increase: **{warming_rate * (2050 - yearly['Year'].max()):.2f}°C**  
-        - Projected average temperature: **{yearly[temp_col].iloc[-1] + warming_rate * (2050 - yearly['Year'].max()):.1f}{temp_symbol}**
-
+st.markdown("**By 2050:**")
+st.warning("Expected temperature increase: **{warming_rate * (2050 - yearly['Year'].max()):.2f}°C**")
+st.warning("Projected average temperature: **{yearly[temp_col].iloc[-1] + warming_rate * (2050 - yearly['Year'].max()):.1f}{temp_symbol}**")
+st.markdown("   ")
+st.markdown("⚠️ *Note: These are linear projections based on historical trends and do not account for policy changes or climate interventions.*")
         ⚠️ *Note: These are linear projections based on historical trends and do not account for policy changes or climate interventions.*
-    """)
+
 # ============================================
 # FOOTER
 # ============================================
