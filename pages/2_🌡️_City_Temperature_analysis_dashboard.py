@@ -636,13 +636,12 @@ trends, and holidays automatically.
 """)  
 
 with st.spinner("Training forecasting model... This may take a moment."): 
-	try: 
-		# Train model  
-		model, train_data, test_data, full_data = train_prophet_model(  
-		df_filtered,  
-		selected_region if selected_region != 'All' else None,  
-		selected_country if selected_country != 'All' else None  
-	)
+	# Train model  
+	model, train_data, test_data, full_data = train_prophet_model(  
+	df_filtered,  
+	selected_region if selected_region != 'All' else None,  
+	selected_country if selected_country != 'All' else None  
+)
 
 # Make predictions  
 future = model.make_future_dataframe(periods=forecast_days, freq='D')  
