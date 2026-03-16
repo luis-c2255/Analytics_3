@@ -800,7 +800,7 @@ with st.expander("View synthesized insights"):
         )
     else:
         st.write("No data available for current filters to generate insights.")
-
+st.markdown("   ")
 # Future projections  
 st.subheader("🔮 :violet[Future Projections]", divider="violet") 
 
