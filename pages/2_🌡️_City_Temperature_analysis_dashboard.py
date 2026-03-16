@@ -793,7 +793,7 @@ with col4:
 st.metric("MAPE", f"{mape:.2f}%")  
   
 # Interpretation  
-st.infof"""  
+st.info(f"""  
 **Model Interpretation:**  
 - **MAE**: On average, predictions are off by {mae:.2f}°C  
 - **RMSE**: Root mean squared error of {rmse:.2f}°C (penalizes larger errors more)  
