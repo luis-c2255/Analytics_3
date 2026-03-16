@@ -225,7 +225,7 @@ yearly = df_filtered.groupby("Year")[temp_col].mean().reset_index()
 yearly = yearly.sort_values("Year")
 
 fig_year = go.Figure()
-    fig_year.add_trace(go.Scatter(
+fig_year.add_trace(go.Scatter(
         x=yearly["Year"],
         y=yearly[temp_col],
         mode="lines+markers",
