@@ -811,7 +811,6 @@ st.warning("Expected temperature increase: **{warming_rate * (2050 - yearly['Yea
 st.warning("Projected average temperature: **{yearly[temp_col].iloc[-1] + warming_rate * (2050 - yearly['Year'].max()):.1f}{temp_symbol}**")
 st.markdown("   ")
 st.markdown("⚠️ *Note: These are linear projections based on historical trends and do not account for policy changes or climate interventions.*")
-        ⚠️ *Note: These are linear projections based on historical trends and do not account for policy changes or climate interventions.*
 
 # ============================================
 # FOOTER
