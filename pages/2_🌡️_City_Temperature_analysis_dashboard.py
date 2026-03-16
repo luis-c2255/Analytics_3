@@ -451,8 +451,7 @@ st.dataframe(
     }).background_gradient(cmap="RdYlBu_r", subset=["Average"]),
     width="stretch"
 )
-else:
-    st.info("Select at least one city to see city-level analysis.")
+
 
 st.markdown("   ")
 # -------------------------------------------------------------------
