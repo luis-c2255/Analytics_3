@@ -707,6 +707,7 @@ with col4:
             card_type="info"
         ), unsafe_allow_html=True
     )
+st.markdown("   ")
 st.info(
     f"Model explains approximately {r2*100:.1f}% of the variance in daily temperature "
     f"for the selected filters."
