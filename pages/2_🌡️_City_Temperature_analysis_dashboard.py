@@ -647,6 +647,8 @@ with col4:
             card_type="info"
         ), unsafe_allow_html=True
     )
+st.markdown("   ")
+st.markdown("   ")
 # Model performance
 st.markdown("#### :rainbow[Model Performance]")
 
