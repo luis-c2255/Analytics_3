@@ -583,7 +583,7 @@ else:
             showlegend=True
     ))
     fig_forecast.add_vline(
-            x=last_date.to_pydatetime(),
+            x=str(last_date),
             line_dash="dash",
             line_color="green",
             annotation_text="Forecast Start"
