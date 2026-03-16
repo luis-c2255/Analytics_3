@@ -1253,8 +1253,8 @@ with tab_d:
 - Train healthcare workers on climate-related health issues  
 """)  
   
-else:  
-	st.warning("Insufficient data for comprehensive insights. Please adjust filters or check data availability.")  
+
+st.warning("Insufficient data for comprehensive insights. Please adjust filters or check data availability.")  
   
 # Export comprehensive report  
 st.subheader("📄 Generate Comprehensive Report")  
