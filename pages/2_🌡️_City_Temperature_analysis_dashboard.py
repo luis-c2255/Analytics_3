@@ -189,9 +189,9 @@ fig4 = px.bar(
 	color=temp_col,  
 	color_continuous_scale='thermal'  
 	)  
-	fig4.update_traces(texttemplate='%{text:.1f}', textposition='outside')  
-	fig4.update_layout(height=400)  
-	st.plotly_chart(fig4, width="stretch")
+fig4.update_traces(texttemplate='%{text:.1f}', textposition='outside')  
+fig4.update_layout(height=400)  
+st.plotly_chart(fig4, width="stretch")
 # Temperature anomaly heatmap  
 st.subheader("Temperature Anomaly Heatmap (Deviation from Average)")  
   
