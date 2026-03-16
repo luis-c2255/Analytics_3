@@ -818,7 +818,7 @@ st.markdown("   ")
 st.subheader("💡 :red[Actionable Recommendations]", divider="red")  
   
 if warming_rate > 0.02:  
-	with st.expander("High Warming Rate Detected - Urgent Actions Recommended"):
+    with st.expander("High Warming Rate Detected - Urgent Actions Recommended"):
         st.markdown(
         """
         <ol style="margin: 0; padding-left: 20px;">
@@ -833,7 +833,7 @@ if warming_rate > 0.02:
         
 
 elif warming_rate > 0.01:  
-	with st.expander("Moderate Warming Trend - Proactive Measures Suggested"):
+    with st.expander("Moderate Warming Trend - Proactive Measures Suggested"):
         st.markdown(
         """
         <ol style="margin: 0; padding-left: 20px;">
