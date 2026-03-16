@@ -583,11 +583,11 @@ else:
             showlegend=True
     ))
     fig_forecast.add_vline(
-            x=last_date,
+            x=last_date.to_pydatetime(
             line_dash="dash",
             line_color="green",
             annotation_text="Forecast Start"
-    )
+    ))
     fig_forecast.update_layout(
             title=f"Temperature Forecast ({forecast_days} days ahead)",
             xaxis_title="Date",
