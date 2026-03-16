@@ -402,7 +402,7 @@ if not city_yearly.empty:
         labels={temp_col: f"Temperature ({temp_symbol})"}
     )
     fig_city_trend.update_layout(height=420, hovermode="x unified")
-    st.plotly_chart(fig_city, width="stretch")
+    st.plotly_chart(fig_city_trend, width="stretch")
 else:
     st.info("No city trend data for selected cities.")
 
