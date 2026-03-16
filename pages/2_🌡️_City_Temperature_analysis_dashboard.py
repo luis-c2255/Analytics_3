@@ -807,8 +807,8 @@ st.warning(f"Projected average temperature: **{yearly[temp_col].iloc[-1] + warmi
 st.markdown("   ")
 
 st.markdown("**By 2050:**")
-st.warning("Expected temperature increase: **{warming_rate * (2050 - yearly['Year'].max()):.2f}°C**")
-st.warning("Projected average temperature: **{yearly[temp_col].iloc[-1] + warming_rate * (2050 - yearly['Year'].max()):.1f}{temp_symbol}**")
+st.warning(f"Expected temperature increase: **{warming_rate * (2050 - yearly['Year'].max()):.2f}°C**")
+st.warning(f"Projected average temperature: **{yearly[temp_col].iloc[-1] + warming_rate * (2050 - yearly['Year'].max()):.1f}{temp_symbol}**")
 st.markdown("   ")
 st.markdown("⚠️ *Note: These are linear projections based on historical trends and do not account for policy changes or climate interventions.*")
 
