@@ -750,7 +750,6 @@ mime='text/csv'
 # TAB 3: Model Performance  
 with tab3:  
 	st.header("📈 Model Performance Evaluation") 
-try:  
 	with st.spinner("Evaluating model performance..."):  
 		# Get model and data  
 		model, train_data, test_data, full_data = train_prophet_model(  
