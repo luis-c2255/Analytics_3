@@ -636,131 +636,127 @@ trends, and holidays automatically.
 """)  
 
 with st.spinner("Training forecasting model... This may take a moment."): 
-	try: 
-		# Train model  
-		model, train_data, test_data, full_data = train_prophet_model(  
-		df_filtered,  
-		selected_region if selected_region != 'All' else None,  
-		selected_country if selected_country != 'All' else None  
+	# Train model  
+	model, train_data, test_data, full_data = train_prophet_model(  
+	df_filtered,  
+	selected_region if selected_region != 'All' else None,  
+	selected_country if selected_country != 'All' else None  
 	)
 
-	# Make predictions  
-	future = model.make_future_dataframe(periods=forecast_days, freq='D')  
-	forecast = model.predict(future) 
+# Make predictions  
+future = model.make_future_dataframe(periods=forecast_days, freq='D')  
+forecast = model.predict(future) 
 
-	# Split into historical and future  
-	last_date = full_data['ds'].max()  
-	forecast_historical = forecast[forecast['ds'] <= last_date]  
-	forecast_future = forecast[forecast['ds'] > last_date]  
+# Split into historical and future  
+last_date = full_data['ds'].max()  
+forecast_historical = forecast[forecast['ds'] <= last_date]  
+forecast_future = forecast[forecast['ds'] > last_date]  
 
-	# Visualization  
-	st.subheader("Forecast Visualization") 
-	fig19 = go.Figure()  
+# Visualization  
+st.subheader("Forecast Visualization") 
+fig19 = go.Figure()  
   
-	# Historical actual data  
-	fig19.add_trace(go.Scatter(  
-	x=full_data['ds'],  
-	y=full_data['y'],  
-	mode='lines',  
-	name='Historical Data',  
-	line=dict(color='blue', width=1),  
-	opacity=0.6  
-	))  
+# Historical actual data  
+fig19.add_trace(go.Scatter(  
+x=full_data['ds'],  
+y=full_data['y'],  
+mode='lines',  
+name='Historical Data',  
+line=dict(color='blue', width=1),  
+opacity=0.6  
+))  
   
-	# Forecast  
-	fig19.add_trace(go.Scatter(  
-	x=forecast['ds'],  
-	y=forecast['yhat'],  
-	mode='lines',  
-	name='Forecast',  
-	line=dict(color='red', width=2)  
-	))  
+# Forecast  
+fig19.add_trace(go.Scatter(  
+x=forecast['ds'],  
+y=forecast['yhat'],  
+mode='lines',  
+name='Forecast',  
+line=dict(color='red', width=2)  
+))  
   
-	# Confidence interval  
-	fig19.add_trace(go.Scatter(  
-	x=forecast['ds'].tolist() + forecast['ds'].tolist()[::-1],  
-	y=forecast['yhat_upper'].tolist() + forecast['yhat_lower'].tolist()[::-1],  
-	fill='toself',  
-	fillcolor='rgba(255,0,0,0.1)',  
-	line=dict(color='rgba(255,255,255,0)'),  
-	name='Confidence Interval',  
-	showlegend=True  
-	))  
+# Confidence interval  
+fig19.add_trace(go.Scatter(  
+x=forecast['ds'].tolist() + forecast['ds'].tolist()[::-1],  
+y=forecast['yhat_upper'].tolist() + forecast['yhat_lower'].tolist()[::-1],  
+fill='toself',  
+fillcolor='rgba(255,0,0,0.1)',  
+line=dict(color='rgba(255,255,255,0)'),  
+name='Confidence Interval',  
+showlegend=True  
+))  
   
-	# Add vertical line at forecast start  
-	fig19.add_vline(  
-	x=last_date.timestamp() * 1000,  
-	line_dash="dash",  
-	line_color="green",  
-	annotation_text="Forecast Start"  
-	)  
+# Add vertical line at forecast start  
+fig19.add_vline(  
+x=last_date.timestamp() * 1000,  
+line_dash="dash",  
+line_color="green",  
+annotation_text="Forecast Start"  
+)  
   
-	fig19.update_layout(  
-	title=f'Temperature Forecast ({forecast_days} days ahead)',  
-	xaxis_title='Date',  
-	yaxis_title='Temperature (°C)',  
-	height=600,  
-	hovermode='x unified'  
-	)  
+fig19.update_layout(  
+title=f'Temperature Forecast ({forecast_days} days ahead)',  
+xaxis_title='Date',  
+yaxis_title='Temperature (°C)',  
+height=600,  
+hovermode='x unified'  
+)  
   
-	st.plotly_chart(fig19, width="stretch")
+st.plotly_chart(fig19, width="stretch")
 
-	# Forecast statistics  
-	st.subheader("Forecast Summary")  
+# Forecast statistics  
+st.subheader("Forecast Summary")  
   
-	col1, col2, col3 = st.columns(3)
-	with col1:  
-		current_avg = full_data['y'].tail(30).mean()  
-		st.metric("Current Avg (Last 30 days)", f"{current_avg:.2f}°C")
+col1, col2, col3 = st.columns(3)
+with col1:  
+	current_avg = full_data['y'].tail(30).mean()  
+	st.metric("Current Avg (Last 30 days)", f"{current_avg:.2f}°C")
 
-	with col2:  
-		forecast_avg = forecast_future['yhat'].mean()  
-		change = forecast_avg - current_avg  
-		st.metric(  
-		f"Predicted Avg (Next {forecast_days} days)",  
-		f"{forecast_avg:.2f}°C",  
-		f"{change:+.2f}°C"  
-	)  
+with col2:  
+	forecast_avg = forecast_future['yhat'].mean()  
+	change = forecast_avg - current_avg  
+	st.metric(  
+	f"Predicted Avg (Next {forecast_days} days)",  
+	f"{forecast_avg:.2f}°C",  
+	f"{change:+.2f}°C"  
+)  
   
-	with col3:  
-		forecast_max = forecast_future['yhat'].max()  
-		st.metric("Predicted Maximum", f"{forecast_max:.2f}°C")  
+with col3:  
+	forecast_max = forecast_future['yhat'].max()  
+	st.metric("Predicted Maximum", f"{forecast_max:.2f}°C")  
   
-	# Trend components  
-	st.subheader("Forecast Components Analysis")
-	# Create component plots  
-	fig_components = model.plot_components(forecast)  
-	st.pyplot(fig_components)  
+# Trend components  
+st.subheader("Forecast Components Analysis")
+# Create component plots  
+fig_components = model.plot_components(forecast)  
+st.pyplot(fig_components)  
 
-	# Download forecast data  
-	st.subheader("📥 Download Forecast Data")  
+# Download forecast data  
+st.subheader("📥 Download Forecast Data")  
   
-	forecast_export = forecast_future[['ds', 'yhat', 'yhat_lower', 'yhat_upper']].copy()  
-	forecast_export.columns = ['Date', 'Predicted_Temp_C', 'Lower_Bound', 'Upper_Bound']  
-	forecast_export['Predicted_Temp_F'] = forecast_export['Predicted_Temp_C'] * 9/5 + 32 
+forecast_export = forecast_future[['ds', 'yhat', 'yhat_lower', 'yhat_upper']].copy()  
+forecast_export.columns = ['Date', 'Predicted_Temp_C', 'Lower_Bound', 'Upper_Bound']  
+forecast_export['Predicted_Temp_F'] = forecast_export['Predicted_Temp_C'] * 9/5 + 32 
 
-	csv_forecast = forecast_export.to_csv(index=False).encode('utf-8')
+csv_forecast = forecast_export.to_csv(index=False).encode('utf-8')
 
-	st.download_button(  
-	label="Download Forecast as CSV",  
-	data=csv_forecast,  
-	file_name=f'temperature_forecast_{datetime.now().strftime("%Y%m%d")}.csv',  
-	mime='text/csv'  
-	) 
-except Exception as e:  
-	st.error(f"Error generating forecast: {str(e)}")  
-	st.info("This may occur if there's insufficient data for the selected filters. Try selecting 'All' for region/country.")
+st.download_button(  
+label="Download Forecast as CSV",  
+data=csv_forecast,  
+file_name=f'temperature_forecast_{datetime.now().strftime("%Y%m%d")}.csv',  
+mime='text/csv'  
+) 
 
 # TAB 3: Model Performance  
 with tab3:  
 	st.header("📈 Model Performance Evaluation") 
 try:  
 	with st.spinner("Evaluating model performance..."):  
-	# Get model and data  
-	model, train_data, test_data, full_data = train_prophet_model(  
-	df_filtered,  
-	selected_region if selected_region != 'All' else None,  
-	selected_country if selected_country != 'All' else None  
+		# Get model and data  
+		model, train_data, test_data, full_data = train_prophet_model(  
+		df_filtered,  
+		selected_region if selected_region != 'All' else None,  
+		selected_country if selected_country != 'All' else None  
 )
 # Calculate metrics  
 mae = mean_absolute_error(test_merged['y'], test_merged['yhat'])  
@@ -779,16 +775,16 @@ st.subheader("Performance Metrics")
 col1, col2, col3, col4 = st.columns(4)  
   
 with col1:  
-st.metric("MAE (Mean Absolute Error)", f"{mae:.3f}°C")  
+	st.metric("MAE (Mean Absolute Error)", f"{mae:.3f}°C")  
   
 with col2:  
-st.metric("RMSE (Root Mean Squared Error)", f"{rmse:.3f}°C")  
+	st.metric("RMSE (Root Mean Squared Error)", f"{rmse:.3f}°C")  
   
 with col3:  
-st.metric("R² Score", f"{r2:.3f}")  
+	st.metric("R² Score", f"{r2:.3f}")  
   
 with col4:  
-st.metric("MAPE", f"{mape:.2f}%")  
+	st.metric("MAPE", f"{mape:.2f}%")  
   
 # Interpretation  
 st.info(f"""  
