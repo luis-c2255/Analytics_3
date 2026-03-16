@@ -20,55 +20,55 @@ try:
         st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
 except FileNotFoundError:
     st.warning("Custom CSS file not found. Using default styling.")
-	
+    
 # Load data
 @st.cache_data(show_spinner="Loading & cleaning data...")
 def load_data():
-	df = pd.read_csv("city_temperature.csv")
+    df = pd.read_csv("city_temperature.csv")
 
-	# Basic cleaning
-	df = df[(df["AvgTemperature"] >= -100) & (df["AvgTemperature"] <= 150)]
-	df = df.drop_duplicates()
+    # Basic cleaning
+    df = df[(df["AvgTemperature"] >= -100) & (df["AvgTemperature"] <= 150)]
+    df = df.drop_duplicates()
 
-	# Date
-	df["Date"] = pd.to_datetime(df[["Year", "Month", "Day"]], errors="coerce")
-	df = df.dropna(subset=["Date"])
+    # Date
+    df["Date"] = pd.to_datetime(df[["Year", "Month", "Day"]], errors="coerce")
+    df = df.dropna(subset=["Date"])
 
-	# Celsius
-	df["AvgTemperature_C"] = (df["AvgTemperature"] - 32) * 5 / 9
+    # Celsius
+    df["AvgTemperature_C"] = (df["AvgTemperature"] - 32) * 5 / 9
 
-	# season
-	df["Season"] = df["Month"].map({
-		12: "Winter", 1: "Winter", 2: "Winter",
+    # season
+    df["Season"] = df["Month"].map({
+        12: "Winter", 1: "Winter", 2: "Winter",
         3: "Spring", 4: "Spring", 5: "Spring",
         6: "Summer", 7: "Summer", 8: "Summer",
         9: "Fall", 10: "Fall", 11: "Fall"
     })
-	return df
+    return df
 
 @st.cache_data
 def precompute(df: pd.DataFrame):
-	yearly = df.groupby("Year").agg(
+    yearly = df.groupby("Year").agg(
         AvgTemperature=("AvgTemperature", "mean"),
         AvgTemperature_C=("AvgTemperature_C", "mean")
     ).reset_index()
 
-	regional_yearly = df.groupby(["Year", "Region"]).agg(
+    regional_yearly = df.groupby(["Year", "Region"]).agg(
         AvgTemperature=("AvgTemperature", "mean"),
         AvgTemperature_C=("AvgTemperature_C", "mean")
     ).reset_index()
 
-	seasonal = df.groupby(["Season", "Region"]).agg(
+    seasonal = df.groupby(["Season", "Region"]).agg(
         AvgTemperature=("AvgTemperature", "mean"),
         AvgTemperature_C=("AvgTemperature_C", "mean")
     ).reset_index()
 
-	monthly = df.groupby("Month").agg(
+    monthly = df.groupby("Month").agg(
         AvgTemperature=("AvgTemperature", "mean"),
         AvgTemperature_C=("AvgTemperature_C", "mean")
     ).reset_index()
 
-	country_avg = df.groupby("Country").agg(
+    country_avg = df.groupby("Country").agg(
         AvgTemperature=("AvgTemperature", "mean"),
         AvgTemperature_C=("AvgTemperature_C", "mean")
     ).reset_index()
@@ -169,49 +169,49 @@ st.header("📊 :red[Key Metrics]", divider='red')
 col1, col2, col3, col4 = st.columns(4) 
 
 with col1:
-	avg_temp = df_filtered[temp_col].mean()
-	st.markdown(
-		Components.metric_card(
-			title="Average Temperature",
-			value=f"{avg_temp:.1f}{temp_symbol}",
-			delta="🔥",
-			card_type="info"
-		), unsafe_allow_html=True
-	)
+    avg_temp = df_filtered[temp_col].mean()
+    st.markdown(
+        Components.metric_card(
+            title="Average Temperature",
+            value=f"{avg_temp:.1f}{temp_symbol}",
+            delta="🔥",
+            card_type="info"
+        ), unsafe_allow_html=True
+    )
 with col2:
-	yearly_filtered = df_filtered.groupby("Year")[temp_col].mean().reset_index()
+    yearly_filtered = df_filtered.groupby("Year")[temp_col].mean().reset_index()
     warming_rate = np.nan
     if len(yearly_filtered) > 1:
         z = np.polyfit(yearly_filtered["Year"], yearly_filtered[temp_col], 1)
         warming_rate = z[0]
-	st.markdown(
-		Components.metric_card(
-			title="Warming Rate / Decade",
-			value=f"{warming_rate*10:.3f}{temp_symbol}/decade",
-			delta="📈",
-			card_type="info"
-		), unsafe_allow_html=True
-	)
+    st.markdown(
+        Components.metric_card(
+            title="Warming Rate / Decade",
+            value=f"{warming_rate*10:.3f}{temp_symbol}/decade",
+            delta="📈",
+            card_type="info"
+        ), unsafe_allow_html=True
+    )
 with col3:
-	regions_count = df_filtered["Region"].nunique()
-	st.markdown(
-		Components.metric_card(
-			title="Regions Analyzed",
-			value=f"{regions_count}",
-			delta="🌍",
-			card_type="info"
-		), unsafe_allow_html=True
-	)
+    regions_count = df_filtered["Region"].nunique()
+    st.markdown(
+        Components.metric_card(
+            title="Regions Analyzed",
+            value=f"{regions_count}",
+            delta="🌍",
+            card_type="info"
+        ), unsafe_allow_html=True
+    )
 with col4:
-	cities_count = df_filtered["City"].nunique()
-	st.markdown(
-		Components.metric_card(
-			title="Cities Included",
-			value=f"{cities_count}",
-			delta="🏙️",
-			card_type="info"
-		), unsafe_allow_html=True
-	)
+    cities_count = df_filtered["City"].nunique()
+    st.markdown(
+        Components.metric_card(
+            title="Cities Included",
+            value=f"{cities_count}",
+            delta="🏙️",
+            card_type="info"
+        ), unsafe_allow_html=True
+    )
 
 st.markdown("   ")
 
@@ -273,7 +273,7 @@ if not regional_yearly.empty:
             title=f"Regional Temperature Trends ({temp_symbol})"
         )
         fig_reg.update_layout(height=420, hovermode="x unified")
-		st.plotly_chart(fig_reg, width="stretch")
+        st.plotly_chart(fig_reg, width="stretch")
 else:
         st.info("No regional data available for current filters.")
 
@@ -308,7 +308,7 @@ if not monthly_anomaly.empty:
         aspect="auto"
     )
     fig_anom.update_layout(height=380)
-	st.plotly_chart(fig_anom, width="stretch")
+    st.plotly_chart(fig_anom, width="stretch")
 else:
     st.info("Not enough data for anomaly heatmap.")
 st.markdown("   ")
@@ -322,17 +322,17 @@ season_order = ["Winter", "Spring", "Summer", "Fall"]
 if not seasonal_data.empty:
     seasonal_data["Season"] = pd.Categorical(seasonal_data["Season"], categories=season_order, ordered=True)
     seasonal_data = seasonal_data.sort_values("Season")
-	fig_season = px.bar(
-    		seasonal_data,
-    		x="Season",
-    		y=temp_col,
-    		color="Region",
-    		barmode="group",
-    		title=f"Seasonal Temperature by Region ({temp_symbol})",
-    		labels={temp_col: f"Temperature ({temp_symbol})"}
-	)
-	fig_season.update_layout(height=420)
-	st.plotly_chart(fig_season, width="stretch")
+    fig_season = px.bar(
+            seasonal_data,
+            x="Season",
+            y=temp_col,
+            color="Region",
+            barmode="group",
+            title=f"Seasonal Temperature by Region ({temp_symbol})",
+            labels={temp_col: f"Temperature ({temp_symbol})"}
+    )
+    fig_season.update_layout(height=420)
+    st.plotly_chart(fig_season, width="stretch")
 else:
     st.info("No seasonal data available for current filters.")
 
@@ -341,7 +341,7 @@ seasonal_std = df_filtered.groupby("Season")[temp_col].std().reset_index()
 if not seasonal_std.empty:
     seasonal_std["Season"] = pd.Categorical(seasonal_std["Season"], categories=season_order, ordered=True)
     seasonal_std = seasonal_std.sort_values("Season")
-	fig_var = px.bar(
+    fig_var = px.bar(
         seasonal_std,
         x="Season",
         y=temp_col,
@@ -350,8 +350,8 @@ if not seasonal_std.empty:
         color=temp_col,
         color_continuous_scale="Oranges"
     )
-	fig_var.update_layout(height=420)
-	st.plotly_chart(fig_var, width="stretch")
+    fig_var.update_layout(height=420)
+    st.plotly_chart(fig_var, width="stretch")
 else:
     st.info("No variability data available for current filters.")
 
@@ -402,7 +402,7 @@ if not city_yearly.empty:
         labels={temp_col: f"Temperature ({temp_symbol})"}
     )
     fig_city_trend.update_layout(height=420, hovermode="x unified")
-	st.plotly_chart(fig_city, width="stretch")
+    st.plotly_chart(fig_city, width="stretch")
 else:
     st.info("No city trend data for selected cities.")
 
@@ -416,20 +416,20 @@ if not city_stats.empty:
         error_y=dict(type="data", array=city_stats["Std Dev"]),
         name="Average"
     ))
-	fig_city_stats.update_layout(
+    fig_city_stats.update_layout(
         title=f"Average Temperature by City with Variability ({temp_symbol})",
         xaxis_title="City",
         yaxis_title=f"Temperature ({temp_symbol})",
         height=420
     )
-	st.plotly_chart(fig_city_stats, width="stretch")
+    st.plotly_chart(fig_city_stats, width="stretch")
 
 st.markdown("#### :violet[Seasonal Patterns by City]")
 city_seasonal = city_filtered.groupby(["City", "Season"])[temp_col].mean().reset_index()
 if not city_seasonal.empty:
     city_seasonal["Season"] = pd.Categorical(city_seasonal["Season"], categories=season_order, ordered=True)
     city_seasonal = city_seasonal.sort_values("Season")
-	fig_city_season = px.line(
+    fig_city_season = px.line(
         city_seasonal,
         x="Season",
         y=temp_col,
@@ -438,8 +438,8 @@ if not city_seasonal.empty:
         title=f"Seasonal Temperature Patterns by City ({temp_symbol})",
         labels={temp_col: f"Temperature ({temp_symbol})"}
     )
-	fig_city_season.update_layout(height=420)
-	st.plotly_chart(fig_city_season, width="stretch")
+    fig_city_season.update_layout(height=420)
+    st.plotly_chart(fig_city_season, width="stretch")
 
 st.markdown("#### :violet[Detailed City Statistics]")
 st.dataframe(
@@ -449,7 +449,7 @@ st.dataframe(
         "Max": "{:.1f}",
         "Std Dev": "{:.2f}"
     }).background_gradient(cmap="RdYlBu_r", subset=["Average"]),
-	width="stretch"
+    width="stretch"
 )
 else:
     st.info("Select at least one city to see city-level analysis.")
@@ -463,7 +463,7 @@ st.subheader("📍 :rainbow[Geographic Analysis]", divider="rainbow")
 regional_stats = df_filtered.groupby("Region")[temp_col].agg(["mean", "min", "max"]).reset_index()
 regional_stats.columns = ["Region", "Average", "Min", "Max"]
 if not regional_stats.empty:
-	fig_reg_stats = go.Figure()
+    fig_reg_stats = go.Figure()
     fig_reg_stats.add_trace(go.Bar(
             x=regional_stats["Region"],
             y=regional_stats["Average"],
@@ -490,14 +490,14 @@ if not regional_stats.empty:
             yaxis_title=f"Temperature ({temp_symbol})",
             height=420
     )
-	st.plotly_chart(fig_reg_stats, width="stretch")
+    st.plotly_chart(fig_reg_stats, width="stretch")
 else:
     st.info("No regional stats for current filters.")
 
 country_avg = df_filtered.groupby("Country")[temp_col].mean().reset_index()
 country_avg.columns = ["Country", "Average Temperature"]
 if not country_avg.empty:
-	top_hot = country_avg.nlargest(10, "Average Temperature")
+    top_hot = country_avg.nlargest(10, "Average Temperature")
     fig_hot = px.bar(
         top_hot,
         x="Average Temperature",
@@ -508,9 +508,9 @@ if not country_avg.empty:
         color_continuous_scale="Reds"
     )
     fig_hot.update_layout(height=420)
-	st.plotly_chart(fig_hot, width="stretch")
+    st.plotly_chart(fig_hot, width="stretch")
 
-	top_cold = country_avg.nsmallest(10, "Average Temperature")
+    top_cold = country_avg.nsmallest(10, "Average Temperature")
     fig_cold = px.bar(
         top_cold,
         x="Average Temperature",
@@ -521,7 +521,7 @@ if not country_avg.empty:
         color_continuous_scale="Blues_r"
     )
     fig_cold.update_layout(height=420)
-	st.plotly_chart(fig_cold, width="stretch")
+    st.plotly_chart(fig_cold, width="stretch")
 else:
     st.info("No country-level data for current filters.")
 
@@ -538,7 +538,7 @@ if not country_avg.empty:
         labels={"Average Temperature": f"Avg Temp ({temp_symbol})"}
     )
     fig_map.update_layout(height=520)
-	st.plotly_chart(fig_map, width="stretch")
+    st.plotly_chart(fig_map, width="stretch")
 
 st.markdown("   ")
 
@@ -555,10 +555,10 @@ else:
     future = model.make_future_dataframe(periods=forecast_days, freq="D")
     forecast = model.predict(future)
 
-	last_date = daily["ds"].max()
+    last_date = daily["ds"].max()
     forecast_future = forecast[forecast["ds"] > last_date]
 
-	fig_forecast = go.Figure()
+    fig_forecast = go.Figure()
     fig_forecast.add_trace(go.Scatter(
             x=daily["ds"],
             y=daily["y"],
@@ -596,7 +596,7 @@ else:
             height=520,
             hovermode="x unified"
     )
-	st.plotly_chart(fig_forecast, width="stretch")
+    st.plotly_chart(fig_forecast, width="stretch")
 st.markdown("#### :yellow[Forecast Summary]")
 current_avg = daily["y"].tail(30).mean()
 forecast_avg = forecast_future["yhat"].mean()
@@ -605,41 +605,41 @@ change = forecast_avg - current_avg
 
 col1, col2, col3, col4 = st.columns(4)
 with col1:
-	st.markdown(
-		Components.metric_card(
-			title="Current Avg (Last 30 days)",
-			value=f"{current_avg:.2f}{temp_symbol}",
-			delta="",
-			card_type="info"
-		), unsafe_allow_html=True
-	)
+    st.markdown(
+        Components.metric_card(
+            title="Current Avg (Last 30 days)",
+            value=f"{current_avg:.2f}{temp_symbol}",
+            delta="",
+            card_type="info"
+        ), unsafe_allow_html=True
+    )
 with col2:
-	st.markdown(
-		Components.metric_card(
-			title=f"Predicted Avg (Next {forecast_days} days)",
-			value=f"{forecast_avg:.2f}{temp_symbol}",
-			delta=f"{change:+.2f}{temp_symbol}",
-			card_type="info"
-		), unsafe_allow_html=True
-	)
+    st.markdown(
+        Components.metric_card(
+            title=f"Predicted Avg (Next {forecast_days} days)",
+            value=f"{forecast_avg:.2f}{temp_symbol}",
+            delta=f"{change:+.2f}{temp_symbol}",
+            card_type="info"
+        ), unsafe_allow_html=True
+    )
 with col3:
-	st.markdown(
-		Components.metric_card(
-			title="Predicted Maximum",
-			value=f"{forecast_max:.2f}{temp_symbol}",
-			delta="",
-			card_type="info"
-		), unsafe_allow_html=True
-	)
+    st.markdown(
+        Components.metric_card(
+            title="Predicted Maximum",
+            value=f"{forecast_max:.2f}{temp_symbol}",
+            delta="",
+            card_type="info"
+        ), unsafe_allow_html=True
+    )
 with col4:
-	st.markdown(
-		Components.metric_card(
-			title="Data Points Used",
-			value=f"{len(daily):,}",
-			delta="",
-			card_type="info"
-		), unsafe_allow_html=True
-	)
+    st.markdown(
+        Components.metric_card(
+            title="Data Points Used",
+            value=f"{len(daily):,}",
+            delta="",
+            card_type="info"
+        ), unsafe_allow_html=True
+    )
 # Model performance
 st.markdown("#### :rainbow[Model Performance]")
 
@@ -661,41 +661,41 @@ mape = np.mean(np.abs((test_merged["y"] - test_merged["yhat"]) / test_merged["y"
 
 col1, col2, col3, col4 = st.columns(4)
 with col1:
-	st.markdown(
-		Components.metric_card(
-			title="MAE",
-			value=f"{mae:.3f}{temp_symbol}",
-			delta="",
-			card_type="info"
-		), unsafe_allow_html=True
-	)
+    st.markdown(
+        Components.metric_card(
+            title="MAE",
+            value=f"{mae:.3f}{temp_symbol}",
+            delta="",
+            card_type="info"
+        ), unsafe_allow_html=True
+    )
 with col2:
-	st.markdown(
-		Components.metric_card(
-			title="RMSE",
-			value=f"{rmse:.3f}{temp_symbol}",
-			delta=f"{change:+.2f}{temp_symbol}",
-			card_type="info"
-		), unsafe_allow_html=True
-	)
+    st.markdown(
+        Components.metric_card(
+            title="RMSE",
+            value=f"{rmse:.3f}{temp_symbol}",
+            delta=f"{change:+.2f}{temp_symbol}",
+            card_type="info"
+        ), unsafe_allow_html=True
+    )
 with col3:
-	st.markdown(
-		Components.metric_card(
-			title="R² Score",
-			value=f"{r2:.3f}",
-			delta="",
-			card_type="info"
-		), unsafe_allow_html=True
-	)
+    st.markdown(
+        Components.metric_card(
+            title="R² Score",
+            value=f"{r2:.3f}",
+            delta="",
+            card_type="info"
+        ), unsafe_allow_html=True
+    )
 with col4:
-	st.markdown(
-		Components.metric_card(
-			title="MAPE",
-			value=f"{mape:.2f}%",
-			delta="",
-			card_type="info"
-		), unsafe_allow_html=True
-	)
+    st.markdown(
+        Components.metric_card(
+            title="MAPE",
+            value=f"{mape:.2f}%",
+            delta="",
+            card_type="info"
+        ), unsafe_allow_html=True
+    )
 st.info(
     f"Model explains approximately {r2*100:.1f}% of the variance in daily temperature "
     f"for the selected filters."
@@ -794,16 +794,16 @@ with st.expander("View synthesized insights"):
         hottest_region = df_filtered.groupby("Region")[temp_col].mean().sort_values(ascending=False).head(1)
         coldest_region = df_filtered.groupby("Region")[temp_col].mean().sort_values(ascending=True).head(1)
 
-		st.markdown("**Climate Signals**")
+        st.markdown("**Climate Signals**")
         st.markdown(
             f"- The warmest region in the current selection is **{hottest_region.index[0]}** "
             f"with an average of **{hottest_region.iloc[0]:.1f}{temp_symbol}**."
         )
-		st.markdown(
+        st.markdown(
             f"- The coldest region in the current selection is **{coldest_region.index[0]}** "
             f"with an average of **{coldest_region.iloc[0]:.1f}{temp_symbol}**."
         )
-		if not np.isnan(warming_rate):
+        if not np.isnan(warming_rate):
             st.markdown(
                 f"- The estimated warming rate is **{warming_rate*10:.3f}{temp_symbol} per decade** "
                 f"over the selected period."
@@ -815,7 +815,7 @@ with st.expander("View synthesized insights"):
             "- Use city-level volatility to identify locations most exposed to extreme temperature swings.\n"
             "- Extend the forecasting horizon cautiously where residuals remain centered and stable over time."
         )
-	else:
+    else:
         st.write("No data available for current filters to generate insights.")
 
 # ============================================
