@@ -891,7 +891,7 @@ with col2:
     )
 with col3:
     recent_years = df_filtered[df_filtered['Year'] >= yearly['Year'].max() - 5]  
-	trend_direction = "↑ Warming" if warming_rate > 0 else "↓ Cooling" if warming_rate < 0 else "→ Stable"
+    trend_direction = "↑ Warming" if warming_rate > 0 else "↓ Cooling" if warming_rate < 0 else "→ Stable"
     st.markdown(
         Components.metric_cards(
             title="5-Year Trend",
@@ -906,7 +906,7 @@ st.subheader("🎯 :red[Domain-Specific Applications]", divider="red")
   
  
 with st.expander("🏢 Business Applications"):  
-	st.markdown(
+    st.markdown(
     """   
     **Energy Sector:**  
     - Forecast cooling/heating demand based on temperature predictions  
@@ -930,7 +930,7 @@ with st.expander("🏢 Business Applications"):
     """)  
   
 with st.expander("🔬 Research Applications"):  
-	st.markdown(
+    st.markdown(
     """
     **Climate Science:**  
     - Validate climate models with historical data  
@@ -954,7 +954,7 @@ with st.expander("🔬 Research Applications"):
     """)  
   
 with st.expander("🏛 Policy Recommendations"):  
-	st.markdown(
+    st.markdown(
     """
     **Immediate Actions (0-2 years):**  
     - Establish temperature monitoring networks in underserved areas  
@@ -978,7 +978,7 @@ with st.expander("🏛 Policy Recommendations"):
     """)  
   
 with st.expander("👥 Public Health Implications"):  
-	st.markdown(
+    st.markdown(
     """
     **Heat-Related Risks:**  
     - Heat exhaustion and heat stroke incidents may increase  
