@@ -616,7 +616,7 @@ with col1:
         Components.metric_card(
             title="Current Avg (Last 30 days)",
             value=f"{current_avg:.2f}{temp_symbol}",
-            delta="",
+            delta="🗓️",
             card_type="info"
         ), unsafe_allow_html=True
     )
@@ -634,7 +634,7 @@ with col3:
         Components.metric_card(
             title="Predicted Maximum",
             value=f"{forecast_max:.2f}{temp_symbol}",
-            delta="",
+            delta="🔝",
             card_type="info"
         ), unsafe_allow_html=True
     )
@@ -643,7 +643,7 @@ with col4:
         Components.metric_card(
             title="Data Points Used",
             value=f"{len(daily):,}",
-            delta="",
+            delta="💯",
             card_type="info"
         ), unsafe_allow_html=True
     )
@@ -676,7 +676,7 @@ with col1:
         Components.metric_card(
             title="MAE",
             value=f"{mae:.3f}{temp_symbol}",
-            delta="",
+            delta="🇲🇦",
             card_type="info"
         ), unsafe_allow_html=True
     )
@@ -694,7 +694,7 @@ with col3:
         Components.metric_card(
             title="R² Score",
             value=f"{r2:.3f}",
-            delta="",
+            delta="🇷2️⃣",
             card_type="info"
         ), unsafe_allow_html=True
     )
@@ -703,7 +703,7 @@ with col4:
         Components.metric_card(
             title="MAPE",
             value=f"{mape:.2f}%",
-            delta="",
+            delta="🇲🇦🇵🇪",
             card_type="info"
         ), unsafe_allow_html=True
     )
