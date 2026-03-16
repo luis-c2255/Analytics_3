@@ -518,8 +518,7 @@ forecast_days = st.sidebar.slider("Forecast Period (days):", 30, 730, 365)
 # Apply filters to main dataframe  
 df_filtered = df.copy()  
 if selected_region != 'All':  
-	df_filtered = 🤖
-df_filtered[df_filtered['Region'] == selected_region]  
+	df_filtered[df_filtered['Region'] == selected_region]  
 if selected_country != 'All':  
 	df_filtered = df_filtered[df_filtered['Country'] == selected_country]
 
