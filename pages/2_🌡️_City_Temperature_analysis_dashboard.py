@@ -22,19 +22,20 @@ except FileNotFoundError:
 def load_data():
     df = pd.read_csv('city_temperature.csv')
 
-# Data Cleaning
-df = df[(df['AvgTemperature'] >= -100) & (df['AvgTemperature'] <= 150)]
-df = df.drop_duplicates()
-df['Date'] = pd.to_datetime(df[['Year', 'Month', 'Day']], errors='coerce')
-df = df.dropna(subset=['Date'])
-df['AvgTemperature_C'] = (df['AvgTemperature'] - 32) * 5/9
-df['Season'] = df['Month'].map({
-	12: 'Winter', 1: 'Winter', 2: 'Winter',
-	3: 'Spring', 4: 'Spring', 5: 'Spring',
-	6: 'Summer', 7: 'Summer', 8: 'Summer',
-	9: 'Fall', 10: 'Fall', 11: 'Fall' 
-})
-return df 
+	# Data Cleaning
+	df = df[(df['AvgTemperature'] >= -100) & (df['AvgTemperature'] <= 150)]
+	df = df.drop_duplicates()
+	f['Date'] = pd.to_datetime(df[['Year', 'Month', 'Day']], errors='coerce')
+	df = df.dropna(subset=['Date'])
+	df['AvgTemperature_C'] = (df['AvgTemperature'] - 32) * 5/9
+	df['Season'] = df['Month'].map({
+		12: 'Winter', 1: 'Winter', 2: 'Winter',
+		3: 'Spring', 4: 'Spring', 5: 'Spring',
+		6: 'Summer', 7: 'Summer', 8: 'Summer',
+		9: 'Fall', 10: 'Fall', 11: 'Fall' 	
+	})
+	return df
+	 
 df = load_data() 
 
 # Title
