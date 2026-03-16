@@ -550,12 +550,25 @@ model, daily = train_prophet(df_filtered, temp_col)
 if model is None or daily.empty:
     st.info("Not enough data to train a forecasting model for the current filters.")
 else:
+    # Convert all datetime columns to Python datetime (critical fix)
+    daily["ds"] = pd.to_datetime(daily["ds"]).dt.to_pydatetime()
+
     # Forecast
     future = model.make_future_dataframe(periods=forecast_days, freq="D")
+    future["ds"] = pd.to_datetime(future["ds"]).dt.to_pydatetime()
+
     forecast = model.predict(future)
+    forecast["ds"] = pd.to_datetime(forecast["ds"]).dt.to_pydatetime()
 
     last_date = daily["ds"].max()
+    last_date = last_date.to_pydatetime()
+
     forecast_future = forecast[forecast["ds"] > last_date]
+
+    # -----------------------------
+    # Forecast Visualization
+    # -----------------------------
+    st.markdown("### :yellow[Forecast Visualization]")
 
     fig_forecast = go.Figure()
     fig_forecast.add_trace(go.Scatter(
@@ -574,8 +587,8 @@ else:
             line=dict(color="red", width=2)
     ))
     fig_forecast.add_trace(go.Scatter(
-            x=forecast["ds"].tolist() + forecast["ds"].tolist()[::-1],
-            y=forecast["yhat_upper"].tolist() + forecast["yhat_lower"].tolist()[::-1],
+            x=list(forecast["ds"]) + list(forecast["ds"])[::-1],
+            y=list(forecast["yhat_upper"]) + list(forecast["yhat_lower"])[::-1],
             fill="toself",
             fillcolor="rgba(255,0,0,0.1)",
             line=dict(color="rgba(255,255,255,0)"),
@@ -583,10 +596,11 @@ else:
             showlegend=True
     ))
     fig_forecast.add_vline(
-            x=last_date.to_pydatetime(),
+            x=last_date,
             line_dash="dash",
             line_color="green",
-            annotation_text="Forecast Start"
+            annotation_text="Forecast Start",
+            annotation_position="top left"
     )
     fig_forecast.update_layout(
             title=f"Temperature Forecast ({forecast_days} days ahead)",
@@ -596,6 +610,7 @@ else:
             hovermode="x unified"
     )
     st.plotly_chart(fig_forecast, width="stretch")
+st.markdown("   ")
 st.markdown("#### :yellow[Forecast Summary]")
 current_avg = daily["y"].tail(30).mean()
 forecast_avg = forecast_future["yhat"].mean()
@@ -648,6 +663,8 @@ train_data = daily.iloc[:split_idx].copy()
 test_data = daily.iloc[split_idx:].copy()
 
 test_forecast = model.predict(test_data[["ds"]])
+test_forecast["ds"] = pd.to_datetime(test_forecast["ds"]).dt.to_pydatetime()
+
 test_merged = test_data.merge(
     test_forecast[["ds", "yhat", "yhat_lower", "yhat_upper"]],
     on="ds"
@@ -715,15 +732,6 @@ fig_avp.add_trace(go.Scatter(
     name="Predicted",
     line=dict(color="red", width=2)
 ))
-fig_avp.add_trace(go.Scatter(
-    x=test_merged["ds"].tolist() + test_merged["ds"].tolist()[::-1],
-    y=test_merged["yhat_upper"].tolist() + test_merged["yhat_lower"].tolist()[::-1],
-    fill="toself",
-    fillcolor="rgba(255,0,0,0.1)",
-    line=dict(color="rgba(255,255,255,0)"),
-    name="95% Confidence",
-    showlegend=True
-))
 fig_avp.update_layout(
     title="Actual vs Predicted Temperature (Test Period)",
     xaxis_title="Date",
@@ -732,26 +740,6 @@ fig_avp.update_layout(
     hovermode="x unified"
 )
 st.plotly_chart(fig_avp, width="stretch")
-
-fig_scatter = px.scatter(
-    test_merged,
-    x="y",
-    y="yhat",
-    labels={"y": f"Actual ({temp_symbol})", "yhat": f"Predicted ({temp_symbol})"},
-    title="Actual vs Predicted Scatter Plot",
-    trendline="ols"
-)
-min_val = min(test_merged["y"].min(), test_merged["yhat"].min())
-max_val = max(test_merged["y"].max(), test_merged["yhat"].max())
-fig_scatter.add_trace(go.Scatter(
-    x=[min_val, max_val],
-    y=[min_val, max_val],
-    mode="lines",
-    name="Perfect Prediction",
-    line=dict(color="green", dash="dash")
-))
-fig_scatter.update_layout(height=420)
-st.plotly_chart(fig_scatter, width="stretch")
 
 # Residuals
 st.markdown("#### :rainbow[Residual Analysis]")
