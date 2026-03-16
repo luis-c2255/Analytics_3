@@ -875,8 +875,8 @@ test_merged['residual'] = test_merged['y'] - test_merged['yhat']
 col1, col2 = st.columns(2)  
   
 with col1:  
-# Residual distribution  
-fig7 = px.histogram(  
+	# Residual distribution  
+	fig7 = px.histogram(  
 test_merged,  
 x='residual',  
 nbins  
@@ -885,42 +885,42 @@ title='Distribution of Prediction Errors',
 labels={'residual': 'Residual (Actual - Predicted) °C'},  
 color_discrete_sequence=['indianred']  
 )  
-fig7.add_vline(x=0, line_dash="dash", line_color="green")  
-fig7.update_layout(height=400)  
-st.plotly_chart(fig7, use_container_width=True)  
+	fig7.add_vline(x=0, line_dash="dash", line_color="green")  
+	fig7.update_layout(height=400)  
+	st.plotly_chart(fig7, use_container_width=True)  
   
 with col2:  
-# Residuals over time  
-fig8 = px.scatter(  
+	# Residuals over time  
+	fig8 = px.scatter(  
 test_merged,  
 x='ds',  
 y='residual',  
 title='Residuals Over Time',  
 labels={'ds': 'Date', 'residual': 'Residual (°C)'}  
 )  
-fig8.add_hline(y=0, line_dash="dash", line_color="green")  
-fig8.update_layout(height=400)  
-st.plotly_chart(fig8, use_container_width=True)  
+	fig8.add_hline(y=0, line_dash="dash", line_color="green")  
+	fig8.update_layout(height=400)  
+	st.plotly_chart(fig8, use_container_width=True)  
   
 # Cross-validation results  
 st.subheader("Model Stability: Cross-Validation")  
   
 with st.expander("ℹ️ About Cross-Validation"):  
-st.markdown("""  
-Cross-validation tests how well the model performs across different time periods.  
-We split the data into multiple train/test windows to ensure consistent performance.  
+	st.markdown("""  
+	Cross-validation tests how well the model performs across different time periods.  
+	We split the data into multiple train/test windows to ensure consistent performance.  
 """)  
   
 from prophet.diagnostics import cross_validation, performance_metrics  
   
 with st.spinner("Running cross-validation (this may take a minute)..."):  
-# Perform cross-validation  
-initial_days = int(len(train_data) * 0.5)  
-cv_results = cross_validation(  
-model,  
-initial=f'{initial_days} days',  
-period='90 days',  
-horizon='180 days'  
+	# Perform cross-validation  
+	initial_days = int(len(train_data) * 0.5)  
+	cv_results = cross_validation(  
+	model,  
+	initial=f'{initial_days} days',  
+	period='90 days',  
+	horizon='180 days'  
 )  
   
 # Calculate performance metrics  
@@ -944,35 +944,35 @@ labels={'value': 'Error (°C)', 'horizon': 'Forecast Horizon'}
 fig9.update_layout(height=400)  
 st.plotly_chart(fig9, use_container_width=True)  
   
-except Exception as e:  
+
 st.error(f"Error in model evaluation: {str(e)}")  
 st.info("Please ensure sufficient data is available for the selected filters.")  
   
 # TAB 4: Insights & Recommendations  
 with tab4:  
-st.header("🎯 Key Insights & Recommendations")  
+	st.header("🎯 Key Insights & Recommendations")  
   
 # Calculate insights  
 yearly_data = df_filtered.groupby('Year')[temp_col].mean().reset_index()  
   
 if len(yearly_data) > 1:  
-# Trend analysis  
-z = np.polyfit(yearly_data['Year'], yearly_data[temp_col], 1)  
-warming_rate = z[0]  
+	# Trend analysis  
+	z = np.polyfit(yearly_data['Year'], yearly_data[temp_col], 1)  
+	warming_rate = z[0]  
   
 # Convert to Celsius for consistent reporting  
 if temp_unit == "Fahrenheit":  
-warming_rate_c = warming_rate * 5/9  
+	warming_rate_c = warming_rate * 5/9  
 else:  
-warming_rate_c = warming_rate  
+	warming_rate_c = warming_rate  
   
 st.subheader("🌍 Climate Trends")  
   
 col1, col2 = st.columns(2)  
   
 with col1:  
-st.markdown(f"""  
-**Historical Trend Analysis:**  
+	st.markdown(f"""  
+	**Historical Trend Analysis:**  
   
 - 📈 **Warming Rate:** {warming_rate_c:.4f}°C per year
 - 📊 **Decade Change:** {warming_rate_c * 10:.3f}°C per decade  
@@ -983,8 +983,8 @@ st.markdown(f"""
 """)  
   
 with col2:  
-# Seasonal insights  
-seasonal_avg = df_filtered.groupby('Season')[temp_col].mean().sort_values(ascending=False)  
+	# Seasonal insights  
+	seasonal_avg = df_filtered.groupby('Season')[temp_col].mean().sort_values(ascending=False)  
   
 st.markdown(f"""  
 **Seasonal Patterns:**  
@@ -1016,8 +1016,8 @@ st.markdown(f"""
 st.subheader("💡 Actionable Recommendations")  
   
 if warming_rate_c > 0.02:  
-st.warning("""  
-**High Warming Rate Detected - Urgent Actions Recommended:**  
+	st.warning("""  
+	**High Warming Rate Detected - Urgent Actions Recommended:**  
   
 1. **Monitoring:** Implement continuous temperature monitoring systems  
 2. **Infrastructure:** Prepare infrastructure for higher temperature extremes  
@@ -1027,8 +1027,8 @@ st.warning("""
 6. **Adaptation:** Develop climate adaptation strategies for agriculture and water resources  
 """)  
 elif warming_rate_c > 0.01:  
-st.info("""  
-**Moderate Warming Trend - Proactive Measures Suggested:**  
+	st.info("""  
+	**Moderate Warming Trend - Proactive Measures Suggested:**  
   
 1. **Data Collection:** Continue detailed temperature monitoring  
 2. **Public Awareness:** Educate communities about climate change impacts  
@@ -1037,8 +1037,8 @@ st.info("""
 5. **Research:** Support climate research and modeling initiatives  
 """)  
 else:  
-st.success("""  
-**Stable Temperature Trends - Maintain Current Practices:**  
+	st.success("""  
+	**Stable Temperature Trends - Maintain Current Practices:**  
   
 1. **Vigilance:** Continue monitoring for any changes in patterns  
 2. **Best Practices:** Maintain current environmental protection measures  
@@ -1060,31 +1060,31 @@ extreme_cold = df_filtered[df_filtered[temp_col] < temp_mean - 2*temp_std]
 col1, col2, col3 = st.columns(3)  
   
 with col1:  
-st.metric(  
-"Extreme Heat Events",  
-f"{len(extreme_hot):,}",  
-f"{len(extreme_hot)/len(df_filtered)*100:.2f}% of records"  
+	st.metric(  
+	"Extreme Heat Events",  
+	f"{len(extreme_hot):,}",  
+	f"{len(extreme_hot)/len(df_filtered)*100:.2f}% of records"  
 )  
   
 with col2:  
-st.metric(  
-"Extreme Cold Events",  
-f"{len(extreme_cold):,}",  
-f"{len(extreme_cold)/len(df_filtered)*100:.2f}% of records"  
+	st.metric(  
+	"Extreme Cold Events",  
+	f"{len(extreme_cold):,}",  
+	f"{len(extreme_cold)/len(df_filtered)*100:.2f}% of records"  
 )  
   
 with col3:  
-recent_years = df_filtered[df_filtered['Year'] >= yearly_data['Year'].max() - 5]  
-trend_direction = "↑ Warming" if warming_rate_c > 0 else "↓ Cooling" if warming_rate_c < 0 else "→ Stable"  
-st.metric(  
-"5-Year Trend",  
-trend_direction,  
-f"{warming_rate_c * 5:.3f}°C"  
+	recent_years = df_filtered[df_filtered['Year'] >= yearly_data['Year'].max() - 5]  
+	trend_direction = "↑ Warming" if warming_rate_c > 0 else "↓ Cooling" if warming_rate_c < 0 else "→ Stable"  
+	st.metric(  
+	"5-Year Trend",  
+	trend_direction,  
+	f"{warming_rate_c * 5:.3f}°C"  
 )  
   
 # Comparative analysis  
 if selected_region != 'All' or selected_country != 'All':  
-st.subheader("🌐 Comparative Context")  
+	st.subheader("🌐 Comparative Context")  
   
 # Global comparison  
 global_avg = df[temp_col].mean()  
@@ -1113,8 +1113,8 @@ missing_data = df_filtered.isnull().sum().sum()
 col1, col2 = st.columns(2)  
   
 with col1:  
-st.markdown(f"""  
-**Data Coverage:**  
+	st.markdown(f"""  
+	**Data Coverage:**  
   
 - Total Records: {actual_records:,}  
 - Date Range: {total_possible_days:,} days  
@@ -1125,10 +1125,10 @@ st.markdown(f"""
 """)  
   
 with col2:  
-# Data freshnesslatest_date = df_filtered['Date'].max()  
-days_old = (datetime.now() - latest_date).days  
+	# Data freshnesslatest_date = df_filtered['Date'].max()  
+	days_old = (datetime.now() - latest_date).days  
   
-st.markdown(f"""  
+	st.markdown(f"""  
 **Data Freshness:**  
   
 - Latest Record: {latest_date.strftime('%Y-%m-%d')}  
@@ -1149,8 +1149,8 @@ tab_a, tab_b, tab_c, tab_d = st.tabs([
 ])  
   
 with tab_a:  
-st.markdown("""  
-**Business Applications:**  
+	st.markdown("""  
+	**Business Applications:**  
   
 **Energy Sector:**  
 - Forecast cooling/heating demand based on temperature predictions  
@@ -1174,8 +1174,8 @@ st.markdown("""
 """)  
   
 with tab_b:  
-st.markdown("""  
-**Research Applications:**  
+	st.markdown("""  
+	**Research Applications:**  
   
 **Climate Science:**  
 - Validate climate models with historical data  
@@ -1199,8 +1199,8 @@ st.markdown("""
 """)  
   
 with tab_c:  
-st.markdown(f"""  
-**Policy Recommendations:**  
+	st.markdown(f"""  	
+	**Policy Recommendations:**  
   
 **Immediate Actions (0-2 years):**  
 - Establish temperature monitoring networks in underserved areas  
@@ -1224,8 +1224,8 @@ st.markdown(f"""
 """)  
   
 with tab_d:  
-st.markdown("""  
-**Public Health Implications:**  
+	st.markdown("""  
+	**Public Health Implications:**  
   
 **Heat-Related Risks:**  
 - Heat exhaustion and heat stroke incidents may increase  
@@ -1254,14 +1254,14 @@ st.markdown("""
 """)  
   
 else:  
-st.warning("Insufficient data for comprehensive insights. Please adjust filters or check data availability.")  
+	st.warning("Insufficient data for comprehensive insights. Please adjust filters or check data availability.")  
   
 # Export comprehensive report  
 st.subheader("📄 Generate Comprehensive Report")  
   
 if st.button("Generate PDF Report Summary"):  
-st.info("PDF generation feature coming soon! For now, you can:")  
-st.markdown("""  
+	st.info("PDF generation feature coming soon! For now, you can:")  
+	st.markdown("""  
 - Use your browser's Print to PDF function (Ctrl/Cmd + P)  
 - Download data from the Historical Analysis tab  
 - Download forecasts from the Forecasting tab  
