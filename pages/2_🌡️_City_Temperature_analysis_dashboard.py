@@ -798,6 +798,24 @@ with st.expander("View synthesized insights"):
     else:
         st.write("No data available for current filters to generate insights.")
 
+# Future projections  
+st.subheader("🔮 :violet[Future Projections]", divider="violet") 
+
+with st.container(border=True, horizontal=True, horizontal_alignment="center"):
+    st.markdown(
+        """
+        **Based on current trends, by 2030:**
+        
+        - Expected temperature increase: **{warming_rate * (2030 - yearly['Year'].max()):.2f}°C**
+        - Projected average temperature: **{yearly[temp_col].iloc[-1] + warming_rate * (2030 - yearly['Year'].max()):.1f}{temp_symbol}**
+
+        **By 2050:**
+
+        - Expected temperature increase: **{warming_rate * (2050 - yearly['Year'].max()):.2f}°C**  
+        - Projected average temperature: **{yearly[temp_col].iloc[-1] + warming_rate * (2050 - yearly['Year'].max()):.1f}{temp_symbol}**
+
+        ⚠️ *Note: These are linear projections based on historical trends and do not account for policy changes or climate interventions.*
+    """)
 # ============================================
 # FOOTER
 # ============================================
