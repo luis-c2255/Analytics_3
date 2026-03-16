@@ -169,8 +169,8 @@ fig3 = px.bar(
 	color='Rate',  
 	color_continuous_scale='RdYlBu_r'  
 	)  
-	fig3.update_layout(height=400)  
-	st.plotly_chart(fig3, width="stretch")
+fig3.update_layout(height=400)  
+st.plotly_chart(fig3, width="stretch")
 
 with col2:  
 	# Decade comparison  
