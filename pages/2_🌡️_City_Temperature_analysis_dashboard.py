@@ -362,8 +362,6 @@ city_stats.style.format({
 'Std Dev': '{:.2f}'  
 }).background_gradient(cmap='RdYlBu_r', subset=['Average']),
 	 width="stretch")
-else:  
-	st.info("Please select at least one city to display comparisons.")
 
 # TAB 5: Geographic Analysis  
 with tab5:  
