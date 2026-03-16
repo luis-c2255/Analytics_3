@@ -638,10 +638,10 @@ trends, and holidays automatically.
 with st.spinner("Training forecasting model... This may take a moment."): 
 	try: 
 		# Train model  
-	model, train_data, test_data, full_data = train_prophet_model(  
-	df_filtered,  
-	selected_region if selected_region != 'All' else None,  
-	selected_country if selected_country != 'All' else None  
+		model, train_data, test_data, full_data = train_prophet_model(  
+		df_filtered,  
+		selected_region if selected_region != 'All' else None,  
+		selected_country if selected_country != 'All' else None  
 	)
 
 # Make predictions  
