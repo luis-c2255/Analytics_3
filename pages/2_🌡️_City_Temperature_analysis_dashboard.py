@@ -467,7 +467,7 @@ warnings.filterwarnings('ignore')
 # Cache forecasting models  
 @st.cache_resource  
 def train_prophet_model(train_data, region_filter=None, country_filter=None):  
-"""Train Prophet model on filtered data"""  
+	"""Train Prophet model on filtered data"""  
 df = load_data()  
 
 # Train-test split  
