@@ -846,7 +846,7 @@ elif warming_rate > 0.01:
         """, "info"), unsafe_allow_html=True)
 
 else:  
-	with st.expander("Stable Temperature Trends - Maintain Current Practices"):
+    with st.expander("Stable Temperature Trends - Maintain Current Practices"):
         st.markdown(
         """
         <ol style="margin: 0; padding-left: 20px;">
