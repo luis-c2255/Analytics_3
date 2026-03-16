@@ -264,7 +264,7 @@ month_names = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'O
 
 fig8 = go.Figure()  
 for month in range(1, 13):  
-month_temps = df_filtered[df_filtered['Month'] == month][temp_col]  
+	month_temps = df_filtered[df_filtered['Month'] == month][temp_col]  
 fig8.add_trace(go.Box(  
 y=month_temps,  
 name=month_names[month-1],  
