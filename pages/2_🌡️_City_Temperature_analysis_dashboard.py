@@ -812,6 +812,51 @@ st.warning(f"Projected average temperature: **{yearly[temp_col].iloc[-1] + warmi
 st.markdown("   ")
 st.markdown("⚠️ *Note: These are linear projections based on historical trends and do not account for policy changes or climate interventions.*")
 
+st.markdown("   ")
+
+# Recommendations  
+st.subheader("💡 :red[Actionable Recommendations]", divider="red")  
+  
+if warming_rate > 0.02:  
+	with st.expander("High Warming Rate Detected - Urgent Actions Recommended"):
+        st.markdown(
+        """
+        <ol style="margin: 0; padding-left: 20px;">
+            <li><strong>Monitoring:</strong> Implement continuous temperature monitoring systems</li>
+            <li><strong>Infrastructure:</strong> Prepare infrastructure for higher temperature extremes</li>
+            <li><strong>Planning:</strong> Develop heat action plans for vulnerable populations</li>
+            <li><strong>Green Spaces:</strong> Increase urban greenery to mitigate heat island effects</li>
+            <li><strong>Energy:</strong> Transition to renewable energy sources to reduce emissions</li>
+            <li><strong>Adaptation:</strong> Develop climate adaptation strategies for agriculture and water resources</li>
+        </ol>
+        """, "error"), unsafe_allow_html=True)
+        
+
+elif warming_rate > 0.01:  
+	with st.expander("Moderate Warming Trend - Proactive Measures Suggested"):
+        st.markdown(
+        """
+        <ol style="margin: 0; padding-left: 20px;">
+            <li><strong>Data Collection:</strong> Continue detailed temperature monitoring</li>
+            <li><strong>Public Awareness:</strong> Educate communities about climate change impacts</li>
+            <li><strong>Sustainable Practices:</strong> Encourage energy efficiency and sustainable practices</li>
+            <li><strong>Preparedness:</strong> Develop contingency plans for extreme weather events</li>
+            <li><strong>Research:</strong> Support climate research and modeling initiatives</li>
+         </ol>
+        """, "info"), unsafe_allow_html=True)
+
+else:  
+	with st.expander("Stable Temperature Trends - Maintain Current Practices"):
+        st.markdown(
+        """
+        <ol style="margin: 0; padding-left: 20px;">
+            <li><strong>Vigilance:</strong> Continue monitoring for any changes in patterns</li>
+            <li><strong>Best Practices:</strong> Maintain current environmental protection measures</li>
+            <li><strong>Documentation:</strong> Keep detailed records for long-term trend analysis</li>
+            <li><strong>Prevention:</strong> Implement preventive measures to avoid future warming</li>
+            <li><strong>Collaboration:</strong> Share data and insights with climate research communities</li>
+         </ol>
+        """, "success"), unsafe_allow_html=True)
 # ============================================
 # FOOTER
 # ============================================
