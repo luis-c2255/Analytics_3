@@ -880,7 +880,7 @@ with col1:
             card_type="error"
         ), unsafe_allow_html=True
     )
-   with col2:
+with col2:
     st.markdown(
         Components.metric_cards(
             title="Extreme Cold Events",
@@ -889,7 +889,7 @@ with col1:
             card_type="info"
         ), unsafe_allow_html=True
     )
-   with col3:
+with col3:
     recent_years = df_filtered[df_filtered['Year'] >= yearly['Year'].max() - 5]  
 	trend_direction = "↑ Warming" if warming_rate > 0 else "↓ Cooling" if warming_rate < 0 else "→ Stable"
     st.markdown(
