@@ -141,6 +141,49 @@ st.plotly_chart(fig2, width="stretch")
 st.markdown("   ")
 
 st.subheader("👤 :violet[Demographics]", divider="violet")
+
+col1, col2, col3, col4 = st.columns(4)
+with col1:
+    average_age = filtered_df['Age'].mean()
+    st.markdown(
+        Components.metric_card(
+            title="Average User Age",
+            value=f"{average_age:.2f}",
+            delta="",
+            card_type="info"
+        ), unsafe_allow_html=True
+    )
+with col2:
+    top_countries = df['Country'].value_counts().head(1)
+    st.markdown(
+        Components.metric_card(
+            title="Top Country",
+            value=f"{top_countries}",
+            delta="",
+            card_type="info"
+        ), unsafe_allow_html=True
+    )
+with col3:
+    age_group_dist = df['Age_Group'].value_counts().sort_index().head(1)
+    st.markdown(
+        Components.metric_card(
+            title="Top Age Group",
+            value=f"{age_group_dist}",
+            delta="",
+            card_type="info"
+        ), unsafe_allow_html=True
+    )
+with col4:
+    avg_age_per_country = df.groupby('Country')['Age'].mean().sort_values(ascending=False)
+    highest_avg_age_country = avg_age_per_country.idxmax()
+    st.markdown(
+        Components.metric_card(
+            title="Country Highest Average Age",
+            value=f"{highest_avg_age_country}",
+            delta="",
+            card_type="info"
+        ), unsafe_allow_html=True
+    )
 st.subheader("📈 :blue[Engagement Analysis]", divider="blue")
 st.subheader("⭐ :yellow[Genre Insights]", divider="yellow")
 
