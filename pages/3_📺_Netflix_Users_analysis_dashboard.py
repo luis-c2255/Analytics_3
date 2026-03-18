@@ -20,6 +20,8 @@ except FileNotFoundError:
 @st.cache_data
 def load_data():
     df = pd.read_csv('netflix_users.csv')
+    return df
+    
     df['Age'] = df['Age'].astype(int)
     df['Watch_Time_Hours'] = df['Watch_Time_Hours'].astype(float)
     df['Last_Login'] = pd.to_datetime(df['Last_Login'], errors='coerce')
@@ -36,7 +38,6 @@ def load_data():
     df['Last_Login_Days_Ago'] = (datetime.today() - df['Last_Login']).dt.days
     for col in ['Country', 'Subscription_Type', 'Favorite_Genre']:
         df[col] = df[col].astype('category')
-return df
 
 
 # Title
