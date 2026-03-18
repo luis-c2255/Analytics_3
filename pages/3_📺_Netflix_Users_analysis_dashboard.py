@@ -154,21 +154,21 @@ with col1:
         ), unsafe_allow_html=True
     )
 with col2:
-    top_countries = df['Country'].value_counts().tolist()
+    top_country = df['Country'].value_counts().idxmax()
     st.markdown(
         Components.metric_card(
             title="Top Country",
-            value=f"{top_countries}",
+            value=f"{top_country}",
             delta="",
             card_type="info"
         ), unsafe_allow_html=True
     )
 with col3:
-    age_group_dist = df['Age_Group'].value_counts().sort_index().tolist()
+    age_group_name = df['Age_Group'].value_counts().idxmax()
     st.markdown(
         Components.metric_card(
             title="Top Age Group",
-            value=f"{age_group_dist}",
+            value=f"{age_group_name}",
             delta="",
             card_type="info"
         ), unsafe_allow_html=True
