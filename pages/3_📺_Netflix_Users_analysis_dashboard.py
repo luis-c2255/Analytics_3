@@ -36,7 +36,7 @@ def load_data():
     df['Last_Login_Days_Ago'] = (datetime.today() - df['Last_Login']).dt.days
     for col in ['Country', 'Subscription_Type', 'Favorite_Genre']:
         df[col] = df[col].astype('category')
-    return df
+return df
 
 
 # Title
