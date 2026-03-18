@@ -37,7 +37,7 @@ def load_data():
     for col in ['Country', 'Subscription_Type', 'Favorite_Genre']:
         df[col] = df[col].astype('category')
     return df
-
+df = load_data()
 # Title
 st.markdown(
     Components.page_header(
