@@ -134,6 +134,7 @@ fig2 = px.bar(
     y='Count',
     title='Top Countries',
     color='Country',
+    text_auto=True,
     color_discrete_sequence=px.colors.qualitative.Vivid
 )
 st.plotly_chart(fig2, width="stretch")
