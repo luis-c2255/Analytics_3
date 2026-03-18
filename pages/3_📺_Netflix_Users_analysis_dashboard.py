@@ -154,7 +154,7 @@ with col1:
         ), unsafe_allow_html=True
     )
 with col2:
-    top_countries = df['Country'].value_counts().tolist().head(1)
+    top_countries = df['Country'].value_counts().tolist()
     st.markdown(
         Components.metric_card(
             title="Top Country",
@@ -164,7 +164,7 @@ with col2:
         ), unsafe_allow_html=True
     )
 with col3:
-    age_group_dist = df['Age_Group'].value_counts().sort_index().tolist().head(1)
+    age_group_dist = df['Age_Group'].value_counts().sort_index().tolist()
     st.markdown(
         Components.metric_card(
             title="Top Age Group",
