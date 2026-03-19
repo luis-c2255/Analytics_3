@@ -44,7 +44,7 @@ st.markdown(
         "🎬 Netflix Users Analysis Dashboard"
     ), unsafe_allow_html=True
 )
-st.markdown("# **Explore user demographics, subscription patterns, and viewing habits.**", text_alignment="center")
+st.markdown("### **Explore user demographics, subscription patterns, and viewing habits.**", text_alignment="center")
 
 # Sidebar filters
 st.sidebar.header("Global Filters")
