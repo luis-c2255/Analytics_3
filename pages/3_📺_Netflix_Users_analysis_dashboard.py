@@ -75,7 +75,7 @@ with col1:
         Components.metric_card(
             title="Total Users",
             value=f"{len(filtered_df):,}",
-            delta="",
+            delta="👤",
             card_type="info"
         ), unsafe_allow_html=True
     )
@@ -84,7 +84,7 @@ with col2:
         Components.metric_card(
             title="Average Watch Time (Hours)",
             value=f"{filtered_df['Watch_Time_Hours'].mean():.2f}",
-            delta="",
+            delta="🕛",
             card_type="info"
         ), unsafe_allow_html=True
     )
@@ -93,7 +93,7 @@ with col3:
         Components.metric_card(
             title="Average Age",
             value=f"{filtered_df['Age'].mean():.1f}",
-            delta="",
+            delta="🟰",
             card_type="info"
         ), unsafe_allow_html=True
     )
@@ -103,7 +103,7 @@ with col4:
         Components.metric_card(
             title="Most Popular Genre",
             value=f"{most_popular_genre}",
-            delta="",
+            delta="📺",
             card_type="info"
         ), unsafe_allow_html=True
     )
@@ -149,7 +149,7 @@ with col1:
         Components.metric_card(
             title="Average User Age",
             value=f"{average_age:.2f}",
-            delta="",
+            delta="🟰",
             card_type="info"
         ), unsafe_allow_html=True
     )
@@ -237,7 +237,7 @@ with col1:
         Components.metric_card(
             title="Average Watch Time",
             value=f"{overall_avg_watch:.2f}",
-            delta="",
+            delta="📺",
             card_type="info"
         ), unsafe_allow_html=True
     )
@@ -409,7 +409,7 @@ fig11 = px.bar(
 st.plotly_chart(fig11, width="stretch")
 st.markdown("   ") 
 
-st.subheader(":red[Actionable Outcomes]", divider="red")
+st.subheader("🎯 :red[Actionable Outcomes]", divider="red")
 
 with st.expander("Targeted Marketing"):
         st.markdown(
