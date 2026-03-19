@@ -144,7 +144,7 @@ st.subheader("👤 :violet[Demographics]", divider="violet")
 
 col1, col2, col3, col4 = st.columns(4)
 with col1:
-    average_age = filtered_df['Age'].mean()
+    average_age = df['Age'].mean()
     st.markdown(
         Components.metric_card(
             title="Average User Age",
@@ -187,6 +187,47 @@ with col4:
             card_type="info"
         ), unsafe_allow_html=True
     )
+st.markdown("   ")
+st.subheader(":violet[Age Distribution]")
+
+
+fig3 = px.histogram(
+    filtered_df,
+    x='Age',
+    nbins=20,
+    title='Age Distribution of Users',
+    color_discrete_sequence=['#4CAF50']
+)
+st.plotly_chart(fig3, width="stretch")
+
+st.markdown("   ")
+
+st.subheader(":violet[Watch Time Distribution]")
+
+fig4 = px.histogram(
+    filtered_df,
+    x='Watch_Time_Hours',
+    nbins=20,
+    title='Watch Time Distribution (Hours)',
+    color_discrete_sequence=['#2196F3']
+)
+st.plotly_chart(fig4, width="stretch")
+
+st.markdown("   ")
+
+st.subheader(":violet[Users by Age Group and Subscription Type]")
+
+age_sub_counts = filtered_df.groupby(['Age_Group', 'Subscription_Type']).size().unstack(fill_value=0)
+fig5 = px.bar(
+    age_sub_counts,
+    barmode='group',
+    title='Users by Age Group and Subscription Type',
+    color_discrete_map={'Basic': '#FFC107', 'Standard': '#00BCD4', 'Premium': '#9C27B0'}
+)
+st.plotly_chart(fig5, width="stretch")
+
+st.markdown("   ")
+
 st.subheader("📈 :blue[Engagement Analysis]", divider="blue")
 
 col1, col2, col3, col4 = st.columns(4)
@@ -233,6 +274,13 @@ with col4:
             card_type="info"
         ), unsafe_allow_html=True
     )
+
+st.markdown("   ")
+st.subheader(":blue[Average Watch Time by Subscription Type]")
+
+st.markdown("   ") 
+
+
 st.subheader("⭐ :yellow[Genre Insights]", divider="yellow")
 
 col1, col2, col3, col4 = st.columns(4)
