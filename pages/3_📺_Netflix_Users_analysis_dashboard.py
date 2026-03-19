@@ -217,7 +217,7 @@ with col3:
     st.markdown(
         Components.metric_card(
             title="Top Genre by Watch Time",
-            value=f"{engagement_by_genre}",
+            value=f"{engagement_by_genre_name}",
             delta=f"{engagement_by_genre_val:.2f}",
             card_type="info"
         ), unsafe_allow_html=True
