@@ -228,7 +228,7 @@ with col4:
     st.markdown(
         Components.metric_card(
             title="Country Most Engaged",
-            value=f"{engagement_by_country}",
+            value=f"{engagement_by_country_name}",
             delta=f"{engagement_by_country_val:.2f}",
             card_type="info"
         ), unsafe_allow_html=True
