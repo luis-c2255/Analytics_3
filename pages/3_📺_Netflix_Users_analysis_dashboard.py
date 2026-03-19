@@ -251,8 +251,8 @@ with col2:
     st.markdown(
         Components.metric_card(
             title="Top Genre by Age Group",
-            value=f"Genre: Romance",
-            delta=f"Age Group: 18-24",
+            value=f"Romance",
+            delta=f"18-24",
             card_type="info"
         ), unsafe_allow_html=True
     )
@@ -261,8 +261,8 @@ with col3:
     st.markdown(
         Components.metric_card(
             title="Top Genre by Country",
-            value=f"Genre: Documentary",
-            delta=f"Country: Australia",
+            value=f"Documentary",
+            delta=f"Australia",
             card_type="info"
         ), unsafe_allow_html=True
     )
