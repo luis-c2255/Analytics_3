@@ -277,9 +277,44 @@ with col4:
 
 st.markdown("   ")
 st.subheader(":blue[Average Watch Time by Subscription Type]")
+avg_watch_sub = filtered_df.groupby('Subscription_Type')['Watch_Time_Hours'].mean().reset_index()
+fig6 = px.bar(
+    avg_watch_sub,
+    x='Subscription_Type',
+    y='Watch_Time_Hours',
+    title='Average Watch Time (Hours) by Subscription Type',
+    color='Subscription_Type',
+    color_discrete_sequence=px.colors.qualitative.Set2
+)
+st.plotly_chart(fig6, width="stretch")
 
 st.markdown("   ") 
+st.subheader(":blue[Watch Time Category Distribution]")    
 
+watch_cat_counts = filtered_df['Watch_Time_Category'].value_counts(sort=False).reset_index()
+watch_cat_counts.columns = ['Watch_Time_Category', 'Count']
+fig7 = px.bar(
+    watch_cat_counts,
+    x='Watch_Time_Category',
+    y='Count',
+    title='Distribution of Watch Time Categories',
+    color='Watch_Time_Category',
+    color_discrete_sequence=px.colors.qualitative.D3
+)
+st.plotly_chart(fig7, width="stretch")
+
+st.markdown("   ") 
+st.subheader(":blue[User Login Recency]") 
+
+fig8 = px.histogram(
+    filtered_df,
+    x='Last_Login_Days_Ago',
+    nbins=30,
+    title='Distribution of Days Since Last Login',
+    labels={'Last_Login_Days_Ago': 'Days Ago'},
+    color_discrete_sequence=['#E91E63']
+)
+st.plotly_chart(fig8, width="stretch")
 
 st.subheader("⭐ :yellow[Genre Insights]", divider="yellow")
 
@@ -326,6 +361,52 @@ with col4:
         ), unsafe_allow_html=True
     )
 
+st.markdown("   ") 
+
+st.subheader(":yellow[Top 10 Favorite Genres]") 
+genre_counts = filtered_df['Favorite_Genre'].value_counts().head(10).reset_index()
+genre_counts.columns = ['Favorite_Genre', 'Count']
+fig9 = px.bar(
+    genre_counts,
+    x='Favorite_Genre',
+    y='Count',
+    title='Top 10 Favorite Genres by User Count',
+    color='Favorite_Genre',
+    color_discrete_sequence=px.colors.qualitative.Dark24
+)
+st.plotly_chart(fig9, width="stretch")
+
+st.markdown("   ") 
+
+st.subheader(":yellow[Average Watch Time by Favorite Genre]")
+avg_watch_genre = filtered_df.groupby('Favorite_Genre')['Watch_Time_Hours'].mean().sort_values(ascending=False).reset_index().head(10)
+fig10 = px.bar(
+    avg_watch_genre,
+    x='Favorite_Genre',
+    y="Watch_Time_Hours",
+    title="Average Watch Time (Hours) by Favorite Genre (Top 10)",
+    color='Favorite_Genre',
+    color_discrete_sequence=px.colors.qualitative.Dark24
+)
+st.plotly_chart(fig10, width="stretch")
+
+st.markdown("   ") 
+
+st.subheader(":yellow[Genre Popularity Across Top Countries]")
+top_countries_filtered = filtered_df['Country'].value_counts().head(5).index.tolist()
+if top_countries_filtered:
+    df_top_countries = filtered_df[filtered_df['Country'].isin(top_countries_filtered)]
+genre_country_counts = df_top_countries.groupby(['Country', 'Favorite_Genre']).size().reset_index(name='Count')
+fig11 = px.bar(
+    genre_country_counts,
+    x='Favorite_Genre',
+    y='Count',
+    color='Country',
+    title='Favorite Genres in Top Countries',
+    barmode='group',
+    color_discrete_sequence=px.colors.qualitative.G10
+)
+st.plotly_chart(fig11, width="stretch")
 # ============================================
 # FOOTER
 # ============================================
