@@ -154,22 +154,24 @@ with col1:
         ), unsafe_allow_html=True
     )
 with col2:
-    top_country = df['Country'].value_counts().idxmax()
+    top_country_name = df['Country'].value_counts().idxmax()
+    top_country_val = df['Country'].value_counts().max()
     st.markdown(
         Components.metric_card(
             title="Top Country",
-            value=f"{top_country}",
-            delta="",
+            value=f"{top_country_name}",
+            delta=f"{top_country_val}",
             card_type="info"
         ), unsafe_allow_html=True
     )
 with col3:
     age_group_name = df['Age_Group'].value_counts().idxmax()
+    age_group_val = df['Age_Group'].value_counts().max()
     st.markdown(
         Components.metric_card(
             title="Top Age Group",
             value=f"{age_group_name}",
-            delta="",
+            delta=f"{age_group_val}",
             card_type="info"
         ), unsafe_allow_html=True
     )
@@ -180,12 +182,100 @@ with col4:
         Components.metric_card(
             title="Country Highest Average Age",
             value=f"{highest_avg_age_country}",
-            delta="",
+            delta=f"{highest_avg_age_value:.2f}",
             card_type="info"
         ), unsafe_allow_html=True
     )
 st.subheader("📈 :blue[Engagement Analysis]", divider="blue")
+
+col1, col2, col3, col4 = st.columns(4)
+with col1:
+    overall_avg_watch = df['Watch_Time_Hours'].mean()
+    st.markdown(
+        Components.metric_card(
+            title="Average Watch Time",
+            value=f"{overall_avg_watch:.2f}",
+            delta="",
+            card_type="info"
+        ), unsafe_allow_html=True
+    )
+with col2:
+    engagement_by_tier_name = df.groupby('Subscription_Type')['Watch_Time_Hours'].mean().idxmax()
+    engagement_by_tier_val = df.groupby('Subscription_Type')['Watch_Time_Hours'].mean().max()
+    st.markdown(
+        Components.metric_card(
+            title="Top Subscription Type",
+            value=f"{engagement_by_tier_name}",
+            delta=f"{engagement_by_tier_val:.2f}",
+            card_type="info"
+        ), unsafe_allow_html=True
+    )
+with col3:
+    engagement_by_genre_name = df.groupby('Favorite_Genre')['Watch_Time_Hours'].mean().idxmax()
+    engagement_by_genre_val = df.groupby('Favorite_Genre')['Watch_Time_Hours'].mean().max()
+    st.markdown(
+        Components.metric_card(
+            title="Top Genre by Watch Time",
+            value=f"{engagement_by_genre}",
+            delta=f"{engagement_by_genre_val:.2f}",
+            card_type="info"
+        ), unsafe_allow_html=True
+    )
+with col4:
+    engagement_by_country_name = df.groupby('Country')['Watch_Time_Hours'].mean().idxmax()
+    engagement_by_country_val = df.groupby('Country')['Watch_Time_Hours'].mean().max()
+    st.markdown(
+        Components.metric_card(
+            title="Country Most Engaged",
+            value=f"{engagement_by_country}",
+            delta=f"{engagement_by_country_val:.2f}",
+            card_type="info"
+        ), unsafe_allow_html=True
+    )
 st.subheader("⭐ :yellow[Genre Insights]", divider="yellow")
+
+col1, col2, col3, col4 = st.columns(4)
+with col1:
+    genre_popularity_name = df['Favorite_Genre'].value_counts().idxmax()
+    genre_popularity_val = df['Favorite_Genre'].value_counts().max()
+    st.markdown(
+        Components.metric_card(
+            title="Most Popular Genre",
+            value=f"{genre_popularity_name}",
+            delta=f"{genre_popularity_val:.2f}",
+            card_type="info"
+        ), unsafe_allow_html=True
+    )
+with col2:
+    st.markdown(
+        Components.metric_card(
+            title="Top Genre by Age Group",
+            value=f"Genre: Romance",
+            delta=f"Age Group: 18-24",
+            card_type="info"
+        ), unsafe_allow_html=True
+    )
+with col3:
+    age_group_name = df['Age_Group'].value_counts().idxmax()
+    st.markdown(
+        Components.metric_card(
+            title="Top Genre by Country",
+            value=f"Genre: Documentary",
+            delta=f"Country: Australia",
+            card_type="info"
+        ), unsafe_allow_html=True
+    )
+with col4:
+    avg_watch_per_genre_val = df.groupby('Favorite_Genre')['Watch_Time_Hours'].mean().max()
+    avg_watch_per_genre_name = df.groupby('Favorite_Genre')['Watch_Time_Hours'].mean().idxmax()
+    st.markdown(
+        Components.metric_card(
+            title="Average Watch per Genre",
+            value=f"{avg_watch_per_genre_val:.2f}",
+            delta=f"{avg_watch_per_genre_name}",
+            card_type="info"
+        ), unsafe_allow_html=True
+    )
 
 # ============================================
 # FOOTER
