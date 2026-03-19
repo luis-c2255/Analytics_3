@@ -407,6 +407,33 @@ fig11 = px.bar(
     color_discrete_sequence=px.colors.qualitative.G10
 )
 st.plotly_chart(fig11, width="stretch")
+st.markdown("   ") 
+
+st.subheader(":red[Actionable Outcomes]")
+
+with st.expander("Targeted Marketing"):
+        st.markdown(
+        """
+        Develop specific campaigns to upsell *Basic* or *Standard* users to *Premium* by highlighting increased
+        watch time benefits or exclusive content access, tailored to their preferred genres.
+        """, unsafe_allow_html=True)
+with st.expander("Content Strategy"):
+        st.markdown(
+        """
+        Prioritize investment in genres that drive the highest engagement and cater to the preferences of high-value user
+        segments (e.g. Premium subscribers).
+        """, unsafe_allow_html=True)
+with st.expander("Localization"):
+        st.markdown(
+        """
+        If significant geographical differences exist, consider comissioning or acquiring region-specific content.
+        """, unsafe_allow_html=True)
+with st.expander("Churn Prevention"):
+        st.markdown(
+        """
+        Implement re-engagement strategies for users identified as inactive, perhaps offering tailored recommendations
+        or special promotions to encourage them to log back in.
+        """, unsafe_allow_html=True)
 # ============================================
 # FOOTER
 # ============================================
