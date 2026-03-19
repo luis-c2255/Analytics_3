@@ -409,7 +409,7 @@ fig11 = px.bar(
 st.plotly_chart(fig11, width="stretch")
 st.markdown("   ") 
 
-st.subheader(":red[Actionable Outcomes]")
+st.subheader(":red[Actionable Outcomes]", divider="red")
 
 with st.expander("Targeted Marketing"):
         st.markdown(
