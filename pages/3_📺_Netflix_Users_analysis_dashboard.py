@@ -178,6 +178,7 @@ with col3:
 with col4:
     avg_age_per_country = df.groupby('Country')['Age'].mean().sort_values(ascending=False)
     highest_avg_age_country = avg_age_per_country.idxmax()
+    highest_avg_age_value = avg_age_per_country.max()
     st.markdown(
         Components.metric_card(
             title="Country Highest Average Age",
