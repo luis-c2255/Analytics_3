@@ -411,6 +411,12 @@ fig2.update_layout(
 st.plotly_chart(fig2, width="stretch")
 st.markdown("   ")
 import plotly.figure_factory as ff
+user_stats = filtered_df.groupby('user_id').agg(
+    total_orders=('order_id', 'nunique'),
+    total_items=('product_id', 'count'),
+    avg_basket_size=('order_id', lambda x: len(x) / x.nunique()),
+    reorder_rate=('reordered', 'mean')
+)
 
 min_val = avg_basket_size.min()
 max_val = avg_basket_size.max()
