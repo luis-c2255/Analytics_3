@@ -179,6 +179,7 @@ with col4:
             card_type="info"
         ), unsafe_allow_html=True
     )
+st.markdown("   ")
 
 st.subheader(":green[Top 10 Most Popular Products]")
 st.markdown("   ")
