@@ -261,7 +261,7 @@ col1, col2, col3, col4 = st.columns(4)
 with col1:
     day_mapping = {0: 'Sunday', 1: 'Monday', 2: 'Tuesday', 3: 'Wednesday', 4: 'Thursday', 5: 'Friday', 6: 'Saturday'}
     df['order_dow_name'] = df['order_dow'].map(day_mapping)
-    top_day = day_mapping[df['order_dow_name'].mode()[0]]
+    top_day = day_mapping[df['order_dow_name'].mode()]
     st.markdown(
         Components.metric_card(
             title="Busiest day",
