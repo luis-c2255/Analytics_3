@@ -328,6 +328,111 @@ fig_avg_cart = px.bar(
 )
 fig_avg_cart.update_layout(yaxis={'categoryorder':'total ascending'})
 st.plotly_chart(fig_avg_cart, width="stretch")
+st.markdown("   ")
+
+heatmap_data = filtered_df.groupby(['order_dow', 'order_hour_of_day'])['order_id'].nunique().unstack(fill_value=0)
+days_map = {0: 'Sunday', 1: 'Monday', 2: 'Tuesday', 3: 'Wednesday', 4: 'Thursday', 5: 'Friday', 6:'Saturday'}
+heatmap_data.index = heatmap_data.index.map(days_map)
+
+fig = go.Figure(
+    data=go.Heatmap(
+        z=heatmap_data.values,
+        x=heatmap_data.columns,
+        y=heatmap_data.index,
+        colorscale='YlGnBu'
+    )
+)
+fig.update_layout(
+    title_text='Order Density: Day vs. Hour',
+    xaxis_title='Hour of Day',
+    yaxis_title='Day of Week'
+)
+st.plotly_chart(fig, width="stretch")
+st.markdown("   ")
+max_cell = heatmap_data.stack().idxmax()
+max_val = heatmap_data.stack().max()
+
+st.success(f"Peak period: {max_cell[0]} a {max_cell[1]}:00 with {max_val} orders.")
+st.markdown("   ")
+
+# 1. Calculate metrics per user
+user_stats = filtered_df.groupby('user_id').agg(
+    total_orders=('order_id', 'nunique'),
+    total_items=('product_id', 'count'),
+    avg_basket_size=('order_id', lambda x: len(x) / x.nunique()),
+    reorder_rate=('reordered', 'mean')
+)
+# 2. Identify Top Values for Metric Cards
+top_order_user_id = user_stats['total_orders'].idxmax()
+max_orders = user_stats['total_orders'].max()
+
+top_basket_user_id = user_stats['avg_basket_size'].idxmax()
+max_basket = user_stats['avg_basket_size'].max()
+
+# Use reorder_rate across all users or top_items if total_orders <= 1
+top_items_user_id = user_stats['total_items'].idxmax()
+max_items = user_stats['total_items'].max()
+
+# Find users with high loyalty, filtering for any repeat buyers if they exist
+repeat_buyers = user_stats[user_stats['total_orders'] > 1]
+if not repeat_buyers.empty:
+    top_loyalty_user_id = repeat_buyers['reorder_rate'].idxmax()
+    max_loyalty = repeat_buyers['reorder_rate'].max()
+else:
+    top_loyalty_user_id = "N/A (No Repeat Buyers)"
+    max_loyalty = 0.0
+
+col1, col2 = st.columns(2, border=True, gap="medium", vertical_alignment="center")
+with col1:
+    st.info(f"User with most orders: ID {top_order_user_id} ({max_orders} orders)")
+with col2:
+    st.success(f"User with largest single/avg basket: ID {top_basket_user_id} ({max_basket:.1f} items)")
+
+col3, col4 = st.columns(2, border=True, gap="medium", vertical_alignment="center")
+with col3:
+    st.success(f"Most loyal user (repeat): {top_loyalty_user_id} ({max_loyalty:.1%})")
+with col4:
+    st.info(f"Top purchaser by volume: ID {top_items_user_id} ({max_items} total items)")
+st.markdown("   ")
+fig2= px.scatter(
+    user_stats,
+    x='total_items',
+    y='reorder_rate',
+    opacity=0.5,
+    color_discrete_sequence=['blue']
+)
+fig2.update_layout(
+    title_text='User Clusters: Total Items vs Reorder Rate',
+    xaxis_title_text='Total Items Purchased',
+    yaxis_title_text='Reorder Rate (Loyalty)',
+    width=1000,
+    height=600
+)
+st.plotly_chart(fig2, width="stretch")
+st.markdown("   ")
+import plotly.figure_factory as ff
+
+min_val = avg_basket_size.min()
+max_val = avg_basket_size.max()
+num_bins = 15
+bin_size = (max_val - min_val) / num_bins
+
+fig3 = ff.create_distplot(
+    [avg_basket_size],
+    group_labels=['Avg Basket Size'],
+    bin_size=bin_size,
+    colors=['purple'],
+    show_hist=True,
+    show_curve=True,
+    curve_type='kde',
+    histnorm='probability density'
+)
+fig3.update_layout(
+    title_text='Distribution of User Basket Sizes',
+    xaxis_title_text='Items per Order',
+    yaxis_title_text='Density'
+)
+st.plotly_chart(fig3, width="stretch")
 
 st.markdown("   ")
 st.subheader(":rainbow[Raw Data]", divider="rainbow")
