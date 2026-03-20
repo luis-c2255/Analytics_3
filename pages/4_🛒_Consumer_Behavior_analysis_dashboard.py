@@ -33,17 +33,6 @@ def load_data():
     df['order_hour_of_day'] = df['order_hour_of_day'].astype('category')
     return df
 
-@st.cache_data
-def get_transaction_data(df_input):
-    """Prepare data for Market Basket Analysis."""
-    # Group products by order_id to create transaction lists
-    transactions = df_input.groupby('order_id')['product_name'].apply(list).tolist()
-    # Use TransactionEncoder for one-hot encoding
-    te = TransactionEncoder()
-    te_ary = te.fit(transactions).transform(transactions)
-    df_encoded = pd.DataFrame(te_ary, columns=te.columns_)
-    return df_encoded
-
 # Title
 st.markdown(
     Components.page_header(
