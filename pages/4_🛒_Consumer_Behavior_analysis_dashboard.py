@@ -572,8 +572,8 @@ if selected_department != 'All':
                 rules['antecedents'] = rules['antecedents'].apply(lambda x: ', '.join(list(x)))
                 rules['consequents'] = rules['consequents'].apply(lambda x: ', '.join(list(x)))
                 rules_display = rules[['antecedents', 'consequents', 'support', 'confidence', 'lift']].sort_values(by='lift', ascending=False)
-st.subheader(":orange[Discovered Association Rules]")
-st.dataframe(rules_display)
+                st.subheader(":orange[Discovered Association Rules]")
+                st.dataframe(rules_display)
 
 st.markdown("   ")
 st.subheader(":orange[Top Antecedents & Consequents]")
