@@ -435,7 +435,8 @@ st.markdown("   ")
 # 1. Create a per-order dataset
 order_stats = filtered_df.groupby('order_id').agg(
     basket_size=('product_id', 'count'),
-    order_dow=('order_dow', 'first')
+    order_dow=('order_dow', 'first'),
+    order_hour_of_day=('order_hour_of_day', 'first')
 ).reset_index()
 
 # 2. Avg Basket Size by Day of the Week
