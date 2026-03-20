@@ -575,40 +575,40 @@ if selected_department != 'All':
                 st.subheader(":orange[Discovered Association Rules]")
                 st.dataframe(rules_display)
 
-st.markdown("   ")
-st.subheader(":orange[Top Antecedents & Consequents]")
-col1, col2 = st.columns(2)
-with col1:
-    st.write("Most Frequent Antecedents (What customers *start* with)")
-    top_antecedents = rules['antecedents'].value_counts().head(10).reset_index()
-    top_antecedents.columns = ['Antecedent', 'Count']
-    fig_ant = px.bar(
-        top_antecedents,
-        x='Count',
-        y='Antecedent',
-        orientation='h',
-        title='Top 10 Antecedents in Rules',
-        color_discrete_sequence=px.colors.qualitative.Pastel
-    )
-    fig_ant.update_layout(
-        yaxis={'categoryorder': 'total ascending'}
-    )
-    st.plotly_chart(fig_ant, width="stretch")
+        st.markdown("   ")
+        st.subheader(":orange[Top Antecedents & Consequents]")
+        col1, col2 = st.columns(2)
+        with col1:
+            st.write("Most Frequent Antecedents (What customers *start* with)")
+            top_antecedents = rules['antecedents'].value_counts().head(10).reset_index()
+            top_antecedents.columns = ['Antecedent', 'Count']
+            fig_ant = px.bar(
+                top_antecedents,
+                x='Count',
+                y='Antecedent',
+                orientation='h',
+                title='Top 10 Antecedents in Rules',
+                color_discrete_sequence=px.colors.qualitative.Pastel
+        )
+            fig_ant.update_layout(
+                yaxis={'categoryorder': 'total ascending'}
+        )
+            st.plotly_chart(fig_ant, width="stretch")
 
-with col2:
-    st.write("Most Frequent Consequents (What customers *end up* buying)")
-    top_consequents = rules['consequents'].value_counts().head(10).reset_index()
-    top_consequents.columns = ['Consequent', 'Count']
-    fig_con = px.bar(
-        top_consequents,
-        x='Count',
-        y='Consequent',
-        orientation='h',
-        title='Top 10 Consequents in Rules',
-        color_discrete_sequence=px.colors.qualitative.Dark24
-    )
-    fig_con.update_layout(yaxis={'categoryorder': 'total ascending'})
-    st.plotly_chart(fig_con, width="stretch")
+        with col2:
+            st.write("Most Frequent Consequents (What customers *end up* buying)")
+            top_consequents = rules['consequents'].value_counts().head(10).reset_index()
+            top_consequents.columns = ['Consequent', 'Count']
+            fig_con = px.bar(
+                top_consequents,
+                x='Count',
+                y='Consequent',
+                orientation='h',
+                title='Top 10 Consequents in Rules',
+                color_discrete_sequence=px.colors.qualitative.Dark24
+        )
+            fig_con.update_layout(yaxis={'categoryorder': 'total ascending'})
+            st.plotly_chart(fig_con, width="stretch")
 
 
 st.subheader(":rainbow[Raw Data]", divider="rainbow")
