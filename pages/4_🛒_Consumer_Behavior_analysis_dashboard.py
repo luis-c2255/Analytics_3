@@ -121,10 +121,10 @@ st.plotly_chart(fig_dow, width="stretch")
 
 st.markdown("   ")
 orders_by_hour = filtered_df['order_hour_of_day'].value_counts().sort_index().reset_index()
-orders_by_hour.columns = ['Hour Of Day', 'Number of Orders']
+orders_by_hour.columns = ['order_hour_of_day', 'Number of Orders']
 fig_hour = px.line(
     orders_by_hour,
-    x='Hour of Day',
+    x='order_hour_of_day',
     y='Number of Orders',
     title='Distribution of Orders by Hour of Day',
     labels={'Number of Orders': 'Total Orders'},
