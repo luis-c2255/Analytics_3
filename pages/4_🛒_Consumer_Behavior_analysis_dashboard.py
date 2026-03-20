@@ -510,8 +510,7 @@ fig5.update_layout(
 st.plotly_chart(fig5, width="stretch")
 st.markdown("   ")
 
-st.subheader("")
-st.markdown("🛒 :orange[Market Basket Analysis (Association Rules)]", divider='orange')
+st.subheader("🛒 :orange[Market Basket Analysis (Association Rules)]", divider='orange')
 st.markdown("""
     Market Basket Analysis helps discover produts frequently purchased together.
     Adjust the parameters below to find interesting association rules.
