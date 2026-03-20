@@ -3,6 +3,8 @@ import pandas as pd
 import numpy as np
 import plotly.express as px
 import plotly.graph_objects as go
+from mlxtend.frequent_patterns import apriori, association_rules
+from mlxtend.preprocessing import TransactionEncoder
 
 from utils.theme import Components, Colors, apply_chart_theme, init_page
 
@@ -30,6 +32,17 @@ def load_data():
     df['order_dow_name'] = df['order_dow'].map(day_mapping).astype('category')
     df['order_hour_of_day'] = df['order_hour_of_day'].astype('category')
     return df
+
+@st.cache_data
+def get_transaction_data(df_input):
+    """Prepare data for Market Basket Analysis."""
+    # Group products by order_id to create transaction lists
+    transactions = df_input.groupby('order_id')['product_name'].apply(list).tolist()
+    # Use TransactionEncoder for one-hot encoding
+    te = TransactionEncoder()
+    te_ary = te.fit(transactions).transform(transactions)
+    df_encoded = pd.DataFrame(te_ary, columns=te.columns_)
+    return df_encoded
 
 # Title
 st.markdown(
@@ -495,8 +508,110 @@ fig5.update_layout(
     )
 )
 st.plotly_chart(fig5, width="stretch")
+st.markdown("   ")
+
+st.subheader("")
+st.markdown("🛒 :orange[Market Basket Analysis (Association Rules)]", divider='orange')
+st.markdown("""
+    Market Basket Analysis helps discover produts frequently purchased together.
+    Adjust the parameters below to find interesting association rules.
+    Note: This analysis can be computationally intensive for large datasets.
+    Start with higher min_support and min_confidence to get initial results faster.
+    """, text_alignment="center")
+
+col1, col2, col3 = st.columns(3)
+with col1:
+    min_support = st.slider("Minimum Support", min_value=0.001, max_value=0.1, value=0.005, step=0.001, help='Frequency of itemsets (e.g., 0.01 means in 1% of transactions)')
+
+with col2: 
+    min_confidence = st.slider("Minimum Confidence", min_value=0.1, max_value=1.0, value=0.5, setp=0.05, help='Likelihood of buying Y given X (P(Y|X))')
+
+with col3:
+    min_lift = st.slider("Minimum Lift", min_value=1.0, max_value=5.0, value=1.2, step=0.1, help='How much more likely Y is bought when X is bought, vs. independently (Lift > 1 implies positive correlation)')
+
+if st.button("Run Market Basket Analysis"):
+    with st.spinner("Preparing transaction data and computing rules... This may take a few minutes for large datasets."):
+        # Filter the main DataFrame to only include relevant columns for MBA to save memory
+        df_mba_prep = df[['order_id', 'product_name']]
+
+        # If a department filter is applied globally, it impacts the scope of MBA
+        if selected_department != 'All':
+            # Need to rejoin department info to filter product_name effectively
+            # Simpler: just pass filtered_df to get_transaction_data, if filtered_df is not too small
+            # For MBA, it's often better to run on a broader dataset first, then filter rules.
+            # However, if the user explicitly filtered by department, they want MBA within that department.
+            df_mba_prep = filtered_df[['order_id', 'product_name']]
+            if df_mba_prep.empty:
+                st.warning("No data for Market Basket Analysis with current filters. Adjust department/reorder filters.")
+                st.stop()
+        
+        # ensure unique order_id and product_name combinations for MBA
+        df_mba_prep = df_mba_prep.drop_duplicates(subset=['order_id', 'product_name'])
+
+        # GEt one-hot encoded transaction DataFrame
+        df_encoded_mba = get_transaction_data(df_mba_prep)
+
+        # Ensure there are enough unique orders after filtering
+        if df_encoded_mba.shape[0] < 2:
+            st.warning("Not enough transactions (orders) top perform Market Basket Analysis with current filters. Please broaden your selection.")
+            st.stop()
+        
+        # Find frequent itemsets
+        frequent_itemsets = apriori(df_encoded_mba, min_support=min_support, use_colnames=True)
+
+        if frequent_itemsets.empty:
+            st.warning(f"No frequent itemsets found with minimum support of {min_support}. Try lowering the support threshold.")
+        else:
+            # Generate association rules
+            rules = association_rules(frequent_itemsets, metric="confidence", min_threshold=min_confidence)
+            rules = rules[rules['lift'] >= min_lift]
+
+            if rules.empty:
+                st.warning(f"No association rules found with minimum confidence of {min_confidence} and minimum lift of {min_lift}. Try lowering the thresholds.")
+            else:
+                # Clean up and display rules
+                rules['antecedents'] = rules['antecedents'].apply(lambda x: ', '.join(list(x)))
+                rules['consequents'] = rules['consequents'].apply(lambda x: ', '.join(list(x)))
+                rules_display = rules[['antecedents', 'consequents', 'support', 'confidence', 'lift']].sort_values(by='lift', ascending=False)
+                st.subheader("Discovered Association Rules")
+                st.dataframe(rules_display)
 
 st.markdown("   ")
+st.subheader(":orange[Top Antecedents & Consequents]")
+col1, col2 = st.columns(2)
+with col1:
+    st.write("Most Frequent Antecedents (What customers *start* with)")
+    top_antecedents = rules['antecedents'].value_counts().head(10).reset_index()
+    top_antecedents.columns = ['Antecedent', 'Count']
+    fig_ant = px.bar(
+        top_antecedents,
+        x='Count',
+        y='Antecedent',
+        orientation='h',
+        title='Top 10 Antecedents in Rules',
+        color_discrete_sequence=px.colors.qualitative.Pastel
+    )
+    fig_ant.update_layout(
+        yaxis={'categoryorder': 'total ascending'}
+    )
+    st.plotly_chart(fig_ant, width="stretch")
+
+with col2:
+    st.write("Most Frequent Consequents (What customers *end up* buying)")
+    top_consequents = rules['consequents'].value_counts().head(10).reset_index()
+    top_consequents.columns = ['Consequent', 'Count']
+    fig_con = px.bar(
+        top_consequents,
+        x='Count',
+        y='Consequent',
+        orientation='h',
+        title='Top 10 Consequents in Rules',
+        color_discrete_sequence=px.colors.qualitative.Dark24
+    )
+    fig_con.update_layout(yaxis={'categoryorder': 'total ascending'})
+    st.plotly_chart(fig_con, width="stretch")
+
+
 st.subheader(":rainbow[Raw Data]", divider="rainbow")
 
 st.dataframe(filtered_df.head(1000))
