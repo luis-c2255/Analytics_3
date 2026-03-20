@@ -523,7 +523,7 @@ with col1:
     min_support = st.slider("Minimum Support", min_value=0.001, max_value=0.1, value=0.005, step=0.001, help='Frequency of itemsets (e.g., 0.01 means in 1% of transactions)')
 
 with col2: 
-    min_confidence = st.slider("Minimum Confidence", min_value=0.1, max_value=1.0, value=0.5, setp=0.05, help='Likelihood of buying Y given X (P(Y|X))')
+    min_confidence = st.slider("Minimum Confidence", min_value=0.1, max_value=1.0, value=0.5, step=0.05, help='Likelihood of buying Y given X (P(Y|X))')
 
 with col3:
     min_lift = st.slider("Minimum Lift", min_value=1.0, max_value=5.0, value=1.2, step=0.1, help='How much more likely Y is bought when X is bought, vs. independently (Lift > 1 implies positive correlation)')
