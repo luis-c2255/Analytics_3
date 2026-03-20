@@ -182,7 +182,6 @@ with col4:
 st.markdown("   ")
 
 st.subheader(":green[Top 10 Most Popular Products]")
-st.markdown("   ")
 
 top_products = filtered_df['product_name'].value_counts().head(10).reset_index()
 top_products.columns = ['Product Name', 'Number of Orders']
