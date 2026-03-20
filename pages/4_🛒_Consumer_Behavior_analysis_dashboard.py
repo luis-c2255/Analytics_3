@@ -304,7 +304,7 @@ days_since_prior_df = filtered_df[filtered_df['days_since_prior_order'] != -1]
 
 fig_days_since = px.histogram(
         days_since_prior_df,
-        x='days_since_prior_order',,
+        x='days_since_prior_order',
         nbins=30,
         title='Distribution of Days Since Prior Order',
         labels={'days_since_prior_order': 'Days Since Prior Order'},
