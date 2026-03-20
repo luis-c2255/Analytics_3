@@ -530,8 +530,8 @@ with col3:
 
 if st.button("Run Market Basket Analysis"):
     with st.spinner("Preparing transaction data and computing rules... This may take a few minutes for large datasets."):
-    # Filter the main DataFrame to only include relevant columns for MBA to save memory
-    df_mba_prep = df[['order_id', 'product_name']]
+        # Filter the main DataFrame to only include relevant columns for MBA to save memory
+        df_mba_prep = df[['order_id', 'product_name']]
 
 # If a department filter is applied globally, it impacts the scope of MBA
 if selected_department != 'All':
