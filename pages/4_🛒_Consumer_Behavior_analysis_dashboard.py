@@ -194,7 +194,7 @@ fig_top_products = px.bar(
     title='Top 10 Products by Order Count',
     labels={'Number of Orders': 'Times Ordered'},
     color_discrete_sequence=px.colors.qualitative.Vivid,
-    height=40
+    height=400
 )
 fig_top_products.update_layout(yaxis={'categoryorder': 'total ascending'})
 st.plotly_chart(fig_top_products, width="stretch")
