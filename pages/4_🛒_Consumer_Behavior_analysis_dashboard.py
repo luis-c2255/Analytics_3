@@ -531,18 +531,18 @@ with col3:
 if st.button("Run Market Basket Analysis"):
     with st.spinner("Preparing transaction data and computing rules... This may take a few minutes for large datasets."):
         # Filter the main DataFrame to only include relevant columns for MBA to save memory
-        df_mba_prep = df[['order_id', 'product_name']]
+df_mba_prep = df[['order_id', 'product_name']]
 
-        # If a department filter is applied globally, it impacts the scope of MBA
-        if selected_department != 'All':
-            # Need to rejoin department info to filter product_name effectively
-            # Simpler: just pass filtered_df to get_transaction_data, if filtered_df is not too small
-            # For MBA, it's often better to run on a broader dataset first, then filter rules.
-            # However, if the user explicitly filtered by department, they want MBA within that department.
-            df_mba_prep = filtered_df[['order_id', 'product_name']]
-            if df_mba_prep.empty:
-                st.warning("No data for Market Basket Analysis with current filters. Adjust department/reorder filters.")
-                st.stop()
+# If a department filter is applied globally, it impacts the scope of MBA
+if selected_department != 'All':
+    # Need to rejoin department info to filter product_name effectively
+    # Simpler: just pass filtered_df to get_transaction_data, if filtered_df is not too small
+    # For MBA, it's often better to run on a broader dataset first, then filter rules.
+    # However, if the user explicitly filtered by department, they want MBA within that department.
+    df_mba_prep = filtered_df[['order_id', 'product_name']]
+    if df_mba_prep.empty:
+        st.warning("No data for Market Basket Analysis with current filters. Adjust department/reorder filters.")
+        st.stop()
         
 # ensure unique order_id and product_name combinations for MBA
 df_mba_prep = df_mba_prep.drop_duplicates(subset=['order_id', 'product_name'])
