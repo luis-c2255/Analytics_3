@@ -127,7 +127,7 @@ fig_hour = px.line(
     x='Hour of Day',
     y='Number of Orders',
     title='Distribution of Orders by Hour of Day',
-    labels={'Number of Orders': 'Total Orders'}
+    labels={'Number of Orders': 'Total Orders'},
     markers=True, line_shape='spline',
     color_discrete_sequence=px.colors.qualitative.Dark24
 )
