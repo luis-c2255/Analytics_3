@@ -496,17 +496,6 @@ fig5.update_layout(
 )
 st.plotly_chart(fig5, width="stretch")
 
-# 6. Finding Peak and Lowest
-peak_day = basket_by_day.idxmax()
-peak_day_val = basket_by_day.max()
-peak_hour = basket_by_hour.idxmax()
-peak_hour_val = basket_by_hour.max()
-
-col1, col2 = st.columns(2, border=True, gap="medium", vertical_alignment="center")
-with col1:
-    st.info(f"Largest average baskets occur on: {peak_day} ({peak_day_val:.2f} items)")
-with col2:
-    st.info(f"Largest average baskets occur at: {peak_hour}:00 ({peak_hour_val:.2f} items)")
 st.markdown("   ")
 st.subheader(":rainbow[Raw Data]", divider="rainbow")
 
