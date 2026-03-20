@@ -547,13 +547,13 @@ if selected_department != 'All':
         # ensure unique order_id and product_name combinations for MBA
         df_mba_prep = df_mba_prep.drop_duplicates(subset=['order_id', 'product_name'])
 
-        # GEt one-hot encoded transaction DataFrame
-        df_encoded_mba = get_transaction_data(df_mba_prep)
+# GEt one-hot encoded transaction DataFrame
+df_encoded_mba = get_transaction_data(df_mba_prep)
 
-        # Ensure there are enough unique orders after filtering
-        if df_encoded_mba.shape[0] < 2:
-            st.warning("Not enough transactions (orders) top perform Market Basket Analysis with current filters. Please broaden your selection.")
-            st.stop()
+# Ensure there are enough unique orders after filtering
+if df_encoded_mba.shape[0] < 2:
+    st.warning("Not enough transactions (orders) top perform Market Basket Analysis with current filters. Please broaden your selection.")
+    st.stop()
         
 # Find frequent itemsets
 frequent_itemsets = apriori(df_encoded_mba, min_support=min_support, use_colnames=True)
