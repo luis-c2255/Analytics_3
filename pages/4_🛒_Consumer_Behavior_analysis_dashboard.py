@@ -412,7 +412,7 @@ st.plotly_chart(fig2, width="stretch")
 st.markdown("   ")
 import plotly.figure_factory as ff
 
-basket_sizes = df.groupby('order_id')['product_id'].count().tolist()
+basket_sizes = filtered_df.groupby('order_id')['product_id'].count().tolist()
 
 group_labels = ['Basket Size Distribution']
 
@@ -431,7 +431,81 @@ fig3.update_layout(
     showlegend=False
 )
 st.plotly_chart(fig3, width="stretch")
+st.markdown("   ")
+# 1. Create a per-order dataset
+order_stats = filtered_df.groupby('order_id').agg(
+    basket_size=('product_id', 'count'),
+    order_dow=('order_dow', 'first')
+).reset_index()
 
+# 2. Avg Basket Size by Day of the Week
+days_map = {0: 'Sunday', 1: 'Monday', 2: 'Tuesday', 3: 'Wednesday', 4: 'Thursday', 5: 'Friday', 6: 'Saturday'}
+basket_by_day = order_stats.groupby('order_dow')['basket_size'].mean().reset_index()
+basket_by_day['day_name'] = basket_by_day['order_dow'].map(days_map)
+# Ensure correct order
+days_order = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+basket_by_day['day_name'] = pd.Categorical(basket_by_day['day_name'], categories=days_order, ordered=True)
+basket_by_day = basket_by_day.sort_values('day_name')
+# 3. Avg Basket Size by Hour of Day
+basket_by_hour = order_stats.groupby('order_hour_of_day')['basket_size'].mean()
+
+fig4 = px.bar(
+    basket_by_day,
+    x='day_name',
+    y='basket_size',
+    title='Average Basket Size by Day of the Week',
+    labels={'day_name': 'Day of the Week', 'basket_size': 'Avg Items per Order'},
+    color='basket_size',
+    color_continuous_scale='Blues'
+)
+fig4.update_layout(
+    xaxis_title="Day of the Week",
+    yaxis_title="Avg Number of Items",
+    coloraxis_showscale=False,  # Hide scale if not needed
+    hoverlabel=dict(bgcolor="white", font_size=16)
+)
+st.plotly_chart(fig4, width="stretch")
+st.markdown("   ")
+
+fig5 = go.Figure()
+fig5.add_trace(go.Scatter(
+    x=basket_by_hour.index,
+    y=basket_by_hour.values,
+    mode='lines+markers',  # Combines 'line' kind and 'o' marker
+    line=dict(color='purple'), # Line color
+    marker=dict(color='purple') # Marker color (default symbol is circle)
+))
+fig5.update_layout(
+    title_text='Average Basket Size by Hour of Day',
+    xaxis_title='Hour of Day (24h)',
+    yaxis_title='Avg Number of Items',
+    width=1000, # Matplotlib figsize=(10, 5) is approximated as 1000x500 pixels
+    height=500,
+    xaxis=dict(
+        tickvals=list(range(0, 24)), # Equivalent to plt.xticks(range(0, 24))
+        showgrid=True,
+        gridcolor='rgba(128,128,128,0.6)', # Approximates alpha=0.6 for grid lines
+        griddash='dash' # Equivalent to linestyle='--'
+    ),
+    yaxis=dict(
+        showgrid=True,
+        gridcolor='rgba(128,128,128,0.6)',
+        griddash='dash'
+    )
+)
+st.plotly_chart(fig5, width="stretch")
+
+# 6. Finding Peak and Lowest
+peak_day = basket_by_day.idxmax()
+peak_day_val = basket_by_day.max()
+peak_hour = basket_by_hour.idxmax()
+peak_hour_val = basket_by_hour.max()
+
+col1, col2 = st.columns(2, border=True, gap="medium", vertical_alignment="center")
+with col1:
+    st.info(f"Largest average baskets occur on: {peak_day} ({peak_day_val:.2f} items)")
+with col2:
+    st.info(f"Largest average baskets occur at: {peak_hour}:00 ({peak_hour_val:.2f} items)")
 st.markdown("   ")
 st.subheader(":rainbow[Raw Data]", divider="rainbow")
 
