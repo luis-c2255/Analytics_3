@@ -411,32 +411,24 @@ fig2.update_layout(
 st.plotly_chart(fig2, width="stretch")
 st.markdown("   ")
 import plotly.figure_factory as ff
-user_stats = filtered_df.groupby('user_id').agg(
-    total_orders=('order_id', 'nunique'),
-    total_items=('product_id', 'count'),
-    avg_basket_size=('order_id', lambda x: len(x) / x.nunique()),
-    reorder_rate=('reordered', 'mean')
-)
 
-min_val = avg_basket_size.min()
-max_val = avg_basket_size.max()
-num_bins = 15
-bin_size = (max_val - min_val) / num_bins
+basket_sizes = df.groupby('order_id')['product_id'].count().tolist()
+
+group_labels = ['Basket Size Distribution']
+
 
 fig3 = ff.create_distplot(
-    [avg_basket_size],
-    group_labels=['Avg Basket Size'],
-    bin_size=bin_size,
-    colors=['purple'],
-    show_hist=True,
-    show_curve=True,
+    [basket_sizes],
+    group_labels,
+    bin_size=2,
     curve_type='kde',
-    histnorm='probability density'
+    colors=['#800080']
 )
 fig3.update_layout(
-    title_text='Distribution of User Basket Sizes',
-    xaxis_title_text='Items per Order',
-    yaxis_title_text='Density'
+    title='Basket Size Distribution with KDE Curve',
+    xaxis_title_text='Number of Items per Order',
+    yaxis_title_text='Probability Density',
+    showlegend=False
 )
 st.plotly_chart(fig3, width="stretch")
 
