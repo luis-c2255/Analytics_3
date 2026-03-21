@@ -250,7 +250,7 @@ fig_country = px.line(
     color='Country',
     title='Average Cumulative Return by Country',
     labels={'Cumulative_Return': 'Average Cumulative Return (%)'},
-    hover_data='Country': True}
+    hover_data={'Country': True}
 )
 fig_country.update_layout(hovermode="x unified")
 st.plotly_chart(fig_country, width="stretch")
