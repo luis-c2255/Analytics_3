@@ -240,7 +240,7 @@ fig_industry = px.line(
     hover_data={'Industry_Tag': True}
 )
 fig_industry.update_layout(hovermode='x unified')
-st.plotly_chart(fig_daily_return, width="stretch")
+st.plotly_chart(fig_industry, width="stretch")
 st.markdown("   ")
 country_performance = filtered_df.groupby(['Date', 'Country'])['Cumulative_Return'].mean().reset_index()
 fig_country = px.line(
