@@ -128,7 +128,7 @@ fig_cum_return = px.line(
     color='Ticker',
     title='Cumulative Returns (%) of Selected Stocks', 
     labels={'Cumulative_Return': 'Cumulative Return (%)'},
-    hover_data={'Brand Name': True, 'Industry_Tag': True, 'Country': True}
+    hover_data={'Brand_Name': True, 'Industry_Tag': True, 'Country': True}
 )
 fig_cum_return.update_layout(hovermode='x unified')
 st.plotly_chart(fig_cum_return, width="stretch")
