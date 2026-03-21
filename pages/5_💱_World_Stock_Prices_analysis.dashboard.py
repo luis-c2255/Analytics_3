@@ -159,7 +159,7 @@ else:
 if selected_single_ticker:
     stock_df = filtered_df[filtered_df['Ticker'] == selected_single_ticker].sort_values('Date')
 
-st.subheader(:blue[f"{selected_single_ticker} ({stock_df['Brand_Name'].iloc[0]}) Performance]")
+st.subheader(f"{selected_single_ticker} ({stock_df['Brand_Name'].iloc[0]}) Performance")
 st.markdown("   ")
 col1, col2, col3, col4 = st.columns(4)
 with col1:
