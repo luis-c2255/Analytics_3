@@ -328,7 +328,7 @@ if not filtered_df['Capital Gains'].isnull().all() and (filtered_df['Capital Gai
             labels={'Capital Gains': 'Capital Gains ($)'},
             hover_data={'Brand_Name': True}
         )
-        st.plotly_chart(fig_capital_gains, width="stretch")
+    st.plotly_chart(fig_capital_gains, width="stretch")
 # ============================================
 # FOOTER
 # ============================================
