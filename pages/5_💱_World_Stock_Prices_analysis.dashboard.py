@@ -316,7 +316,19 @@ if not splits_df.empty:
         hover_data={'Brand_Name': True}
     )
     st.plotly_chart(fig_splits, width="stretch")
-
+st.markdown("   ")
+st.subheader(":yellow[Capital Gains Distribution]")
+if not filtered_df['Capital Gains'].isnull().all() and (filtered_df['Capital Gains'] != 0).any():
+    fig_capital_gains = px.histogram(
+        filtered_df[filtered_df['Capital Gains'] != 0],
+        x='Capital Gains',
+            color='Ticker',
+            nbins=50,
+            title='Distribution of Capital Gains',
+            labels={'Capital Gains': 'Capital Gains ($)'},
+            hover_data={'Brand_Name': True}
+        )
+        st.plotly_chart(fig_capital_gains, width="stretch")
 # ============================================
 # FOOTER
 # ============================================
