@@ -127,6 +127,38 @@
         "documentation": {}
     },
     {
+        "label": "silhouette_score",
+        "importPath": "sklearn.metrics",
+        "description": "sklearn.metrics",
+        "isExtraImport": true,
+        "detail": "sklearn.metrics",
+        "documentation": {}
+    },
+    {
+        "label": "mean_absolute_error",
+        "importPath": "sklearn.metrics",
+        "description": "sklearn.metrics",
+        "isExtraImport": true,
+        "detail": "sklearn.metrics",
+        "documentation": {}
+    },
+    {
+        "label": "mean_squared_error",
+        "importPath": "sklearn.metrics",
+        "description": "sklearn.metrics",
+        "isExtraImport": true,
+        "detail": "sklearn.metrics",
+        "documentation": {}
+    },
+    {
+        "label": "r2_score",
+        "importPath": "sklearn.metrics",
+        "description": "sklearn.metrics",
+        "isExtraImport": true,
+        "detail": "sklearn.metrics",
+        "documentation": {}
+    },
+    {
         "label": "warnings",
         "kind": 6,
         "isExtraImport": true,
@@ -328,11 +360,27 @@
         "documentation": {}
     },
     {
+        "label": "Prophet",
+        "importPath": "prophet",
+        "description": "prophet",
+        "isExtraImport": true,
+        "detail": "prophet",
+        "documentation": {}
+    },
+    {
+        "label": "datetime",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
         "label": "load_data",
         "kind": 2,
         "importPath": "pages.1_💊_OCD_patients_analysis_dashboard",
         "description": "pages.1_💊_OCD_patients_analysis_dashboard",
-        "peekOfCode": "def load_data():\n    df = pd.read_csv('ocd_patient_dataset.csv')\n    df['OCD Diagnosis Date'] = pd.to_datetime(df['OCD Diagnosis Date'])\n    df['Diagnosis Year'] = df['OCD Diagnosis Date'].dt.year\n    df['Age Group'] = pd.cut(df['Age'], bins=[0, 18, 30, 45, 60, 100],\n    labels=['<18', '18-30', '31-45', '46-60', '60+'])\n    df['Total Y-BOCS Score'] = df['Y-BOCS Score (Obsessions)'] + df['Y-BOCS Score (Compulsions)']\n    df['Severity Category'] = pd.cut(df['Total Y-BOCS Score'], bins=[0, 7, 15, 23, 31, 40], labels=['Subclinical', 'Mild', 'Moderate', 'Severe', 'Extreme'])\n    df['Comorbidity Profile'] = df.apply(lambda row: 'Both' if row['Depression Diagnosis'] == 'Yes' and row['Anxiety Diagnosis'] == 'Yes'\n    else 'Depression Only' if row['Depression Diagnosis'] == 'Yes'",
+        "peekOfCode": "def load_data():\n    df = pd.read_csv('ocd_patient_dataset.csv')\n    df['OCD Diagnosis Date'] = pd.to_datetime(df['OCD Diagnosis Date'])\n    df['Diagnosis Year'] = df['OCD Diagnosis Date'].dt.year\n    df['Age Group'] = pd.cut(\n        df['Age'], \n        bins=[0, 18, 30, 45, 60, 100],\n        labels=['<18', '18-30', '31-45', '46-60', '60+']\n    )\n    df['Total Y-BOCS Score'] = (",
         "detail": "pages.1_💊_OCD_patients_analysis_dashboard",
         "documentation": {}
     },
@@ -341,16 +389,1060 @@
         "kind": 2,
         "importPath": "pages.1_💊_OCD_patients_analysis_dashboard",
         "description": "pages.1_💊_OCD_patients_analysis_dashboard",
-        "peekOfCode": "def encoded_data(df):\n    df_encoded = df.copy()\n    categorical_cols = ['Gender', 'Ethnicity', 'Marital Status', 'Education Level', 'Previous Diagnosis', 'Family History of OCD', 'Obsession Type',\n    'Compulsion Type', 'Depression Diagnosis', 'Anxiety Diagnosis', 'Medications']\n    for col in categorical_cols:\n        le = LabelEncoder()\n        df_encoded[col + '_Encoded'] = le.fit_transform(df[col].astype(str))\n        return df_encoded\n    df_encoded = encoded_data(df)\n    df.load_data()",
+        "peekOfCode": "def encoded_data(df):\n    df_encoded = df.copy()\n    categorical_cols = [\n        'Gender', 'Ethnicity', 'Marital Status', 'Education Level', \n        'Previous Diagnoses', 'Family History of OCD', 'Obsession Type',\n        'Compulsion Type', 'Depression Diagnosis', 'Anxiety Diagnosis', \n        'Medications'\n    ]\n    for col in categorical_cols:\n        le = LabelEncoder()",
         "detail": "pages.1_💊_OCD_patients_analysis_dashboard",
         "documentation": {}
     },
     {
-        "label": "load_data",
+        "label": "df",
+        "kind": 5,
+        "importPath": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "description": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "peekOfCode": "df = load_data()\ndf_encoded = encoded_data(df)\n# Title\nst.markdown(\n    Components.page_header(\n        \"💊 OCD Patients Analysis Dashboard\"\n    ), unsafe_allow_html=True\n)\nst.subheader(\"🏠 :orange[Overview]\", divider=\"orange\")\ncol1, col2, col3, col4 = st.columns(4)  ",
+        "detail": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "df_encoded",
+        "kind": 5,
+        "importPath": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "description": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "peekOfCode": "df_encoded = encoded_data(df)\n# Title\nst.markdown(\n    Components.page_header(\n        \"💊 OCD Patients Analysis Dashboard\"\n    ), unsafe_allow_html=True\n)\nst.subheader(\"🏠 :orange[Overview]\", divider=\"orange\")\ncol1, col2, col3, col4 = st.columns(4)  \nwith col1:",
+        "detail": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "severity_counts",
+        "kind": 5,
+        "importPath": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "description": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "peekOfCode": "severity_counts = df['Severity Category'].value_counts().sort_index()\nfig = go.Figure()\nfig.add_trace(go.Bar(\n        x=severity_counts.index,\n        y=severity_counts.values,\n        marker_color=['green', 'yellow', 'orange', 'red', 'darkred'],\n        text=severity_counts.values,\n        textposition='auto'\n    ))\nfig.update_layout(",
+        "detail": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "fig",
+        "kind": 5,
+        "importPath": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "description": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "peekOfCode": "fig = go.Figure()\nfig.add_trace(go.Bar(\n        x=severity_counts.index,\n        y=severity_counts.values,\n        marker_color=['green', 'yellow', 'orange', 'red', 'darkred'],\n        text=severity_counts.values,\n        textposition='auto'\n    ))\nfig.update_layout(\n        title=\"OCD Severity Distribution\",",
+        "detail": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "gender_counts",
+        "kind": 5,
+        "importPath": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "description": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "peekOfCode": "gender_counts = df['Gender'].value_counts()\nfig2 = go.Figure(data=[go.Pie(\n            labels=gender_counts.index,\n            values=gender_counts.values,\n            hole=0.4,\n            marker_colors=['#FF6B6B', '#4ECDC4']\n    )])\nfig2.update_layout(\n            title='Gender Distribution',\n            height=400",
+        "detail": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "fig2",
+        "kind": 5,
+        "importPath": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "description": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "peekOfCode": "fig2 = go.Figure(data=[go.Pie(\n            labels=gender_counts.index,\n            values=gender_counts.values,\n            hole=0.4,\n            marker_colors=['#FF6B6B', '#4ECDC4']\n    )])\nfig2.update_layout(\n            title='Gender Distribution',\n            height=400\n    )",
+        "detail": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "fig5",
+        "kind": 5,
+        "importPath": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "description": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "peekOfCode": "fig5 = px.box(\n    df,\n    x='Gender',\n    y='Total Y-BOCS Score',\n    color='Gender',\n    title='Y-BCOS Score Distribution by Gender',\n    color_discrete_map={'Male': '#4ECDC4', 'Female': '#FF6B6B'})\nfig5.update_layout(height=700)\nst.plotly_chart(fig5, width=\"stretch\")\nwith tab2:",
+        "detail": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "fig8",
+        "kind": 5,
+        "importPath": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "description": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "peekOfCode": "fig8 = px.box(\n    df,\n    x='Ethnicity',\n    y='Total Y-BOCS Score',\n    color='Ethnicity',\n    title=\"Y-BOCS Score by Ethnicity\")\nfig8.update_layout(height=700)\nst.plotly_chart(fig8, width=\"stretch\")\nwith tab3:\n    col1, col2 = st.columns(2)",
+        "detail": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "fig11",
+        "kind": 5,
+        "importPath": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "description": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "peekOfCode": "fig11 = px.histogram(\n    df,\n    x='Y-BOCS Score (Obsessions)',\n    nbins=25,\n    title=\"Y-BOCS Obsession Scores Distribution\",\n    color_discrete_sequence=['lightcoral'])\nfig11.update_layout(height=700)\nst.plotly_chart(fig11, width=\"stretch\")\n# Compulsion scores distribution\nfig12 = px.histogram(",
+        "detail": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "fig12",
+        "kind": 5,
+        "importPath": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "description": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "peekOfCode": "fig12 = px.histogram(\n    df,\n    x='Y-BOCS Score (Compulsions)',\n    nbins=25,\n    title=\"Y-BOCS Compulsion Scores Distribution\",\n    color_discrete_sequence=['lightskyblue'])\nfig12.update_layout(height=700)\nst.plotly_chart(fig12, width=\"stretch\")\n# Scatter plot: Obsessions vs Compulsions \nst.markdown(\"### :blue[Relationship: Obsessions vs Compulsions]\")",
+        "detail": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "fig13",
+        "kind": 5,
+        "importPath": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "description": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "peekOfCode": "fig13 = px.scatter(\n    df,\n    x='Y-BOCS Score (Obsessions)',\n    y='Y-BOCS Score (Compulsions)',\n    color='Total Y-BOCS Score',\n    size='Total Y-BOCS Score',\n    hover_data=['Age', 'Gender', 'Severity Category'],\n    title=\"Y-BOCS Obsessions vs Compulsions\",\n    color_continuous_scale='Viridis')\nfig13.update_layout(height=700)",
+        "detail": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "obsession_counts",
+        "kind": 5,
+        "importPath": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "description": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "peekOfCode": "obsession_counts = df['Obsession Type'].value_counts()\nfig14 = px.bar(\n    x=obsession_counts.values,\n    y=obsession_counts.index,\n    orientation='h',\n    title='Obsession Types Distribution',\n    labels={'x': 'Count', 'y': 'Obsession Type'},\n    color_continuous_scale='Reds')\nfig14.update_layout(height=700, showlegend=False)\nst.plotly_chart(fig14, width=\"stretch\")",
+        "detail": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "fig14",
+        "kind": 5,
+        "importPath": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "description": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "peekOfCode": "fig14 = px.bar(\n    x=obsession_counts.values,\n    y=obsession_counts.index,\n    orientation='h',\n    title='Obsession Types Distribution',\n    labels={'x': 'Count', 'y': 'Obsession Type'},\n    color_continuous_scale='Reds')\nfig14.update_layout(height=700, showlegend=False)\nst.plotly_chart(fig14, width=\"stretch\")\n# Compulsion types",
+        "detail": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "compulsion_counts",
+        "kind": 5,
+        "importPath": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "description": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "peekOfCode": "compulsion_counts = df['Compulsion Type'].value_counts()\nfig15 = px.bar(\n    x=compulsion_counts.values,\n    y=compulsion_counts.index,\n    orientation='h',\n    title='Compulsion Types Distribution',\n    labels={'x': 'Count', 'y': 'Compulsion Type'},\n    color=compulsion_counts.values,\n    color_continuous_scale='Blues')\nfig15.update_layout(height=700, showlegend=False)",
+        "detail": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "fig15",
+        "kind": 5,
+        "importPath": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "description": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "peekOfCode": "fig15 = px.bar(\n    x=compulsion_counts.values,\n    y=compulsion_counts.index,\n    orientation='h',\n    title='Compulsion Types Distribution',\n    labels={'x': 'Count', 'y': 'Compulsion Type'},\n    color=compulsion_counts.values,\n    color_continuous_scale='Blues')\nfig15.update_layout(height=700, showlegend=False)\nst.plotly_chart(fig15, width=\"stretch\")",
+        "detail": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "crosstab",
+        "kind": 5,
+        "importPath": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "description": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "peekOfCode": "crosstab = pd.crosstab(df['Obsession Type'], df['Compulsion Type'])\nfig16 = px.imshow(\n    crosstab,\n    labels=dict(\n        x='Compulsion Type',\n        y='Obsession Type',\n        color='Count'),\n    title='Obsession-Compulsion Relationship Heatmap',\n    color_continuous_scale='YlOrRd',\n    text_auto=True)",
+        "detail": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "fig16",
+        "kind": 5,
+        "importPath": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "description": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "peekOfCode": "fig16 = px.imshow(\n    crosstab,\n    labels=dict(\n        x='Compulsion Type',\n        y='Obsession Type',\n        color='Count'),\n    title='Obsession-Compulsion Relationship Heatmap',\n    color_continuous_scale='YlOrRd',\n    text_auto=True)\nfig16.update_layout(height=700)",
+        "detail": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "fig17",
+        "kind": 5,
+        "importPath": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "description": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "peekOfCode": "fig17 = px.histogram(\n    df,\n    x='Duration of Symptoms (months)',\n    nbins=40,\n    title='Symptom Duration Distribution',\n    color_discrete_sequence=['mediumpurple'])\nfig17.update_layout(height=700)\nst.plotly_chart(fig17, width=\"stretch\")\n# Duration vs Y-BOCS Score \nst.markdown(\"### :blue[Duration vs Y-BOCS Score]\") ",
+        "detail": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "fig18",
+        "kind": 5,
+        "importPath": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "description": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "peekOfCode": "fig18 = px.scatter(\n    df,\n    x='Duration of Symptoms (months)',\n    y='Total Y-BOCS Score',\n    color='Severity Category',\n    hover_data=['Age', 'Gender', 'Obsession Type'],\n    title='Symptom Duration vs Y-BOCS Score',\n    trendline='lowess')\nfig18.update_layout(height=700)\nst.plotly_chart(fig18, width=\"stretch\")",
+        "detail": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "comorbidity_counts",
+        "kind": 5,
+        "importPath": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "description": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "peekOfCode": "comorbidity_counts = df['Comorbidity Profile'].value_counts() \nfig19 = px.bar(\n    x=comorbidity_counts.index,\n    y=comorbidity_counts.values,\n    title='Comorbidity Profile Distribution',\n    labels={'x': 'Profile', 'y': 'Count'},\n    color=comorbidity_counts.index,\n    color_discrete_map={\n        'None': 'lightgreen',\n        'Depression Only': 'lightblue',",
+        "detail": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "fig19",
+        "kind": 5,
+        "importPath": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "description": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "peekOfCode": "fig19 = px.bar(\n    x=comorbidity_counts.index,\n    y=comorbidity_counts.values,\n    title='Comorbidity Profile Distribution',\n    labels={'x': 'Profile', 'y': 'Count'},\n    color=comorbidity_counts.index,\n    color_discrete_map={\n        'None': 'lightgreen',\n        'Depression Only': 'lightblue',\n        'Anxiety Only': 'lightyellow',",
+        "detail": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "fig20",
+        "kind": 5,
+        "importPath": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "description": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "peekOfCode": "fig20 = px.box(\n    df,\n    x='Comorbidity Profile',\n    y='Total Y-BOCS Score',\n    color='Comorbidity Profile',\n    title='Y-BOCS Score by Comorbidity Profile',\n    category_orders={'Comorbidity Profile': ['None', 'Depression Only', 'Anxiety Only', 'Both']})\nfig20.update_layout(height=700)\nst.plotly_chart(fig20, width=\"stretch\")\n# Family history impact  ",
+        "detail": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "fig21",
+        "kind": 5,
+        "importPath": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "description": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "peekOfCode": "fig21 = px.box(\n    df,\n    x='Family History of OCD',\n    y='Total Y-BOCS Score',\n    color='Family History of OCD',\n    title=\"Y-BOCS Score vs Family History\",\n    color_discrete_map={'Yes': '#FF6B6B', 'No': '#95E1D3'})\nfig21.update_layout(height=700)\nst.plotly_chart(fig21, width=\"stretch\")\n# Statistical comparison  ",
+        "detail": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "with_family",
+        "kind": 5,
+        "importPath": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "description": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "peekOfCode": "with_family = df[df['Family History of OCD'] == 'Yes']['Total Y-BOCS Score']\nwithout_family = df[df['Family History of OCD'] == 'No']['Total Y-BOCS Score']\nst.markdown(\"### :red[Statistical Summary:]\")\nst.error(f\"**With Family History:** Mean = {with_family.mean():.2f}, Std = {with_family.std():.2f}\")\nst.error(f\"**Without Family History:** Mean = {without_family.mean():.2f}, Std = {without_family.std():.2f}\") \n# Medications distribution  \nmed_counts = df['Medications'].value_counts()\nfig22 = px.pie(\n    values=med_counts.values,\n    names=med_counts.index,",
+        "detail": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "without_family",
+        "kind": 5,
+        "importPath": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "description": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "peekOfCode": "without_family = df[df['Family History of OCD'] == 'No']['Total Y-BOCS Score']\nst.markdown(\"### :red[Statistical Summary:]\")\nst.error(f\"**With Family History:** Mean = {with_family.mean():.2f}, Std = {with_family.std():.2f}\")\nst.error(f\"**Without Family History:** Mean = {without_family.mean():.2f}, Std = {without_family.std():.2f}\") \n# Medications distribution  \nmed_counts = df['Medications'].value_counts()\nfig22 = px.pie(\n    values=med_counts.values,\n    names=med_counts.index,\n    title='Medication Types Distribution',",
+        "detail": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "med_counts",
+        "kind": 5,
+        "importPath": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "description": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "peekOfCode": "med_counts = df['Medications'].value_counts()\nfig22 = px.pie(\n    values=med_counts.values,\n    names=med_counts.index,\n    title='Medication Types Distribution',\n    hole=0.4)\nfig22.update_layout(height=700)\nst.plotly_chart(fig22, width=\"stretch\")\n# Medication effectiveness  \nst.markdown(\"### 💊 :red[Medication Analysis]\")",
+        "detail": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "fig22",
+        "kind": 5,
+        "importPath": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "description": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "peekOfCode": "fig22 = px.pie(\n    values=med_counts.values,\n    names=med_counts.index,\n    title='Medication Types Distribution',\n    hole=0.4)\nfig22.update_layout(height=700)\nst.plotly_chart(fig22, width=\"stretch\")\n# Medication effectiveness  \nst.markdown(\"### 💊 :red[Medication Analysis]\")\ncol1, col2 = st.columns(2) ",
+        "detail": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "feature_cols",
+        "kind": 5,
+        "importPath": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "description": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "peekOfCode": "feature_cols = [\n    'Age', 'Duration of Symptoms (months)', 'Gender_Encoded',\n    'Ethnicity_Encoded', 'Marital Status_Encoded',\n    'Education Level_Encoded', 'Family History of OCD_Encoded',\n    'Obsession Type_Encoded', 'Compulsion Type_Encoded',\n    'Depression Diagnosis_Encoded', 'Anxiety Diagnosis_Encoded',\n    'Medications_Encoded'\n]\nX = df_encoded[feature_cols]  \ny = df_encoded['Total Y-BOCS Score'] ",
+        "detail": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "X",
+        "kind": 5,
+        "importPath": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "description": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "peekOfCode": "X = df_encoded[feature_cols]  \ny = df_encoded['Total Y-BOCS Score'] \n# Split data  \nX_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)\n# Train model  \nwith st.spinner(\"Training Random Forest model...\"):\n    rf_model = RandomForestRegressor(\n        n_estimators=100,\n        random_state=42,\n        max_depth=10)",
+        "detail": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "y",
+        "kind": 5,
+        "importPath": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "description": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "peekOfCode": "y = df_encoded['Total Y-BOCS Score'] \n# Split data  \nX_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)\n# Train model  \nwith st.spinner(\"Training Random Forest model...\"):\n    rf_model = RandomForestRegressor(\n        n_estimators=100,\n        random_state=42,\n        max_depth=10)\n    rf_model.fit(X_train, y_train)",
+        "detail": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "fig25",
+        "kind": 5,
+        "importPath": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "description": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "peekOfCode": "fig25 = go.Figure()\nfig25.add_trace(go.Scatter(\n    x=y_test,\n    y=y_pred,\n    mode='markers',\n    name='Predictions',\n    marker=dict(color='steelblue', size=8, opacity=0.6)\n))\n# Perfect prediction line  \nmin_val = min(y_test.min(), y_pred.min())  ",
+        "detail": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "min_val",
+        "kind": 5,
+        "importPath": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "description": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "peekOfCode": "min_val = min(y_test.min(), y_pred.min())  \nmax_val = max(y_test.max(), y_pred.max())\nfig25.add_trace(go.Scatter(\n    x=[min_val, max_val],\n    y=[min_val, max_val],\n    mode='lines',\n    name='Perfect Prediction',\n    line=dict(color='red', dash='dash', width=2)\n))\nfig25.update_layout(",
+        "detail": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "max_val",
+        "kind": 5,
+        "importPath": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "description": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "peekOfCode": "max_val = max(y_test.max(), y_pred.max())\nfig25.add_trace(go.Scatter(\n    x=[min_val, max_val],\n    y=[min_val, max_val],\n    mode='lines',\n    name='Perfect Prediction',\n    line=dict(color='red', dash='dash', width=2)\n))\nfig25.update_layout(\n    title='Actual vs Predicted Y-BOCS Scores',",
+        "detail": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "residuals",
+        "kind": 5,
+        "importPath": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "description": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "peekOfCode": "residuals = y_test - y_pred\nfig26 = go.Figure()\nfig26.add_trace(go.Scatter(\n    x=y_pred,\n    y=residuals,\n    mode='markers',\n    marker=dict(color='coral', size=8, opacity=0.6)\n))\nfig26.add_hline(\n    y=0, ",
+        "detail": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "fig26",
+        "kind": 5,
+        "importPath": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "description": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "peekOfCode": "fig26 = go.Figure()\nfig26.add_trace(go.Scatter(\n    x=y_pred,\n    y=residuals,\n    mode='markers',\n    marker=dict(color='coral', size=8, opacity=0.6)\n))\nfig26.add_hline(\n    y=0, \n    line_dash='dash',",
+        "detail": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "feature_importance",
+        "kind": 5,
+        "importPath": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "description": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "peekOfCode": "feature_importance = pd.DataFrame({\n    'Feature': feature_cols,\n    'Importance': rf_model.feature_importances_\n}).sort_values('Importance', ascending=False)\n# Clean feature names\nfeature_importance['Feature'] = feature_importance['Feature'].str.replace('_Encoded', '')\nfig27 = px.bar(\n    feature_importance,\n    x='Importance',\n    y='Feature',",
+        "detail": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "feature_importance['Feature']",
+        "kind": 5,
+        "importPath": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "description": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "peekOfCode": "feature_importance['Feature'] = feature_importance['Feature'].str.replace('_Encoded', '')\nfig27 = px.bar(\n    feature_importance,\n    x='Importance',\n    y='Feature',\n    orientation='h',\n    title='Feature Importance for Y-BOCS Prediction',\n    color='Importance',\n    color_continuous_scale='Viridis')\nfig27.update_layout(height=600, yaxis={'categoryorder': 'total ascending'})",
+        "detail": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "fig27",
+        "kind": 5,
+        "importPath": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "description": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "peekOfCode": "fig27 = px.bar(\n    feature_importance,\n    x='Importance',\n    y='Feature',\n    orientation='h',\n    title='Feature Importance for Y-BOCS Prediction',\n    color='Importance',\n    color_continuous_scale='Viridis')\nfig27.update_layout(height=600, yaxis={'categoryorder': 'total ascending'})\nst.plotly_chart(fig27, width=\"stretch\")",
+        "detail": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "cluster_features",
+        "kind": 5,
+        "importPath": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "description": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "peekOfCode": "cluster_features = ['Age', 'Duration of Symptoms (months)', 'Y-BOCS Score (Obsessions)', 'Y-BOCS Score (Compulsions)']\nX_cluster = df[cluster_features].copy()\n# Standardize  \nscaler = StandardScaler()\nX_cluster_scaled = scaler.fit_transform(X_cluster)\n# Optimal k selection  \nst.markdown(\"### 🔍 :violet[Optimal Cluster Selection]\")\n# Calculate metrics for different k values\ninertias = []  \nsilhouette_scores = []  ",
+        "detail": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "X_cluster",
+        "kind": 5,
+        "importPath": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "description": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "peekOfCode": "X_cluster = df[cluster_features].copy()\n# Standardize  \nscaler = StandardScaler()\nX_cluster_scaled = scaler.fit_transform(X_cluster)\n# Optimal k selection  \nst.markdown(\"### 🔍 :violet[Optimal Cluster Selection]\")\n# Calculate metrics for different k values\ninertias = []  \nsilhouette_scores = []  \nK_range = range(2, 11) ",
+        "detail": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "scaler",
+        "kind": 5,
+        "importPath": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "description": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "peekOfCode": "scaler = StandardScaler()\nX_cluster_scaled = scaler.fit_transform(X_cluster)\n# Optimal k selection  \nst.markdown(\"### 🔍 :violet[Optimal Cluster Selection]\")\n# Calculate metrics for different k values\ninertias = []  \nsilhouette_scores = []  \nK_range = range(2, 11) \nfrom sklearn.metrics import silhouette_score \nfor k in K_range:",
+        "detail": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "X_cluster_scaled",
+        "kind": 5,
+        "importPath": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "description": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "peekOfCode": "X_cluster_scaled = scaler.fit_transform(X_cluster)\n# Optimal k selection  \nst.markdown(\"### 🔍 :violet[Optimal Cluster Selection]\")\n# Calculate metrics for different k values\ninertias = []  \nsilhouette_scores = []  \nK_range = range(2, 11) \nfrom sklearn.metrics import silhouette_score \nfor k in K_range:\n    kmeans = KMeans(n_clusters=k, random_state=42, n_init=10)",
+        "detail": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "inertias",
+        "kind": 5,
+        "importPath": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "description": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "peekOfCode": "inertias = []  \nsilhouette_scores = []  \nK_range = range(2, 11) \nfrom sklearn.metrics import silhouette_score \nfor k in K_range:\n    kmeans = KMeans(n_clusters=k, random_state=42, n_init=10)\n    kmeans.fit(X_cluster_scaled)\n    inertias.append(kmeans.inertia_)\n    silhouette_scores.append(\n        silhouette_score(",
+        "detail": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "silhouette_scores",
+        "kind": 5,
+        "importPath": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "description": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "peekOfCode": "silhouette_scores = []  \nK_range = range(2, 11) \nfrom sklearn.metrics import silhouette_score \nfor k in K_range:\n    kmeans = KMeans(n_clusters=k, random_state=42, n_init=10)\n    kmeans.fit(X_cluster_scaled)\n    inertias.append(kmeans.inertia_)\n    silhouette_scores.append(\n        silhouette_score(\n            X_cluster_scaled,",
+        "detail": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "K_range",
+        "kind": 5,
+        "importPath": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "description": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "peekOfCode": "K_range = range(2, 11) \nfrom sklearn.metrics import silhouette_score \nfor k in K_range:\n    kmeans = KMeans(n_clusters=k, random_state=42, n_init=10)\n    kmeans.fit(X_cluster_scaled)\n    inertias.append(kmeans.inertia_)\n    silhouette_scores.append(\n        silhouette_score(\n            X_cluster_scaled,\n            kmeans.labels_",
+        "detail": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "optimal_k",
+        "kind": 5,
+        "importPath": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "description": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "peekOfCode": "optimal_k = st.slider(\"Select number of clusters (k):\", min_value=2, max_value=10, value=4)\n# Apply K-Means  \nkmeans_final = KMeans(n_clusters=optimal_k, random_state=42, n_init=10)  \ndf['Cluster'] = kmeans_final.fit_predict(X_cluster_scaled) \nst.success(f\"✅ Patients segmented into **{optimal_k}** clusters\") \n# Cluster distribution  \ncluster_counts = df['Cluster'].value_counts().sort_index()  \ncol1, col2 = st.columns([1, 2])\nwith col1:\n    st.markdown(\"### :violet[Cluster Distribution]\")",
+        "detail": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "kmeans_final",
+        "kind": 5,
+        "importPath": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "description": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "peekOfCode": "kmeans_final = KMeans(n_clusters=optimal_k, random_state=42, n_init=10)  \ndf['Cluster'] = kmeans_final.fit_predict(X_cluster_scaled) \nst.success(f\"✅ Patients segmented into **{optimal_k}** clusters\") \n# Cluster distribution  \ncluster_counts = df['Cluster'].value_counts().sort_index()  \ncol1, col2 = st.columns([1, 2])\nwith col1:\n    st.markdown(\"### :violet[Cluster Distribution]\")\n    for cluster_id in range(optimal_k):\n        count = cluster_counts[cluster_id]",
+        "detail": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "df['Cluster']",
+        "kind": 5,
+        "importPath": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "description": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "peekOfCode": "df['Cluster'] = kmeans_final.fit_predict(X_cluster_scaled) \nst.success(f\"✅ Patients segmented into **{optimal_k}** clusters\") \n# Cluster distribution  \ncluster_counts = df['Cluster'].value_counts().sort_index()  \ncol1, col2 = st.columns([1, 2])\nwith col1:\n    st.markdown(\"### :violet[Cluster Distribution]\")\n    for cluster_id in range(optimal_k):\n        count = cluster_counts[cluster_id]\n        pct = count / len(df) * 100",
+        "detail": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "cluster_counts",
+        "kind": 5,
+        "importPath": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "description": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "peekOfCode": "cluster_counts = df['Cluster'].value_counts().sort_index()  \ncol1, col2 = st.columns([1, 2])\nwith col1:\n    st.markdown(\"### :violet[Cluster Distribution]\")\n    for cluster_id in range(optimal_k):\n        count = cluster_counts[cluster_id]\n        pct = count / len(df) * 100\n        st.metric(f\"Cluster {cluster_id}\", f\"{count}\", f\"{pct:.1f}%\")\nwith col2:\n    fig30 = px.bar(",
+        "detail": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "fig31",
+        "kind": 5,
+        "importPath": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "description": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "peekOfCode": "fig31 = px.scatter_3d(\n    df,\n    x='Age',\n    y='Duration of Symptoms (months)',\n    z='Total Y-BOCS Score',\n    color='Cluster',\n    hover_data=['Gender', 'Obsession Type', 'Compulsion Type'],\n    title='Patient Clusters in 3D Space',\n    color_continuous_scale='Viridis')\nfig31.update_layout(height=700)",
+        "detail": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "diagnosis_trends",
+        "kind": 5,
+        "importPath": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "description": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "peekOfCode": "diagnosis_trends = df.groupby('Diagnosis Year').agg({\n    'Patient ID': 'count',\n    'Total Y-BOCS Score': 'mean',\n    'Age': 'mean'\n}).reset_index()\ndiagnosis_trends.columns = ['Year', 'Number of Diagnoses', 'Mean Y-BOCS', 'Mean Age']\nfig34 = make_subplots(\n    rows=1, cols=3,\n    subplot_titles=('OCD Diagnoses Over Time', 'Mean Y-BOCS Score Over Time', 'Mean Age at Diagnosis Over Time')\n)",
+        "detail": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "diagnosis_trends.columns",
+        "kind": 5,
+        "importPath": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "description": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "peekOfCode": "diagnosis_trends.columns = ['Year', 'Number of Diagnoses', 'Mean Y-BOCS', 'Mean Age']\nfig34 = make_subplots(\n    rows=1, cols=3,\n    subplot_titles=('OCD Diagnoses Over Time', 'Mean Y-BOCS Score Over Time', 'Mean Age at Diagnosis Over Time')\n)\nfig34.add_trace(\n    go.Scatter(\n        x=diagnosis_trends['Year'],\n        y=diagnosis_trends['Number of Diagnoses'],\n        mode='lines+markers',",
+        "detail": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "fig34",
+        "kind": 5,
+        "importPath": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "description": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "peekOfCode": "fig34 = make_subplots(\n    rows=1, cols=3,\n    subplot_titles=('OCD Diagnoses Over Time', 'Mean Y-BOCS Score Over Time', 'Mean Age at Diagnosis Over Time')\n)\nfig34.add_trace(\n    go.Scatter(\n        x=diagnosis_trends['Year'],\n        y=diagnosis_trends['Number of Diagnoses'],\n        mode='lines+markers',\n        marker=dict(size=8, color='steelblue', symbol='circle'),",
+        "detail": "pages.1_💊_OCD_patients_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "load_and_clean",
         "kind": 2,
         "importPath": "pages.2_🌡️_City_Temperature_analysis_dashboard",
         "description": "pages.2_🌡️_City_Temperature_analysis_dashboard",
-        "peekOfCode": "def load_data():\n    df = pd.read_csv('city_temperature.csv')\n# Title\nst.markdown(\n    Components.page_header(\n        \"🌡 City Temperature Analysis Dashboard\"\n    ), unsafe_allow_html=True\n)\n# ============================================\n# FOOTER",
+        "peekOfCode": "def load_and_clean():\n    df = pd.read_csv(\"city_temperature.csv\")\n    # Basic cleaning\n    df = df[(df[\"AvgTemperature\"] >= -100) & (df[\"AvgTemperature\"] <= 150)]\n    df = df.drop_duplicates()\n    # Date\n    df[\"Date\"] = pd.to_datetime(df[[\"Year\", \"Month\", \"Day\"]], errors=\"coerce\")\n    df = df.dropna(subset=[\"Date\"])\n    # Celsius\n    df[\"AvgTemperature_C\"] = (df[\"AvgTemperature\"] - 32) * 5 / 9",
+        "detail": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "precompute",
+        "kind": 2,
+        "importPath": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "description": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "peekOfCode": "def precompute(df: pd.DataFrame):\n    yearly = df.groupby(\"Year\").agg(\n        AvgTemperature=(\"AvgTemperature\", \"mean\"),\n        AvgTemperature_C=(\"AvgTemperature_C\", \"mean\")\n    ).reset_index()\n    regional_yearly = df.groupby([\"Year\", \"Region\"]).agg(\n        AvgTemperature=(\"AvgTemperature\", \"mean\"),\n        AvgTemperature_C=(\"AvgTemperature_C\", \"mean\")\n    ).reset_index()\n    seasonal = df.groupby([\"Season\", \"Region\"]).agg(",
+        "detail": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "filter_df",
+        "kind": 2,
+        "importPath": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "description": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "peekOfCode": "def filter_df(df, region, country, year_range):\n    df2 = df\n    if region != \"All\":\n        df2 = df2[df2[\"Region\"] == region]\n    if country != \"All\":\n        df2 = df2[df2[\"Country\"] == country]\n    df2 = df2[(df2[\"Year\"] >= year_range[0]) & (df2[\"Year\"] <= year_range[1])]\n    return df2\n@st.cache_resource\ndef train_prophet(df_filtered, temp_col):",
+        "detail": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "train_prophet",
+        "kind": 2,
+        "importPath": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "description": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "peekOfCode": "def train_prophet(df_filtered, temp_col):\n    daily = df_filtered.groupby(\"Date\")[temp_col].mean().reset_index()\n    daily = daily.rename(columns={\"Date\": \"ds\", temp_col: \"y\"})\n    daily = daily.sort_values(\"ds\")\n    if len(daily) < 50:\n        return None, daily\n    model = Prophet(\n        yearly_seasonality=True,\n        weekly_seasonality=False,\n        daily_seasonality=False,",
+        "detail": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "df",
+        "kind": 5,
+        "importPath": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "description": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "peekOfCode": "df = load_and_clean()\nagg = precompute(df)\n# -------------------------------------------------------------------\n# Sidebar filters\n# -------------------------------------------------------------------\nst.sidebar.header(\"🎛️ Filters\")\ntemp_unit = st.sidebar.radio(\"Temperature Unit\", [\"Fahrenheit\", \"Celsius\"])\ntemp_col = \"AvgTemperature\" if temp_unit == \"Fahrenheit\" else \"AvgTemperature_C\"\ntemp_symbol = \"°F\" if temp_unit == \"Fahrenheit\" else \"°C\"\nregions = [\"All\"] + sorted(df[\"Region\"].unique().tolist())",
+        "detail": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "agg",
+        "kind": 5,
+        "importPath": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "description": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "peekOfCode": "agg = precompute(df)\n# -------------------------------------------------------------------\n# Sidebar filters\n# -------------------------------------------------------------------\nst.sidebar.header(\"🎛️ Filters\")\ntemp_unit = st.sidebar.radio(\"Temperature Unit\", [\"Fahrenheit\", \"Celsius\"])\ntemp_col = \"AvgTemperature\" if temp_unit == \"Fahrenheit\" else \"AvgTemperature_C\"\ntemp_symbol = \"°F\" if temp_unit == \"Fahrenheit\" else \"°C\"\nregions = [\"All\"] + sorted(df[\"Region\"].unique().tolist())\nselected_region = st.sidebar.selectbox(\"Region\", regions)",
+        "detail": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "temp_unit",
+        "kind": 5,
+        "importPath": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "description": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "peekOfCode": "temp_unit = st.sidebar.radio(\"Temperature Unit\", [\"Fahrenheit\", \"Celsius\"])\ntemp_col = \"AvgTemperature\" if temp_unit == \"Fahrenheit\" else \"AvgTemperature_C\"\ntemp_symbol = \"°F\" if temp_unit == \"Fahrenheit\" else \"°C\"\nregions = [\"All\"] + sorted(df[\"Region\"].unique().tolist())\nselected_region = st.sidebar.selectbox(\"Region\", regions)\nif selected_region != \"All\":\n    countries = [\"All\"] + sorted(df[df[\"Region\"] == selected_region][\"Country\"].unique().tolist())\nelse:\n    countries = [\"All\"] + sorted(df[\"Country\"].unique().tolist())\nselected_country = st.sidebar.selectbox(\"Country\", countries)",
+        "detail": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "temp_col",
+        "kind": 5,
+        "importPath": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "description": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "peekOfCode": "temp_col = \"AvgTemperature\" if temp_unit == \"Fahrenheit\" else \"AvgTemperature_C\"\ntemp_symbol = \"°F\" if temp_unit == \"Fahrenheit\" else \"°C\"\nregions = [\"All\"] + sorted(df[\"Region\"].unique().tolist())\nselected_region = st.sidebar.selectbox(\"Region\", regions)\nif selected_region != \"All\":\n    countries = [\"All\"] + sorted(df[df[\"Region\"] == selected_region][\"Country\"].unique().tolist())\nelse:\n    countries = [\"All\"] + sorted(df[\"Country\"].unique().tolist())\nselected_country = st.sidebar.selectbox(\"Country\", countries)\nyear_min, year_max = int(df[\"Year\"].min()), int(df[\"Year\"].max())",
+        "detail": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "temp_symbol",
+        "kind": 5,
+        "importPath": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "description": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "peekOfCode": "temp_symbol = \"°F\" if temp_unit == \"Fahrenheit\" else \"°C\"\nregions = [\"All\"] + sorted(df[\"Region\"].unique().tolist())\nselected_region = st.sidebar.selectbox(\"Region\", regions)\nif selected_region != \"All\":\n    countries = [\"All\"] + sorted(df[df[\"Region\"] == selected_region][\"Country\"].unique().tolist())\nelse:\n    countries = [\"All\"] + sorted(df[\"Country\"].unique().tolist())\nselected_country = st.sidebar.selectbox(\"Country\", countries)\nyear_min, year_max = int(df[\"Year\"].min()), int(df[\"Year\"].max())\nyear_range = st.sidebar.slider(\"Year Range\", year_min, year_max, (year_min, year_max))",
+        "detail": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "regions",
+        "kind": 5,
+        "importPath": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "description": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "peekOfCode": "regions = [\"All\"] + sorted(df[\"Region\"].unique().tolist())\nselected_region = st.sidebar.selectbox(\"Region\", regions)\nif selected_region != \"All\":\n    countries = [\"All\"] + sorted(df[df[\"Region\"] == selected_region][\"Country\"].unique().tolist())\nelse:\n    countries = [\"All\"] + sorted(df[\"Country\"].unique().tolist())\nselected_country = st.sidebar.selectbox(\"Country\", countries)\nyear_min, year_max = int(df[\"Year\"].min()), int(df[\"Year\"].max())\nyear_range = st.sidebar.slider(\"Year Range\", year_min, year_max, (year_min, year_max))\nforecast_days = st.sidebar.slider(\"Forecast Horizon (days)\", 30, 730, 365)",
+        "detail": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "selected_region",
+        "kind": 5,
+        "importPath": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "description": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "peekOfCode": "selected_region = st.sidebar.selectbox(\"Region\", regions)\nif selected_region != \"All\":\n    countries = [\"All\"] + sorted(df[df[\"Region\"] == selected_region][\"Country\"].unique().tolist())\nelse:\n    countries = [\"All\"] + sorted(df[\"Country\"].unique().tolist())\nselected_country = st.sidebar.selectbox(\"Country\", countries)\nyear_min, year_max = int(df[\"Year\"].min()), int(df[\"Year\"].max())\nyear_range = st.sidebar.slider(\"Year Range\", year_min, year_max, (year_min, year_max))\nforecast_days = st.sidebar.slider(\"Forecast Horizon (days)\", 30, 730, 365)\ndf_filtered = filter_df(df, selected_region, selected_country, year_range)",
+        "detail": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "selected_country",
+        "kind": 5,
+        "importPath": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "description": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "peekOfCode": "selected_country = st.sidebar.selectbox(\"Country\", countries)\nyear_min, year_max = int(df[\"Year\"].min()), int(df[\"Year\"].max())\nyear_range = st.sidebar.slider(\"Year Range\", year_min, year_max, (year_min, year_max))\nforecast_days = st.sidebar.slider(\"Forecast Horizon (days)\", 30, 730, 365)\ndf_filtered = filter_df(df, selected_region, selected_country, year_range)\n# Title\nst.markdown(\n    Components.page_header(\n        \"🌡 City Temperature Analysis Dashboard\"\n    ), unsafe_allow_html=True",
+        "detail": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "year_range",
+        "kind": 5,
+        "importPath": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "description": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "peekOfCode": "year_range = st.sidebar.slider(\"Year Range\", year_min, year_max, (year_min, year_max))\nforecast_days = st.sidebar.slider(\"Forecast Horizon (days)\", 30, 730, 365)\ndf_filtered = filter_df(df, selected_region, selected_country, year_range)\n# Title\nst.markdown(\n    Components.page_header(\n        \"🌡 City Temperature Analysis Dashboard\"\n    ), unsafe_allow_html=True\n)\nst.markdown(\"\"\"  ",
+        "detail": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "forecast_days",
+        "kind": 5,
+        "importPath": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "description": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "peekOfCode": "forecast_days = st.sidebar.slider(\"Forecast Horizon (days)\", 30, 730, 365)\ndf_filtered = filter_df(df, selected_region, selected_country, year_range)\n# Title\nst.markdown(\n    Components.page_header(\n        \"🌡 City Temperature Analysis Dashboard\"\n    ), unsafe_allow_html=True\n)\nst.markdown(\"\"\"  \nExplore **2.9M+ temperature records** across global cities from 1995-2020.  ",
+        "detail": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "df_filtered",
+        "kind": 5,
+        "importPath": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "description": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "peekOfCode": "df_filtered = filter_df(df, selected_region, selected_country, year_range)\n# Title\nst.markdown(\n    Components.page_header(\n        \"🌡 City Temperature Analysis Dashboard\"\n    ), unsafe_allow_html=True\n)\nst.markdown(\"\"\"  \nExplore **2.9M+ temperature records** across global cities from 1995-2020.  \nAnalyze climate trends, seasonal patterns, and geographic temperature variations.  ",
+        "detail": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "yearly",
+        "kind": 5,
+        "importPath": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "description": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "peekOfCode": "yearly = df_filtered.groupby(\"Year\")[temp_col].mean().reset_index()\nyearly = yearly.sort_values(\"Year\")\nfig_year = go.Figure()\nfig_year.add_trace(go.Scatter(\n        x=yearly[\"Year\"],\n        y=yearly[temp_col],\n        mode=\"lines+markers\",\n        name=\"Yearly Avg\",\n        line=dict(color=\"#4c78a8\", width=2)\n    ))",
+        "detail": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "yearly",
+        "kind": 5,
+        "importPath": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "description": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "peekOfCode": "yearly = yearly.sort_values(\"Year\")\nfig_year = go.Figure()\nfig_year.add_trace(go.Scatter(\n        x=yearly[\"Year\"],\n        y=yearly[temp_col],\n        mode=\"lines+markers\",\n        name=\"Yearly Avg\",\n        line=dict(color=\"#4c78a8\", width=2)\n    ))\nif len(yearly) > 4:",
+        "detail": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "fig_year",
+        "kind": 5,
+        "importPath": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "description": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "peekOfCode": "fig_year = go.Figure()\nfig_year.add_trace(go.Scatter(\n        x=yearly[\"Year\"],\n        y=yearly[temp_col],\n        mode=\"lines+markers\",\n        name=\"Yearly Avg\",\n        line=dict(color=\"#4c78a8\", width=2)\n    ))\nif len(yearly) > 4:\n        yearly[\"MA_5\"] = yearly[temp_col].rolling(window=5, center=True).mean()",
+        "detail": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "regional_yearly",
+        "kind": 5,
+        "importPath": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "description": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "peekOfCode": "regional_yearly = df_filtered.groupby([\"Year\", \"Region\"])[temp_col].mean().reset_index()\nif not regional_yearly.empty:\n        fig_reg = px.line(\n            regional_yearly,\n            x=\"Year\",\n            y=temp_col,\n            color=\"Region\",\n            title=f\"Regional Temperature Trends ({temp_symbol})\"\n        )\n        fig_reg.update_layout(height=420, hovermode=\"x unified\")",
+        "detail": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "df_dec",
+        "kind": 5,
+        "importPath": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "description": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "peekOfCode": "df_dec = df_filtered.copy()\ndf_dec[\"Decade\"] = (df_dec[\"Year\"] // 10) * 10\ndecade_avg = df_dec.groupby(\"Decade\")[temp_col].mean().reset_index()\ndecade_avg[\"Change\"] = decade_avg[temp_col].diff()\nfig_dec = px.bar(\n        decade_avg,\n        x=\"Decade\",\n        y=temp_col,\n        text=temp_col,\n        title=f\"Average Temperature by Decade ({temp_symbol})\",",
+        "detail": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "df_dec[\"Decade\"]",
+        "kind": 5,
+        "importPath": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "description": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "peekOfCode": "df_dec[\"Decade\"] = (df_dec[\"Year\"] // 10) * 10\ndecade_avg = df_dec.groupby(\"Decade\")[temp_col].mean().reset_index()\ndecade_avg[\"Change\"] = decade_avg[temp_col].diff()\nfig_dec = px.bar(\n        decade_avg,\n        x=\"Decade\",\n        y=temp_col,\n        text=temp_col,\n        title=f\"Average Temperature by Decade ({temp_symbol})\",\n        labels={temp_col: f\"Temperature ({temp_symbol})\"}",
+        "detail": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "decade_avg",
+        "kind": 5,
+        "importPath": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "description": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "peekOfCode": "decade_avg = df_dec.groupby(\"Decade\")[temp_col].mean().reset_index()\ndecade_avg[\"Change\"] = decade_avg[temp_col].diff()\nfig_dec = px.bar(\n        decade_avg,\n        x=\"Decade\",\n        y=temp_col,\n        text=temp_col,\n        title=f\"Average Temperature by Decade ({temp_symbol})\",\n        labels={temp_col: f\"Temperature ({temp_symbol})\"}\n    )",
+        "detail": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "decade_avg[\"Change\"]",
+        "kind": 5,
+        "importPath": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "description": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "peekOfCode": "decade_avg[\"Change\"] = decade_avg[temp_col].diff()\nfig_dec = px.bar(\n        decade_avg,\n        x=\"Decade\",\n        y=temp_col,\n        text=temp_col,\n        title=f\"Average Temperature by Decade ({temp_symbol})\",\n        labels={temp_col: f\"Temperature ({temp_symbol})\"}\n    )\nfig_dec.update_traces(texttemplate=\"%{text:.1f}\", textposition=\"outside\")",
+        "detail": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "fig_dec",
+        "kind": 5,
+        "importPath": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "description": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "peekOfCode": "fig_dec = px.bar(\n        decade_avg,\n        x=\"Decade\",\n        y=temp_col,\n        text=temp_col,\n        title=f\"Average Temperature by Decade ({temp_symbol})\",\n        labels={temp_col: f\"Temperature ({temp_symbol})\"}\n    )\nfig_dec.update_traces(texttemplate=\"%{text:.1f}\", textposition=\"outside\")\nfig_dec.update_layout(height=380)",
+        "detail": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "overall_avg",
+        "kind": 5,
+        "importPath": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "description": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "peekOfCode": "overall_avg = df_filtered[temp_col].mean()\nmonthly_anomaly = df_filtered.groupby([\"Year\", \"Month\"])[temp_col].mean().reset_index()\nmonthly_anomaly[\"Anomaly\"] = monthly_anomaly[temp_col] - overall_avg\nif not monthly_anomaly.empty:\n    pivot_anom = monthly_anomaly.pivot(index=\"Month\", columns=\"Year\", values=\"Anomaly\")\n    fig_anom = px.imshow(\n        pivot_anom,\n        labels=dict(x=\"Year\", y=\"Month\", color=f\"Anomaly ({temp_symbol})\"),\n        title=f\"Temperature Anomaly Heatmap (vs {overall_avg:.1f}{temp_symbol})\",\n        color_continuous_scale=\"RdBu_r\",",
+        "detail": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "monthly_anomaly",
+        "kind": 5,
+        "importPath": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "description": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "peekOfCode": "monthly_anomaly = df_filtered.groupby([\"Year\", \"Month\"])[temp_col].mean().reset_index()\nmonthly_anomaly[\"Anomaly\"] = monthly_anomaly[temp_col] - overall_avg\nif not monthly_anomaly.empty:\n    pivot_anom = monthly_anomaly.pivot(index=\"Month\", columns=\"Year\", values=\"Anomaly\")\n    fig_anom = px.imshow(\n        pivot_anom,\n        labels=dict(x=\"Year\", y=\"Month\", color=f\"Anomaly ({temp_symbol})\"),\n        title=f\"Temperature Anomaly Heatmap (vs {overall_avg:.1f}{temp_symbol})\",\n        color_continuous_scale=\"RdBu_r\",\n        aspect=\"auto\"",
+        "detail": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "monthly_anomaly[\"Anomaly\"]",
+        "kind": 5,
+        "importPath": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "description": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "peekOfCode": "monthly_anomaly[\"Anomaly\"] = monthly_anomaly[temp_col] - overall_avg\nif not monthly_anomaly.empty:\n    pivot_anom = monthly_anomaly.pivot(index=\"Month\", columns=\"Year\", values=\"Anomaly\")\n    fig_anom = px.imshow(\n        pivot_anom,\n        labels=dict(x=\"Year\", y=\"Month\", color=f\"Anomaly ({temp_symbol})\"),\n        title=f\"Temperature Anomaly Heatmap (vs {overall_avg:.1f}{temp_symbol})\",\n        color_continuous_scale=\"RdBu_r\",\n        aspect=\"auto\"\n    )",
+        "detail": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "seasonal_data",
+        "kind": 5,
+        "importPath": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "description": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "peekOfCode": "seasonal_data = df_filtered.groupby([\"Season\", \"Region\"])[temp_col].mean().reset_index()\nseason_order = [\"Winter\", \"Spring\", \"Summer\", \"Fall\"]\nif not seasonal_data.empty:\n    seasonal_data[\"Season\"] = pd.Categorical(seasonal_data[\"Season\"], categories=season_order, ordered=True)\n    seasonal_data = seasonal_data.sort_values(\"Season\")\n    fig_season = px.bar(\n            seasonal_data,\n            x=\"Season\",\n            y=temp_col,\n            color=\"Region\",",
+        "detail": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "season_order",
+        "kind": 5,
+        "importPath": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "description": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "peekOfCode": "season_order = [\"Winter\", \"Spring\", \"Summer\", \"Fall\"]\nif not seasonal_data.empty:\n    seasonal_data[\"Season\"] = pd.Categorical(seasonal_data[\"Season\"], categories=season_order, ordered=True)\n    seasonal_data = seasonal_data.sort_values(\"Season\")\n    fig_season = px.bar(\n            seasonal_data,\n            x=\"Season\",\n            y=temp_col,\n            color=\"Region\",\n            barmode=\"group\",",
+        "detail": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "seasonal_std",
+        "kind": 5,
+        "importPath": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "description": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "peekOfCode": "seasonal_std = df_filtered.groupby(\"Season\")[temp_col].std().reset_index()\nif not seasonal_std.empty:\n    seasonal_std[\"Season\"] = pd.Categorical(seasonal_std[\"Season\"], categories=season_order, ordered=True)\n    seasonal_std = seasonal_std.sort_values(\"Season\")\n    fig_var = px.bar(\n        seasonal_std,\n        x=\"Season\",\n        y=temp_col,\n        title=f\"Temperature Variability by Season (Std Dev {temp_symbol})\",\n        labels={temp_col: f\"Std Dev ({temp_symbol})\"},",
+        "detail": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "monthly_names",
+        "kind": 5,
+        "importPath": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "description": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "peekOfCode": "monthly_names = [\"Jan\", \"Feb\", \"Mar\", \"Apr\", \"May\", \"Jun\",\n                 \"Jul\", \"Aug\", \"Sep\", \"Oct\", \"Nov\", \"Dec\"]\nfig_box = go.Figure()\nfor m in range(1, 13):\n    month_temps = df_filtered[df_filtered[\"Month\"] == m][temp_col]\n    if not month_temps.empty:\n        fig_box.add_trace(go.Box(\n            y=month_temps,\n            name=monthly_names[m - 1],\n            boxmean=\"sd\"",
+        "detail": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "fig_box",
+        "kind": 5,
+        "importPath": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "description": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "peekOfCode": "fig_box = go.Figure()\nfor m in range(1, 13):\n    month_temps = df_filtered[df_filtered[\"Month\"] == m][temp_col]\n    if not month_temps.empty:\n        fig_box.add_trace(go.Box(\n            y=month_temps,\n            name=monthly_names[m - 1],\n            boxmean=\"sd\"\n        ))\nfig_box.update_layout(",
+        "detail": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "top_cities",
+        "kind": 5,
+        "importPath": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "description": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "peekOfCode": "top_cities = agg[\"city_counts\"][\"City\"].head(20).tolist()\nselected_cities = st.multiselect(\n    \"Select Cities to Compare (Top 20 by data volume):\",\n    top_cities,\n    default=top_cities[:5] if len(top_cities) >= 5 else top_cities\n)\nif selected_cities:\n    city_filtered = df_filtered[df_filtered[\"City\"].isin(selected_cities)]\ncity_yearly = city_filtered.groupby([\"Year\", \"City\"])[temp_col].mean().reset_index()\nif not city_yearly.empty:",
+        "detail": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "selected_cities",
+        "kind": 5,
+        "importPath": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "description": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "peekOfCode": "selected_cities = st.multiselect(\n    \"Select Cities to Compare (Top 20 by data volume):\",\n    top_cities,\n    default=top_cities[:5] if len(top_cities) >= 5 else top_cities\n)\nif selected_cities:\n    city_filtered = df_filtered[df_filtered[\"City\"].isin(selected_cities)]\ncity_yearly = city_filtered.groupby([\"Year\", \"City\"])[temp_col].mean().reset_index()\nif not city_yearly.empty:\n    fig_city_trend = px.line(",
+        "detail": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "city_yearly",
+        "kind": 5,
+        "importPath": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "description": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "peekOfCode": "city_yearly = city_filtered.groupby([\"Year\", \"City\"])[temp_col].mean().reset_index()\nif not city_yearly.empty:\n    fig_city_trend = px.line(\n        city_yearly,\n        x=\"Year\",\n        y=temp_col,\n        color=\"City\",\n        title=f\"City Temperature Trends ({temp_symbol})\",\n        labels={temp_col: f\"Temperature ({temp_symbol})\"}\n    )",
+        "detail": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "city_stats",
+        "kind": 5,
+        "importPath": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "description": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "peekOfCode": "city_stats = city_filtered.groupby(\"City\")[temp_col].agg([\"mean\", \"min\", \"max\", \"std\"]).reset_index()\ncity_stats.columns = [\"City\", \"Average\", \"Min\", \"Max\", \"Std Dev\"]\nif not city_stats.empty:\n    fig_city_stats = go.Figure()\n    fig_city_stats.add_trace(go.Bar(\n        x=city_stats[\"City\"],\n        y=city_stats[\"Average\"],\n        error_y=dict(type=\"data\", array=city_stats[\"Std Dev\"]),\n        name=\"Average\"\n    ))",
+        "detail": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "city_stats.columns",
+        "kind": 5,
+        "importPath": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "description": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "peekOfCode": "city_stats.columns = [\"City\", \"Average\", \"Min\", \"Max\", \"Std Dev\"]\nif not city_stats.empty:\n    fig_city_stats = go.Figure()\n    fig_city_stats.add_trace(go.Bar(\n        x=city_stats[\"City\"],\n        y=city_stats[\"Average\"],\n        error_y=dict(type=\"data\", array=city_stats[\"Std Dev\"]),\n        name=\"Average\"\n    ))\n    fig_city_stats.update_layout(",
+        "detail": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "city_seasonal",
+        "kind": 5,
+        "importPath": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "description": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "peekOfCode": "city_seasonal = city_filtered.groupby([\"City\", \"Season\"])[temp_col].mean().reset_index()\nif not city_seasonal.empty:\n    city_seasonal[\"Season\"] = pd.Categorical(city_seasonal[\"Season\"], categories=season_order, ordered=True)\n    city_seasonal = city_seasonal.sort_values(\"Season\")\n    fig_city_season = px.line(\n        city_seasonal,\n        x=\"Season\",\n        y=temp_col,\n        color=\"City\",\n        markers=True,",
+        "detail": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "regional_stats",
+        "kind": 5,
+        "importPath": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "description": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "peekOfCode": "regional_stats = df_filtered.groupby(\"Region\")[temp_col].agg([\"mean\", \"min\", \"max\"]).reset_index()\nregional_stats.columns = [\"Region\", \"Average\", \"Min\", \"Max\"]\nif not regional_stats.empty:\n    fig_reg_stats = go.Figure()\n    fig_reg_stats.add_trace(go.Bar(\n            x=regional_stats[\"Region\"],\n            y=regional_stats[\"Average\"],\n            name=\"Average\",\n            marker_color=\"indianred\"\n    ))",
+        "detail": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "regional_stats.columns",
+        "kind": 5,
+        "importPath": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "description": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "peekOfCode": "regional_stats.columns = [\"Region\", \"Average\", \"Min\", \"Max\"]\nif not regional_stats.empty:\n    fig_reg_stats = go.Figure()\n    fig_reg_stats.add_trace(go.Bar(\n            x=regional_stats[\"Region\"],\n            y=regional_stats[\"Average\"],\n            name=\"Average\",\n            marker_color=\"indianred\"\n    ))\n    fig_reg_stats.add_trace(go.Scatter(",
+        "detail": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "country_avg",
+        "kind": 5,
+        "importPath": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "description": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "peekOfCode": "country_avg = df_filtered.groupby(\"Country\")[temp_col].mean().reset_index()\ncountry_avg.columns = [\"Country\", \"Average Temperature\"]\nif not country_avg.empty:\n    top_hot = country_avg.nlargest(10, \"Average Temperature\")\n    fig_hot = px.bar(\n        top_hot,\n        x=\"Average Temperature\",\n        y=\"Country\",\n        orientation=\"h\",\n        title=f\"Top 10 Hottest Countries ({temp_symbol})\",",
+        "detail": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "country_avg.columns",
+        "kind": 5,
+        "importPath": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "description": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "peekOfCode": "country_avg.columns = [\"Country\", \"Average Temperature\"]\nif not country_avg.empty:\n    top_hot = country_avg.nlargest(10, \"Average Temperature\")\n    fig_hot = px.bar(\n        top_hot,\n        x=\"Average Temperature\",\n        y=\"Country\",\n        orientation=\"h\",\n        title=f\"Top 10 Hottest Countries ({temp_symbol})\",\n        color=\"Average Temperature\",",
+        "detail": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "current_avg",
+        "kind": 5,
+        "importPath": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "description": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "peekOfCode": "current_avg = daily[\"y\"].tail(30).mean()\nforecast_avg = forecast_future[\"yhat\"].mean()\nforecast_max = forecast_future[\"yhat\"].max()\nchange = forecast_avg - current_avg\ncol1, col2, col3, col4 = st.columns(4)\nwith col1:\n    st.markdown(\n        Components.metric_card(\n            title=\"Current Avg (Last 30 days)\",\n            value=f\"{current_avg:.2f}{temp_symbol}\",",
+        "detail": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "forecast_avg",
+        "kind": 5,
+        "importPath": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "description": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "peekOfCode": "forecast_avg = forecast_future[\"yhat\"].mean()\nforecast_max = forecast_future[\"yhat\"].max()\nchange = forecast_avg - current_avg\ncol1, col2, col3, col4 = st.columns(4)\nwith col1:\n    st.markdown(\n        Components.metric_card(\n            title=\"Current Avg (Last 30 days)\",\n            value=f\"{current_avg:.2f}{temp_symbol}\",\n            delta=\"🗓️\",",
+        "detail": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "forecast_max",
+        "kind": 5,
+        "importPath": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "description": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "peekOfCode": "forecast_max = forecast_future[\"yhat\"].max()\nchange = forecast_avg - current_avg\ncol1, col2, col3, col4 = st.columns(4)\nwith col1:\n    st.markdown(\n        Components.metric_card(\n            title=\"Current Avg (Last 30 days)\",\n            value=f\"{current_avg:.2f}{temp_symbol}\",\n            delta=\"🗓️\",\n            card_type=\"info\"",
+        "detail": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "change",
+        "kind": 5,
+        "importPath": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "description": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "peekOfCode": "change = forecast_avg - current_avg\ncol1, col2, col3, col4 = st.columns(4)\nwith col1:\n    st.markdown(\n        Components.metric_card(\n            title=\"Current Avg (Last 30 days)\",\n            value=f\"{current_avg:.2f}{temp_symbol}\",\n            delta=\"🗓️\",\n            card_type=\"info\"\n        ), unsafe_allow_html=True",
+        "detail": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "split_idx",
+        "kind": 5,
+        "importPath": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "description": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "peekOfCode": "split_idx = int(len(daily) * 0.8)\ntrain_data = daily.iloc[:split_idx].copy()\ntest_data = daily.iloc[split_idx:].copy()\ntest_forecast = model.predict(test_data[[\"ds\"]])\ntest_forecast[\"ds\"] = pd.to_datetime(test_forecast[\"ds\"]).dt.to_pydatetime()\ntest_merged = test_data.merge(\n    test_forecast[[\"ds\", \"yhat\", \"yhat_lower\", \"yhat_upper\"]],\n    on=\"ds\"\n)\nmae = mean_absolute_error(test_merged[\"y\"], test_merged[\"yhat\"])",
+        "detail": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "train_data",
+        "kind": 5,
+        "importPath": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "description": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "peekOfCode": "train_data = daily.iloc[:split_idx].copy()\ntest_data = daily.iloc[split_idx:].copy()\ntest_forecast = model.predict(test_data[[\"ds\"]])\ntest_forecast[\"ds\"] = pd.to_datetime(test_forecast[\"ds\"]).dt.to_pydatetime()\ntest_merged = test_data.merge(\n    test_forecast[[\"ds\", \"yhat\", \"yhat_lower\", \"yhat_upper\"]],\n    on=\"ds\"\n)\nmae = mean_absolute_error(test_merged[\"y\"], test_merged[\"yhat\"])\nrmse = np.sqrt(mean_squared_error(test_merged[\"y\"], test_merged[\"yhat\"]))",
+        "detail": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "test_data",
+        "kind": 5,
+        "importPath": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "description": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "peekOfCode": "test_data = daily.iloc[split_idx:].copy()\ntest_forecast = model.predict(test_data[[\"ds\"]])\ntest_forecast[\"ds\"] = pd.to_datetime(test_forecast[\"ds\"]).dt.to_pydatetime()\ntest_merged = test_data.merge(\n    test_forecast[[\"ds\", \"yhat\", \"yhat_lower\", \"yhat_upper\"]],\n    on=\"ds\"\n)\nmae = mean_absolute_error(test_merged[\"y\"], test_merged[\"yhat\"])\nrmse = np.sqrt(mean_squared_error(test_merged[\"y\"], test_merged[\"yhat\"]))\nr2 = r2_score(test_merged[\"y\"], test_merged[\"yhat\"])",
+        "detail": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "test_forecast",
+        "kind": 5,
+        "importPath": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "description": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "peekOfCode": "test_forecast = model.predict(test_data[[\"ds\"]])\ntest_forecast[\"ds\"] = pd.to_datetime(test_forecast[\"ds\"]).dt.to_pydatetime()\ntest_merged = test_data.merge(\n    test_forecast[[\"ds\", \"yhat\", \"yhat_lower\", \"yhat_upper\"]],\n    on=\"ds\"\n)\nmae = mean_absolute_error(test_merged[\"y\"], test_merged[\"yhat\"])\nrmse = np.sqrt(mean_squared_error(test_merged[\"y\"], test_merged[\"yhat\"]))\nr2 = r2_score(test_merged[\"y\"], test_merged[\"yhat\"])\nmape = np.mean(np.abs((test_merged[\"y\"] - test_merged[\"yhat\"]) / test_merged[\"y\"])) * 100",
+        "detail": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "test_forecast[\"ds\"]",
+        "kind": 5,
+        "importPath": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "description": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "peekOfCode": "test_forecast[\"ds\"] = pd.to_datetime(test_forecast[\"ds\"]).dt.to_pydatetime()\ntest_merged = test_data.merge(\n    test_forecast[[\"ds\", \"yhat\", \"yhat_lower\", \"yhat_upper\"]],\n    on=\"ds\"\n)\nmae = mean_absolute_error(test_merged[\"y\"], test_merged[\"yhat\"])\nrmse = np.sqrt(mean_squared_error(test_merged[\"y\"], test_merged[\"yhat\"]))\nr2 = r2_score(test_merged[\"y\"], test_merged[\"yhat\"])\nmape = np.mean(np.abs((test_merged[\"y\"] - test_merged[\"yhat\"]) / test_merged[\"y\"])) * 100\ncol1, col2, col3, col4 = st.columns(4)",
+        "detail": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "test_merged",
+        "kind": 5,
+        "importPath": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "description": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "peekOfCode": "test_merged = test_data.merge(\n    test_forecast[[\"ds\", \"yhat\", \"yhat_lower\", \"yhat_upper\"]],\n    on=\"ds\"\n)\nmae = mean_absolute_error(test_merged[\"y\"], test_merged[\"yhat\"])\nrmse = np.sqrt(mean_squared_error(test_merged[\"y\"], test_merged[\"yhat\"]))\nr2 = r2_score(test_merged[\"y\"], test_merged[\"yhat\"])\nmape = np.mean(np.abs((test_merged[\"y\"] - test_merged[\"yhat\"]) / test_merged[\"y\"])) * 100\ncol1, col2, col3, col4 = st.columns(4)\nwith col1:",
+        "detail": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "mae",
+        "kind": 5,
+        "importPath": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "description": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "peekOfCode": "mae = mean_absolute_error(test_merged[\"y\"], test_merged[\"yhat\"])\nrmse = np.sqrt(mean_squared_error(test_merged[\"y\"], test_merged[\"yhat\"]))\nr2 = r2_score(test_merged[\"y\"], test_merged[\"yhat\"])\nmape = np.mean(np.abs((test_merged[\"y\"] - test_merged[\"yhat\"]) / test_merged[\"y\"])) * 100\ncol1, col2, col3, col4 = st.columns(4)\nwith col1:\n    st.markdown(\n        Components.metric_card(\n            title=\"MAE\",\n            value=f\"{mae:.3f}{temp_symbol}\",",
+        "detail": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "rmse",
+        "kind": 5,
+        "importPath": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "description": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "peekOfCode": "rmse = np.sqrt(mean_squared_error(test_merged[\"y\"], test_merged[\"yhat\"]))\nr2 = r2_score(test_merged[\"y\"], test_merged[\"yhat\"])\nmape = np.mean(np.abs((test_merged[\"y\"] - test_merged[\"yhat\"]) / test_merged[\"y\"])) * 100\ncol1, col2, col3, col4 = st.columns(4)\nwith col1:\n    st.markdown(\n        Components.metric_card(\n            title=\"MAE\",\n            value=f\"{mae:.3f}{temp_symbol}\",\n            delta=\"🇲🇦\",",
+        "detail": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "r2",
+        "kind": 5,
+        "importPath": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "description": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "peekOfCode": "r2 = r2_score(test_merged[\"y\"], test_merged[\"yhat\"])\nmape = np.mean(np.abs((test_merged[\"y\"] - test_merged[\"yhat\"]) / test_merged[\"y\"])) * 100\ncol1, col2, col3, col4 = st.columns(4)\nwith col1:\n    st.markdown(\n        Components.metric_card(\n            title=\"MAE\",\n            value=f\"{mae:.3f}{temp_symbol}\",\n            delta=\"🇲🇦\",\n            card_type=\"info\"",
+        "detail": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "mape",
+        "kind": 5,
+        "importPath": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "description": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "peekOfCode": "mape = np.mean(np.abs((test_merged[\"y\"] - test_merged[\"yhat\"]) / test_merged[\"y\"])) * 100\ncol1, col2, col3, col4 = st.columns(4)\nwith col1:\n    st.markdown(\n        Components.metric_card(\n            title=\"MAE\",\n            value=f\"{mae:.3f}{temp_symbol}\",\n            delta=\"🇲🇦\",\n            card_type=\"info\"\n        ), unsafe_allow_html=True",
+        "detail": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "fig_avp",
+        "kind": 5,
+        "importPath": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "description": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "peekOfCode": "fig_avp = go.Figure()\nfig_avp.add_trace(go.Scatter(\n    x=test_merged[\"ds\"],\n    y=test_merged[\"y\"],\n    mode=\"lines\",\n    name=\"Actual\",\n    line=dict(color=\"blue\", width=2)\n))\nfig_avp.add_trace(go.Scatter(\n    x=test_merged[\"ds\"],",
+        "detail": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "test_merged[\"residual\"]",
+        "kind": 5,
+        "importPath": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "description": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "peekOfCode": "test_merged[\"residual\"] = test_merged[\"y\"] - test_merged[\"yhat\"]\nfig_res_hist = px.histogram(\n    test_merged,\n    x=\"residual\",\n    nbins=50,\n    title=\"Distribution of Prediction Errors\",\n    labels={\"residual\": f\"Residual (Actual - Predicted) {temp_symbol}\"},\n    color_discrete_sequence=[\"indianred\"]\n)\nfig_res_hist.add_vline(x=0, line_dash=\"dash\", line_color=\"green\")",
+        "detail": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "fig_res_hist",
+        "kind": 5,
+        "importPath": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "description": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "peekOfCode": "fig_res_hist = px.histogram(\n    test_merged,\n    x=\"residual\",\n    nbins=50,\n    title=\"Distribution of Prediction Errors\",\n    labels={\"residual\": f\"Residual (Actual - Predicted) {temp_symbol}\"},\n    color_discrete_sequence=[\"indianred\"]\n)\nfig_res_hist.add_vline(x=0, line_dash=\"dash\", line_color=\"green\")\nfig_res_hist.update_layout(height=380)",
+        "detail": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "fig_res_time",
+        "kind": 5,
+        "importPath": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "description": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "peekOfCode": "fig_res_time = px.scatter(\n    test_merged,\n    x=\"ds\",\n    y=\"residual\",\n    title=\"Residuals Over Time\",\n    labels={\"ds\": \"Date\", \"residual\": f\"Residual ({temp_symbol})\"}\n)\nfig_res_time.add_hline(y=0, line_dash=\"dash\", line_color=\"green\")\nfig_res_time.update_layout(height=380)\nst.plotly_chart(fig_res_time, width=\"stretch\")",
+        "detail": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "temp_mean",
+        "kind": 5,
+        "importPath": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "description": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "peekOfCode": "temp_mean = df_filtered[temp_col].mean()  \ntemp_std = df_filtered[temp_col].std()  \nextreme_hot = df_filtered[df_filtered[temp_col] > temp_mean + 2*temp_std]  \nextreme_cold = df_filtered[df_filtered[temp_col] < temp_mean - 2*temp_std]  \ncol1, col2, col3 = st.columns(3)\nwith col1:\n    st.markdown(\n        Components.metric_card(\n            title=\"Extreme Heat Events\",\n            value=f\"{len(extreme_hot)/len(df_filtered)*100:.2f}% of records\",",
+        "detail": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "temp_std",
+        "kind": 5,
+        "importPath": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "description": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "peekOfCode": "temp_std = df_filtered[temp_col].std()  \nextreme_hot = df_filtered[df_filtered[temp_col] > temp_mean + 2*temp_std]  \nextreme_cold = df_filtered[df_filtered[temp_col] < temp_mean - 2*temp_std]  \ncol1, col2, col3 = st.columns(3)\nwith col1:\n    st.markdown(\n        Components.metric_card(\n            title=\"Extreme Heat Events\",\n            value=f\"{len(extreme_hot)/len(df_filtered)*100:.2f}% of records\",\n            delta=f\"{len(extreme_hot):,}\",",
+        "detail": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "extreme_hot",
+        "kind": 5,
+        "importPath": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "description": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "peekOfCode": "extreme_hot = df_filtered[df_filtered[temp_col] > temp_mean + 2*temp_std]  \nextreme_cold = df_filtered[df_filtered[temp_col] < temp_mean - 2*temp_std]  \ncol1, col2, col3 = st.columns(3)\nwith col1:\n    st.markdown(\n        Components.metric_card(\n            title=\"Extreme Heat Events\",\n            value=f\"{len(extreme_hot)/len(df_filtered)*100:.2f}% of records\",\n            delta=f\"{len(extreme_hot):,}\",\n            card_type=\"error\"",
+        "detail": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "documentation": {}
+    },
+    {
+        "label": "extreme_cold",
+        "kind": 5,
+        "importPath": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "description": "pages.2_🌡️_City_Temperature_analysis_dashboard",
+        "peekOfCode": "extreme_cold = df_filtered[df_filtered[temp_col] < temp_mean - 2*temp_std]  \ncol1, col2, col3 = st.columns(3)\nwith col1:\n    st.markdown(\n        Components.metric_card(\n            title=\"Extreme Heat Events\",\n            value=f\"{len(extreme_hot)/len(df_filtered)*100:.2f}% of records\",\n            delta=f\"{len(extreme_hot):,}\",\n            card_type=\"error\"\n        ), unsafe_allow_html=True",
         "detail": "pages.2_🌡️_City_Temperature_analysis_dashboard",
         "documentation": {}
     },
